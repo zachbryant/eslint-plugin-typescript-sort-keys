@@ -17,6 +17,10 @@ type RuleOptions = InterfaceRuleOptions & StringEnumRuleOptions
 
 type TSType = TSESTree.TypeElement | TSESTree.TSEnumMember
 
+/**
+ * @param context The rule context.
+ * @returns A function that swaps two nodes.
+ */
 function createNodeSwapper(context: UtilRuleContext<string, RuleOptions>) {
   const sourceCode = context.getSourceCode() as SourceCode & {
     lineStartIndices: number[]
@@ -154,6 +158,8 @@ export function createReporter<MessageIds extends string>(
 
   const compare = compareFn(isAscending, isInsensitive, isNatural)
   const swapNodes = createNodeSwapper(context)
+  const sortFunction = (a: TSType, b: TSType) =>
+    compare(getPropertyName(a), getPropertyName(b))
 
   return (body: TSType[]) => {
     const sortedBody = isRequiredFirst
@@ -161,13 +167,13 @@ export function createReporter<MessageIds extends string>(
           ...body
             .slice(0)
             .filter(node => !getPropertyIsOptional(node))
-            .sort((a, b) => compare(getPropertyName(a), getPropertyName(b))),
+            .sort(sortFunction),
           ...body
             .slice(0)
             .filter(node => getPropertyIsOptional(node))
-            .sort((a, b) => compare(getPropertyName(a), getPropertyName(b))),
+            .sort(sortFunction),
         ]
-      : body.slice(0).sort((a, b) => compare(getPropertyName(a), getPropertyName(b)))
+      : body.slice(0).sort(sortFunction)
 
     const nodePositions = new Map(
       body.map(n => [n, { initial: body.indexOf(n), final: sortedBody.indexOf(n) }]),
