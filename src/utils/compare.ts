@@ -15,13 +15,11 @@ function charCompare(a: string, b: string) {
 }
 
 function getWeight(value: string) {
-  switch (true) {
-    // Custom name for index signature used here
-    case indexSignature.regex.test(value):
-      return 100
-    default:
-      return 0
+  // Custom name for index signature used here
+  if (indexSignature.regex.test(value)) {
+    return 100
   }
+  return 0
 }
 
 function weightedCompare(
