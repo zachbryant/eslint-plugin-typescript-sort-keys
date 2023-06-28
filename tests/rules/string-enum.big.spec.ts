@@ -13,11 +13,12 @@ import {
 import fs from 'fs'
 
 const validBigTestCode = fs
-  .readFileSync('tests/rules/string-enum-big-test.valid.ts')
+  .readFileSync('tests/rules/string-enum-big-test.valid-case.ts')
   .toString('utf-8')
 const invalidBigTestCode = fs
-  .readFileSync('tests/rules/string-enum-big-test.invalid.ts')
+  .readFileSync('tests/rules/string-enum-big-test.invalid-case.ts')
   .toString('utf-8')
+
 const valid: readonly ValidTestCase<Options>[] = [
   {
     code: validBigTestCode,
