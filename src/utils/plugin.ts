@@ -1,4 +1,5 @@
 import { TSESTree, AST_TOKEN_TYPES } from '@typescript-eslint/experimental-utils'
+
 import {
   RuleContext as UtilRuleContext,
   RuleFixer,
@@ -176,7 +177,7 @@ export function createReporter<MessageIds extends string>(
       : body.slice(0).sort(sortFunction)
 
     const nodePositions = new Map(
-      body.map(n => [n, { initial: body.indexOf(n), final: sortedBody.indexOf(n) }]),
+      body.map((n, index) => [n, { initial: index, final: sortedBody.indexOf(n) }]),
     )
 
     for (let i = 1; i < body.length; i += 1) {
@@ -185,14 +186,15 @@ export function createReporter<MessageIds extends string>(
       const prevNodeName = getPropertyName(prevNode)
       const currentNodeName = getPropertyName(currentNode)
 
+      const isCurrentNodeOptional = getPropertyIsOptional(currentNode)
+      const isPrevNodeOptional = getPropertyIsOptional(prevNode)
+
       if (
         (!isRequiredFirst && compare(prevNodeName, currentNodeName) > 0) ||
         (isRequiredFirst &&
-          getPropertyIsOptional(prevNode) === getPropertyIsOptional(currentNode) &&
+          isPrevNodeOptional === isCurrentNodeOptional &&
           compare(prevNodeName, currentNodeName) > 0) ||
-        (isRequiredFirst &&
-          getPropertyIsOptional(prevNode) !== getPropertyIsOptional(currentNode) &&
-          getPropertyIsOptional(prevNode))
+        (isRequiredFirst && isPrevNodeOptional && !isCurrentNodeOptional)
       ) {
         const targetPosition = sortedBody.indexOf(currentNode)
         const replaceNode = body[targetPosition]
@@ -200,6 +202,7 @@ export function createReporter<MessageIds extends string>(
 
         // Sanity check
         assert(loc, 'createReportObject return value must include a node location')
+
         assert(
           messageId,
           'createReportObject return value must include a problem message',
