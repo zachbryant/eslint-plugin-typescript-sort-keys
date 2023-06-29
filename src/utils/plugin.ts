@@ -18,6 +18,8 @@ type RuleOptions = InterfaceRuleOptions & StringEnumRuleOptions
 
 type TSType = TSESTree.TypeElement | TSESTree.TSEnumMember
 
+type NodePositionInfo = { initialIndex: number; finalIndex: number }
+
 /**
  * @param context The rule context.
  * @returns A function that swaps two nodes.
@@ -84,7 +86,7 @@ function createNodeSwapper(context: UtilRuleContext<string, RuleOptions>) {
 
   return (
     fixer: RuleFixer,
-    nodePositions: Map<TSType, { initial: number; final: number }>,
+    nodePositions: Map<TSType, NodePositionInfo>,
     currentNode: TSType,
     replaceNode: TSType,
   ) =>
@@ -93,8 +95,8 @@ function createNodeSwapper(context: UtilRuleContext<string, RuleOptions>) {
       const comments = sourceCode.getCommentsBefore(node)
       const nextSibling = sourceCode.getTokenAfter(node)
       const isLastReplacingLast =
-        nodePositions.get(node)?.final === nodePositions.size - 1 &&
-        nodePositions.get(node)?.final === nodePositions.get(otherNode)?.initial
+        nodePositions.get(node)?.finalIndex === nodePositions.size - 1 &&
+        nodePositions.get(node)?.finalIndex === nodePositions.get(otherNode)?.initialIndex
 
       let text = [
         comments.length ? getIndentText(node) : '',
@@ -176,29 +178,18 @@ export function createReporter<MessageIds extends string>(
         ]
       : body.slice(0).sort(sortFunction)
 
-    const nodePositions = new Map(
-      body.map((n, index) => [n, { initial: index, final: sortedBody.indexOf(n) }]),
+    const nodePositions = new Map<TSType, NodePositionInfo>(
+      body.map((n, index) => [
+        n,
+        { initialIndex: index, finalIndex: sortedBody.indexOf(n) },
+      ]),
     )
 
-    for (let i = 1; i < body.length; i += 1) {
-      const prevNode = body[i - 1]
-      const currentNode = body[i]
-      const prevNodeName = getPropertyName(prevNode)
-      const currentNodeName = getPropertyName(currentNode)
-
-      const isCurrentNodeOptional = getPropertyIsOptional(currentNode)
-      const isPrevNodeOptional = getPropertyIsOptional(prevNode)
-
-      if (
-        (!isRequiredFirst && compare(prevNodeName, currentNodeName) > 0) ||
-        (isRequiredFirst &&
-          isPrevNodeOptional === isCurrentNodeOptional &&
-          compare(prevNodeName, currentNodeName) > 0) ||
-        (isRequiredFirst && isPrevNodeOptional && !isCurrentNodeOptional)
-      ) {
-        const targetPosition = sortedBody.indexOf(currentNode)
-        const replaceNode = body[targetPosition]
-        const { loc, messageId } = createReportObject(currentNode)
+    for (const [node, nodePositionInfo] of nodePositions.entries()) {
+      const { initialIndex, finalIndex } = nodePositionInfo
+      if (initialIndex !== finalIndex) {
+        const nodeToReplace = body[finalIndex]
+        const { loc, messageId } = createReportObject(node)
 
         // Sanity check
         assert(loc, 'createReportObject return value must include a node location')
@@ -208,26 +199,25 @@ export function createReporter<MessageIds extends string>(
           'createReportObject return value must include a problem message',
         )
 
+        const messageShouldBeWhere =
+          finalIndex === sortedBody.length - 1
+            ? 'at the end'
+            : `before '${getPropertyName(sortedBody[finalIndex + 1])}'`
+
         context.report({
           loc,
           messageId,
-          node: currentNode,
+          node: node,
           data: {
-            thisName: currentNodeName,
-            prevName: prevNodeName,
+            nodeName: getPropertyName(node),
+            messageShouldBeWhere,
             order,
             insensitive: isInsensitive ? 'insensitive ' : '',
             natural: isNatural ? 'natural ' : '',
             requiredFirst: isRequiredFirst ? 'required first ' : '',
           },
 
-          fix: fixer => {
-            if (currentNode !== replaceNode) {
-              return swapNodes(fixer, nodePositions, currentNode, replaceNode)
-            }
-
-            return null
-          },
+          fix: fixer => swapNodes(fixer, nodePositions, node, nodeToReplace),
         })
       }
     }

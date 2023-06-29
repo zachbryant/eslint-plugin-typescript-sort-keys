@@ -36,18 +36,18 @@ const invalid: readonly InvalidTestCase<Options>[] = [
   {
     code: invalidBigTestCode,
     output: validBigTestCode,
-    errors: 146,
+    errors: 457,
     optionsSet: [
       [],
-      // [SortingOrder.Ascending],
-      // [SortingOrder.Ascending, { caseSensitive: true }],
-      // [SortingOrder.Ascending, { natural: false }],
-      // [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
+      [SortingOrder.Ascending],
+      [SortingOrder.Ascending, { caseSensitive: true }],
+      [SortingOrder.Ascending, { natural: false }],
+      [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
     ],
   },
 ]
 
-describe('TypeScript', () => {
+describe('TypeScript large enum', () => {
   const ruleTester = new RuleTester(typescript)
 
   ruleTester.run(name, rule as unknown as Rule.RuleModule, {
