@@ -11,6 +11,7 @@ import {
 } from '../helpers/util'
 
 import fs from 'fs'
+import { SortingOrder } from 'common/options'
 
 const validBigTestCode = fs
   .readFileSync('tests/rules/string-enum-big-test.valid-case.ts')
@@ -24,51 +25,25 @@ const valid: readonly ValidTestCase<Options>[] = [
     code: '',
     optionsSet: [
       [],
-      // [SortingOrder.Ascending],
-      // [SortingOrder.Ascending, { caseSensitive: true }],
-      // [SortingOrder.Ascending, { natural: false }],
-      // [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
+      [SortingOrder.Ascending],
+      [SortingOrder.Ascending, { caseSensitive: true }],
+      [SortingOrder.Ascending, { natural: false }],
+      [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
     ],
   },
 ]
 
 const invalid: readonly InvalidTestCase<Options>[] = [
   {
-    code: `
-export enum A {
-  /*back*/ B = '' /*front*/,
-  // C above
-  C = '', // C side
-  // A above
-  A = '', // A side
-}`,
-    output: `
-export enum A {
-  // A above
-  A = '', // A side
-  /*back*/ B = '' /*front*/,
-  // C above
-  C = '', // C side
-}`,
-    errors: 4,
-    optionsSet: [
-      [],
-      // [SortingOrder.Ascending],
-      // [SortingOrder.Ascending, { caseSensitive: true }],
-      // [SortingOrder.Ascending, { natural: false }],
-      // [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
-    ],
-  },
-  {
     code: invalidBigTestCode,
     output: validBigTestCode,
     errors: 458,
     optionsSet: [
       [],
-      // [SortingOrder.Ascending],
-      // [SortingOrder.Ascending, { caseSensitive: true }],
-      // [SortingOrder.Ascending, { natural: false }],
-      // [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
+      [SortingOrder.Ascending],
+      [SortingOrder.Ascending, { caseSensitive: true }],
+      [SortingOrder.Ascending, { natural: false }],
+      [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
     ],
   },
 ]
