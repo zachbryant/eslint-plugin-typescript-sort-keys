@@ -55,7 +55,8 @@ const defaultOptions: Options = [
  * The possible error messages.
  */
 const errorMessages = {
-  invalidOrder: ErrorMessage.StringEnumInvalidOrder,
+  invalidOrderProperties: ErrorMessage.StringEnumInvalidOrder,
+  invalidOrderParent: ErrorMessage.ParentInvalidOrder,
 } as const
 
 /**
@@ -81,10 +82,17 @@ export const rule = createRule<keyof typeof errorMessages, Options>({
   defaultOptions,
 
   create(context) {
-    const compareNodeListAndReport = createReporter(context, ({ loc }) => ({
-      loc,
-      messageId: 'invalidOrder',
-    }))
+    const compareNodeListAndReport = createReporter({
+      context,
+      createReportPropertiesObject: ({ loc }) => ({
+        loc,
+        messageId: 'invalidOrderProperties' as any,
+      }),
+      createReportParentObject: ({ loc }) => ({
+        loc,
+        messageId: 'invalidOrderParent' as any,
+      }),
+    })
 
     return {
       TSEnumDeclaration(node) {
@@ -97,7 +105,7 @@ export const rule = createRule<keyof typeof errorMessages, Options>({
         )
 
         if (isStringEnum) {
-          compareNodeListAndReport(body)
+          compareNodeListAndReport(node, body)
         }
       },
     }

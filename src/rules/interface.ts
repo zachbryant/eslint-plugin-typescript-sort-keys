@@ -10,6 +10,7 @@ import {
   SortingOrderOption,
   SortingParamsOptions,
 } from 'common/options'
+import { TSESTree } from '@typescript-eslint/experimental-utils'
 
 /**
  * The name of this rule.
@@ -58,7 +59,8 @@ const defaultOptions: Options = [
  * The possible error messages.
  */
 const errorMessages = {
-  invalidOrder: ErrorMessage.InterfaceInvalidOrder,
+  invalidOrderProperties: ErrorMessage.InterfaceInvalidOrder,
+  invalidOrderParent: ErrorMessage.ParentInvalidOrder,
 } as const
 
 /**
@@ -84,22 +86,29 @@ export const rule = createRule<keyof typeof errorMessages, Options>({
   defaultOptions,
 
   create(context) {
-    const compareNodeListAndReport = createReporter(context, ({ loc }) => ({
-      loc,
-      messageId: 'invalidOrder',
-    }))
+    const compareNodeListAndReport = createReporter({
+      context,
+      createReportPropertiesObject: ({ loc }) => ({
+        loc,
+        messageId: 'invalidOrderProperties' as any,
+      }),
+      createReportParentObject: ({ loc }) => ({
+        loc,
+        messageId: 'invalidOrderParent' as any,
+      }),
+    })
 
     return {
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
         const body = getObjectBody(node)
 
-        return compareNodeListAndReport(body)
+        return compareNodeListAndReport(node, body)
       },
 
-      TSTypeLiteral(node) {
+      TSTypeLiteral(node: TSESTree.TSTypeLiteral) {
         const body = getObjectBody(node)
 
-        return compareNodeListAndReport(body)
+        return compareNodeListAndReport(node, body)
       },
     }
   },

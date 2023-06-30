@@ -511,7 +511,7 @@ const invalid: readonly InvalidTestCase<Options>[] = [
     optionsSet: [[SortingOrder.Ascending, { caseSensitive: false }]],
   },
   {
-    code: 'enum U {a="T", c="T", b="T"}',
+    code: 'enum U {c="T", a="T", b="T"}',
     output: 'enum U {a="T", b="T", c="T"}',
     errors: [
       "Expected string enum members to be in insensitive ascending order. 'b' should be before 'c'.",
@@ -842,8 +842,8 @@ const invalid: readonly InvalidTestCase<Options>[] = [
     code: "enum U {'#'='T', À='T', 'Z'='T', è='T'}",
     output: "enum U {è='T', À='T', 'Z'='T', '#'='T'}",
     errors: [
-      "Expected string enum members to be in natural insensitive descending order. 'À' should be before '#'.",
-      "Expected string enum members to be in natural insensitive descending order. 'è' should be before 'Z'.",
+      "Expected string enum members to be in natural insensitive descending order. '#' should be at the end.",
+      "Expected string enum members to be in natural insensitive descending order. 'è' should be before 'À'.",
     ],
     optionsSet: [[SortingOrder.Descending, { natural: true, caseSensitive: false }]],
   },
