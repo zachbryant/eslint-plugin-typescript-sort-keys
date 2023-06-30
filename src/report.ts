@@ -1,19 +1,23 @@
 import assert from 'assert'
 
 import { getOptions } from 'common/options'
-import { CreateReporterArgs, NodePositionInfo, TSType } from 'common/types'
-import { getPropertyName } from './ast'
 import {
+  AllRuleOptions,
+  CreateReporterArgs,
+  NodePositionInfo,
   SourceCode,
-  getIndentRange,
-  getLineOfText,
-  getReassembledBodyText,
-} from './sourceCodeHelper'
+  TSType,
+} from './types'
+import { getPropertyName } from './utils/ast'
+import { getLineOfText, getReassembledBodyText } from './utils/sourceCodeHelper'
 
-import { TSESLint, TSESTree } from '@typescript-eslint/experimental-utils'
+import { TSESLint, TSESTree } from '@typescript-eslint/utils'
 
 export function reportParentNode(
-  createReporterArgs: Omit<CreateReporterArgs<string>, 'createReportPropertiesObject'>,
+  createReporterArgs: Omit<
+    CreateReporterArgs<string, AllRuleOptions>,
+    'createReportPropertiesObject'
+  >,
   bodyParent: TSESTree.Node,
   body: TSType[],
   sortedBody: TSType[],
@@ -32,13 +36,19 @@ export function reportParentNode(
     *fix(fixer: TSESLint.RuleFixer) {
       // Replace the entire body with the sorted body
       const sourceCode = createReporterArgs.context.getSourceCode() as SourceCode
-      const startNodeIndentRange = getIndentRange(sourceCode, body[0])
-      // The start of the body includes the indent of the first node
-      const start = body[0].range[0] - (startNodeIndentRange[1] - startNodeIndentRange[0])
+      // const startNodeIndentRange = getIndentRange(sourceCode, body[0])
+      //const start = body[0].range[0] - (startNodeIndentRange[1] - startNodeIndentRange[0])
+      const startNode = body[0]
+      const startLineText = getLineOfText(sourceCode, startNode)
+      const startNodeText = sourceCode.getText(startNode).trim()
+      // Adjust the start range back by indent and any leading comments
+      const start =
+        startNode.range[0] -
+        startLineText.substring(0, startLineText.indexOf(startNodeText)).length
       const endNode = body[body.length - 1]
       // The end of the body includes the punctuator and comments if any
       const end =
-        body[body.length - 1].range[1] -
+        endNode.range[1] -
         sourceCode.getText(endNode).length +
         getLineOfText(sourceCode, endNode).trimStart().length
 
@@ -51,7 +61,10 @@ export function reportParentNode(
 }
 
 export function reportUnsortedBody(
-  createReporterArgs: Omit<CreateReporterArgs<string>, 'createReportParentObject'>,
+  createReporterArgs: Omit<
+    CreateReporterArgs<string, AllRuleOptions>,
+    'createReportParentObject'
+  >,
   nodePositions: Map<TSType, NodePositionInfo>,
   sortedBody: TSType[],
 ) {

@@ -1,23 +1,5 @@
-import { SourceCode as Lib_SourceCode } from '@typescript-eslint/experimental-utils/dist/ts-eslint'
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  TSESTree,
-} from '@typescript-eslint/experimental-utils/dist/ts-estree'
-
-export type SourceCode = Lib_SourceCode & {
-  lineStartIndices: number[]
-}
-
-export function isInterface(node: TSESTree.Node) {
-  switch (node.type) {
-    case AST_NODE_TYPES.TSInterfaceDeclaration:
-    case AST_NODE_TYPES.TSTypeLiteral:
-      return true
-    default:
-      return false
-  }
-}
+import { TSESTree } from '@typescript-eslint/utils'
+import { SourceCode } from '../types'
 
 /**
  * Returns the indent range of a node if it's the first on its line.
@@ -55,22 +37,11 @@ function getLineRange(sourceCode: SourceCode, node: TSESTree.Node): TSESTree.Ran
   return [sourceCode.lineStartIndices[index], sourceCode.lineStartIndices[index + lines]]
 }
 
+/**
+ * Returns the "line" if text of a node, between its siblings
+ */
 export function getLineOfText(sourceCode: SourceCode, node: TSESTree.Node) {
   return sourceCode.text.slice(...getLineRange(sourceCode, node))
-}
-
-/**
- * The punctuator after the node, if any.
- */
-export function getNodePunctuator(sourceCode: SourceCode, node: TSESTree.Node) {
-  const punctuator = sourceCode.getTokenAfter(node, {
-    filter: n => n.type === AST_TOKEN_TYPES.Punctuator && n.value !== ':',
-    includeComments: false,
-  })
-
-  // Check the punctuator value outside of filter because we
-  // want to stop traversal on any terminating punctuator
-  return punctuator && /^[,;]$/.test(punctuator.value) ? punctuator : undefined
 }
 
 /**
@@ -91,6 +62,9 @@ function getCommentsAbove(sourceCode: SourceCode, node: TSESTree.Node) {
   })
 }
 
+/**
+ * Returns the text of the entire body, rebuilt from the source code in order given.
+ */
 export function getReassembledBodyText(sourceCode: SourceCode, body: TSESTree.Node[]) {
   return body
     .map(node => {

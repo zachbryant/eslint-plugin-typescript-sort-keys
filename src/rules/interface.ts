@@ -1,30 +1,26 @@
 import { JSONSchema4 } from 'json-schema'
 
+import { TSESTree } from '@typescript-eslint/utils'
+import { createReporter } from 'plugin'
 import { getObjectBody } from 'utils/ast'
-import { createReporter } from 'utils/plugin'
 import { createRule, RuleMetaData } from 'utils/rule'
 import {
-  sortingOrderOptionSchema,
-  SortingOrder,
   ErrorMessage,
-  SortingOrderOption,
+  RuleOptionsGeneric,
+  SortingOrder,
+  sortingOrderOptionSchema,
   SortingParamsOptions,
-} from 'common/options'
-import { TSESTree } from '@typescript-eslint/experimental-utils'
+} from '../types'
 
 /**
  * The name of this rule.
  */
 export const name = 'interface' as const
 
-type SortingParams = SortingParamsOptions['caseSensitive'] &
-  SortingParamsOptions['natural'] &
-  SortingParamsOptions['requiredFirst']
-
 /**
  * The options this rule can take.
  */
-export type Options = [SortingOrderOption] | [SortingOrderOption, Partial<SortingParams>]
+export type RuleOptions = RuleOptionsGeneric<SortingParamsOptions>
 
 const sortingParamsOptionSchema: JSONSchema4 = {
   type: 'object',
@@ -50,7 +46,7 @@ const schema: JSONSchema4[] = [sortingOrderOptionSchema, sortingParamsOptionSche
 /**
  * The default options for the rule.
  */
-const defaultOptions: Options = [
+const defaultOptions: RuleOptions = [
   SortingOrder.Ascending,
   { caseSensitive: true, natural: false, requiredFirst: false },
 ]
@@ -62,11 +58,12 @@ const errorMessages = {
   invalidOrderProperties: ErrorMessage.InterfaceInvalidOrder,
   invalidOrderParent: ErrorMessage.ParentInvalidOrder,
 } as const
+type errorMessageKeys = keyof typeof errorMessages
 
 /**
  * The meta data for this rule.
  */
-const meta: RuleMetaData<keyof typeof errorMessages> = {
+const meta: RuleMetaData<errorMessageKeys> = {
   type: 'suggestion',
   docs: {
     description: 'require interface keys to be sorted',
@@ -80,7 +77,7 @@ const meta: RuleMetaData<keyof typeof errorMessages> = {
 /**
  * Create the rule.
  */
-export const rule = createRule<keyof typeof errorMessages, Options>({
+export const rule = createRule<errorMessageKeys, RuleOptions>({
   name,
   meta,
   defaultOptions,
@@ -88,24 +85,24 @@ export const rule = createRule<keyof typeof errorMessages, Options>({
   create(context) {
     const compareNodeListAndReport = createReporter({
       context,
-      createReportPropertiesObject: ({ loc }) => ({
+      createReportPropertiesObject: ({ loc }: TSESTree.Node) => ({
         loc,
         messageId: 'invalidOrderProperties' as any,
       }),
-      createReportParentObject: ({ loc }) => ({
+      createReportParentObject: ({ loc }: TSESTree.Node) => ({
         loc,
         messageId: 'invalidOrderParent' as any,
       }),
     })
 
     return {
-      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
+      TSInterfaceDeclaration(node) {
         const body = getObjectBody(node)
 
         return compareNodeListAndReport(node, body)
       },
 
-      TSTypeLiteral(node: TSESTree.TSTypeLiteral) {
+      TSTypeLiteral(node) {
         const body = getObjectBody(node)
 
         return compareNodeListAndReport(node, body)

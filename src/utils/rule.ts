@@ -1,4 +1,4 @@
-import { ESLintUtils } from '@typescript-eslint/experimental-utils'
+import { ESLintUtils } from '@typescript-eslint/utils'
 import {
   ReportDescriptor,
   RuleContext as UtilRuleContext,
@@ -6,7 +6,7 @@ import {
   RuleMetaData as UtilRuleMetaData,
   RuleMetaDataDocs as UtilRuleMetaDataDocs,
   RuleModule,
-} from '@typescript-eslint/experimental-utils/dist/ts-eslint'
+} from '@typescript-eslint/utils/dist/ts-eslint'
 
 export type BaseOptions = readonly unknown[]
 

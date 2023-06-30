@@ -1,9 +1,9 @@
-import { TSESTree } from '@typescript-eslint/experimental-utils'
-import { CreateReporterArgs, NodePositionInfo, TSType } from 'common/types'
-import { getPropertyIsOptional, getPropertyName } from './ast'
-import { compareFn } from './compare'
+import { TSESTree } from '@typescript-eslint/utils'
+import { getPropertyIsOptional, getPropertyName } from './utils/ast'
+import { compareFn } from './utils/compare'
 import { reportParentNode, reportUnsortedBody } from './report'
 import { getOptions } from 'common/options'
+import { TSType, CreateReporterArgs, NodePositionInfo, AllRuleOptions } from './types'
 
 function getSortedBody(
   body: TSType[],
@@ -25,7 +25,9 @@ function getSortedBody(
     : body.slice(0).sort(sortFunction)
 }
 
-export function createReporter(createReporterArgs: CreateReporterArgs<string>) {
+export function createReporter(
+  createReporterArgs: CreateReporterArgs<string, AllRuleOptions>,
+) {
   const { isAscending, isInsensitive, isNatural, isRequiredFirst } = getOptions(
     createReporterArgs.context,
   )
@@ -47,6 +49,7 @@ export function createReporter(createReporterArgs: CreateReporterArgs<string>) {
     )
 
     const unsortedCount = Array.from(nodePositions.entries()).reduce(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (count, [_, info]) => {
         if (info.initialIndex !== info.finalIndex) {
           return count + 1

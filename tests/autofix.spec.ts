@@ -5,8 +5,8 @@ import { ESLint, Linter } from 'eslint'
 
 import plugin from '../src'
 import recommended from 'config/recommended'
-import { SortingOrder } from 'common/options'
-import { typescript } from './helpers/configs'
+import { typescriptConfig } from './helpers/configs'
+import { SortingOrder } from 'types'
 
 describe('autofix', () => {
   beforeEach(() => {
@@ -46,7 +46,7 @@ describe('autofix', () => {
       const eslint = new ESLint({
         overrideConfig: {
           ...config,
-          parser: typescript.parser,
+          parser: typescriptConfig.parser,
           parserOptions: { sourceType: 'module' },
         },
         plugins: {

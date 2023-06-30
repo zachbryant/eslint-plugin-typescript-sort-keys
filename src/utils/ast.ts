@@ -1,6 +1,7 @@
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/experimental-utils'
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils'
 
 import { indexSignature } from './common'
+import { TSType } from 'types'
 
 export function getObjectBody(
   node:
@@ -71,8 +72,8 @@ function getProperty(node: TSESTree.Node) {
  *     let a = {[tag`b`]: 1}     // => undefined
  *     let a = {[`${b}`]: 1}     // => undefined
  */
-export function getPropertyName(node: TSESTree.TypeElement | TSESTree.TSEnumMember) {
-  const property = getProperty(node)
+export function getPropertyName(node: TSType) {
+  const property = getProperty(node as TSESTree.Node)
 
   if (!property) {
     return undefined
@@ -90,9 +91,7 @@ export function getPropertyName(node: TSESTree.TypeElement | TSESTree.TSEnumMemb
   }
 }
 
-export function getPropertyIsOptional(
-  node: TSESTree.TypeElement | TSESTree.TSEnumMember,
-) {
+export function getPropertyIsOptional(node: TSType) {
   switch (node.type) {
     case AST_NODE_TYPES.TSMethodSignature:
     case AST_NODE_TYPES.TSPropertySignature:
@@ -100,4 +99,14 @@ export function getPropertyIsOptional(
   }
 
   return false
+}
+
+export function isInterface(node: TSESTree.Node) {
+  switch (node.type) {
+    case AST_NODE_TYPES.TSInterfaceDeclaration:
+    case AST_NODE_TYPES.TSTypeLiteral:
+      return true
+    default:
+      return false
+  }
 }
