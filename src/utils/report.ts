@@ -6,7 +6,7 @@ import { getPropertyName } from './ast'
 import {
   SourceCode,
   getIndentRange,
-  getNodePunctuator,
+  getLineOfText,
   getReassembledBodyText,
 } from './sourceCodeHelper'
 
@@ -35,14 +35,16 @@ export function reportParentNode(
       const startNodeIndentRange = getIndentRange(sourceCode, body[0])
       // The start of the body includes the indent of the first node
       const start = body[0].range[0] - (startNodeIndentRange[1] - startNodeIndentRange[0])
-      // The end of the body includes the punctuator of the last node, if any
+      const endNode = body[body.length - 1]
+      // The end of the body includes the punctuator and comments if any
       const end =
-        body[body.length - 1].range[1] +
-        (getNodePunctuator(sourceCode, body[body.length - 1]) ? 1 : 0)
+        body[body.length - 1].range[1] -
+        sourceCode.getText(endNode).length +
+        getLineOfText(sourceCode, endNode).trimStart().length
 
       yield fixer.replaceTextRange(
         [start, end],
-        getReassembledBodyText(sourceCode, bodyParent, sortedBody),
+        getReassembledBodyText(sourceCode, sortedBody),
       )
     },
   })

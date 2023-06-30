@@ -41,10 +41,7 @@ export function getIndentRange(
  * Returns the range for the entire line, including EOL, if node is the only
  * token on its lines. Otherwise, returns the node range.
  */
-export function getLineRange(
-  sourceCode: SourceCode,
-  node: TSESTree.Node,
-): TSESTree.Range {
+function getLineRange(sourceCode: SourceCode, node: TSESTree.Node): TSESTree.Range {
   const [start] = [getIndentRange(sourceCode, node)[0], node.range[1]]
   const index = sourceCode.lineStartIndices.findIndex(n => start === n)
 
@@ -56,13 +53,6 @@ export function getLineRange(
   const lines = 1 + node.loc.end.line - node.loc.start.line
 
   return [sourceCode.lineStartIndices[index], sourceCode.lineStartIndices[index + lines]]
-}
-
-/**
- * Returns the text of the indent of a node if it's the first on its line.
- */
-export function getTextWithIndent(sourceCode: SourceCode, node: TSESTree.Node) {
-  return sourceCode.text.slice(...getIndentRange(sourceCode, node))
 }
 
 export function getLineOfText(sourceCode: SourceCode, node: TSESTree.Node) {
@@ -83,36 +73,34 @@ export function getNodePunctuator(sourceCode: SourceCode, node: TSESTree.Node) {
   return punctuator && /^[,;]$/.test(punctuator.value) ? punctuator : undefined
 }
 
-export function getReassembledNodeText(
-  sourceCode: SourceCode,
-  _bodyParent: TSESTree.Node,
-  node: TSESTree.Node,
-) {
-  // const commentsBefore = sourceCode.getCommentsBefore(node)
-  // const commentsAfter = sourceCode
-  //   .getCommentsAfter(node)
-  //   .filter(comment => comment.loc.start.line === node.loc.end.line)
-  const nodeText = getLineOfText(sourceCode, node)
-  console.log(getLineOfText(sourceCode, node))
+/**
+ * Returns comments above a node, exclusively between the line of the
+ * previous node and the line of the node.
+ */
+function getCommentsAbove(sourceCode: SourceCode, node: TSESTree.Node) {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const prevNode = sourceCode.getTokenBefore(node) ?? node.parent!
+  const comments = sourceCode.getCommentsBefore(node)
+  return comments.filter(comment => {
+    const commentStartLine = comment.loc.start.line
+    const commentEndLine = comment.loc.end.line
 
-  // const commentText = commentsBefore
-  //   .map(comment => sourceCode.getText(comment as any))
-  //   .concat('')
-  //   .join('\n')
-  // get space between previous node or start of line and node
-
-  return nodeText
+    return (
+      commentStartLine > prevNode.loc.end.line && commentEndLine < node.loc.start.line
+    )
+  })
 }
 
-export function getReassembledBodyText(
-  sourceCode: SourceCode,
-  bodyParent: TSESTree.Node,
-  body: TSESTree.Node[],
-) {
-  // const shouldHaveNewline = body.some(
-  //   (node, _, nodes) => node.loc.start.line !== nodes[0].loc.start.line,
-  // )
-  // const lineSeparator = shouldHaveNewline ? '\n' : ''
+export function getReassembledBodyText(sourceCode: SourceCode, body: TSESTree.Node[]) {
+  return body
+    .map(node => {
+      const commentsBefore = getCommentsAbove(sourceCode, node)
 
-  return body.map(node => getReassembledNodeText(sourceCode, bodyParent, node)).join('')
+      const nodeText = [
+        commentsBefore.map(_ => getLineOfText(sourceCode, _ as unknown as TSESTree.Node)),
+        getLineOfText(sourceCode, node),
+      ].join('')
+      return nodeText
+    })
+    .join('')
 }
