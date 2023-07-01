@@ -1,17 +1,15 @@
 import { Rule, RuleTester } from 'eslint'
 
-import { rule, name, Options } from 'rules/string-enum'
-//import { SortingOrder } from 'common/options'
-import { typescript } from '../helpers/configs'
+import { name, rule } from 'rules/string-enum'
+import { typescriptConfig } from '../helpers/configs'
 import {
-  InvalidTestCase,
+  PreInvalidTestCaseObject,
+  PreValidTestCaseObject,
   processInvalidTestCase,
   processValidTestCase,
-  ValidTestCase,
-} from '../helpers/util'
+} from '../helpers/processCases'
 
 import fs from 'fs'
-import { SortingOrder } from 'common/options'
 
 const validBigTestCode = fs
   .readFileSync('tests/rules/string-enum-big-test.valid-case.ts')
@@ -20,36 +18,22 @@ const invalidBigTestCode = fs
   .readFileSync('tests/rules/string-enum-big-test.invalid-case.ts')
   .toString('utf-8')
 
-const valid: readonly ValidTestCase<Options>[] = [
-  {
-    code: '',
-    optionsSet: [
-      [],
-      [SortingOrder.Ascending],
-      [SortingOrder.Ascending, { caseSensitive: true }],
-      [SortingOrder.Ascending, { natural: false }],
-      [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
-    ],
-  },
-]
+const valid: PreValidTestCaseObject = {
+  ascending: [validBigTestCode],
+}
 
-const invalid: readonly InvalidTestCase<Options>[] = [
-  {
-    code: invalidBigTestCode,
-    output: validBigTestCode,
-    errors: 458,
-    optionsSet: [
-      [],
-      [SortingOrder.Ascending],
-      [SortingOrder.Ascending, { caseSensitive: true }],
-      [SortingOrder.Ascending, { natural: false }],
-      [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
-    ],
-  },
-]
+const invalid: PreInvalidTestCaseObject = {
+  ascending: [
+    {
+      code: invalidBigTestCode,
+      output: validBigTestCode,
+      errors: 458,
+    },
+  ],
+}
 
 describe('TypeScript large enum', () => {
-  const ruleTester = new RuleTester(typescript)
+  const ruleTester = new RuleTester(typescriptConfig)
 
   ruleTester.run(name, rule as unknown as Rule.RuleModule, {
     valid: processValidTestCase(valid),
