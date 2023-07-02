@@ -10,6 +10,17 @@ export const orderStrings: Record<OptionsSetsKey, string> = {
   descendingNatural: 'natural descending ',
   descendingInsensitiveNatural: 'insensitive natural descending ',
   noOptions: '',
+  ascendingOnly: '',
+  ascendingSensitive: '',
+  ascendingInsensitiveNaturalRequired: '',
+  ascendingInsensitiveNaturalNotRequired: '',
+  ascendingRequired: '',
+  descending: 'descending ',
+  descendingInsensitiveNonNatural: '',
+  descendingSensitiveNatural: '',
+  descendingInsensitiveNaturalRequired: '',
+  descendingInsensitiveNaturalNotRequired: '',
+  descendingRequired: '',
 }
 
 export const getSwapErrorString = (order: OptionsSetsKey, a: string, b: string) =>

@@ -35,7 +35,7 @@ const sortingParamsOptionSchema: JSONSchema4 = {
       type: 'boolean',
     },
   },
-  additionalProperties: false,
+  additionalProperties: true,
 }
 
 /**

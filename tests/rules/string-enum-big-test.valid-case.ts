@@ -1,5 +1,5 @@
 export enum BigTest {
-  AAAUDRE = '',
+  /*start*/ AAAUDRE = '',
   AAAUDWE = '',
   AATHS = '',
   AATHSD = '',
@@ -10,7 +10,10 @@ export enum BigTest {
   ABI = '',
   ABMPA = '',
   ABPA = '',
-  ABRE = '',
+  // ABRE comment 1
+  // ABRE comment 2
+  ABRE = '', // ABRE comment 3
+  // ABUA comment 1
   ABUA = '',
   ABUDRE = '',
   ABUDWE = '',
@@ -472,7 +475,7 @@ export enum BigTest {
   WCPV = '',
   WDA = '',
   WDBLE = '',
-  WDFF = '',
+  WDFF = '', // end comment do sort
   WDGBE = '',
   WDJAE = '',
   WDJAT = '',
@@ -485,5 +488,6 @@ export enum BigTest {
   WTE = '',
   WTR = '',
   WTRI = '',
-  WVE = '',
+  WVE = '' /* end */, // end
+  // end comment dont sort
 }

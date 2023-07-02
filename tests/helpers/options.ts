@@ -1,10 +1,10 @@
-import { SortingOrder } from 'types'
+import { AllRuleOptions, SortingOrder } from 'types'
 
-export type OptionsSet<Options extends any[]> = {
+export type OptionsSet = {
   /**
    * The set of options this test case should pass for.
    */
-  readonly optionsSet: readonly (Options | [])[]
+  readonly optionsSet: readonly (AllRuleOptions | [])[]
 }
 /**
  * Option sets by test category

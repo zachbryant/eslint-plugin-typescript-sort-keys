@@ -9,7 +9,7 @@ import {
   TSType,
 } from './types'
 import { getPropertyName } from './utils/ast'
-import { getLineOfText, getReassembledBodyText } from './utils/sourceCodeHelper'
+import { getFixedBodyText } from './utils/sourceCodeHelper'
 
 import { TSESLint, TSESTree } from '@typescript-eslint/utils'
 
@@ -36,26 +36,20 @@ export function reportParentNode(
     *fix(fixer: TSESLint.RuleFixer) {
       // Replace the entire body with the sorted body
       const sourceCode = createReporterArgs.context.getSourceCode() as SourceCode
-      // const startNodeIndentRange = getIndentRange(sourceCode, body[0])
-      //const start = body[0].range[0] - (startNodeIndentRange[1] - startNodeIndentRange[0])
-      const startNode = body[0]
-      const startLineText = getLineOfText(sourceCode, startNode)
-      const startNodeText = sourceCode.getText(startNode).trim()
-      // Adjust the start range back by indent and any leading comments
-      const start =
-        startNode.range[0] -
-        startLineText.substring(0, startLineText.indexOf(startNodeText)).length
-      const endNode = body[body.length - 1]
-      // The end of the body includes the punctuator and comments if any
-      const end =
-        endNode.range[1] -
-        sourceCode.getText(endNode).length +
-        getLineOfText(sourceCode, endNode).trimStart().length
 
-      yield fixer.replaceTextRange(
-        [start, end],
-        getReassembledBodyText(sourceCode, sortedBody),
-      )
+      const startNode = body[0]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const declarationStartPunctuator = sourceCode.getTokenBefore(startNode)!
+      const endNode = body[body.length - 1]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const declarationEndPunctuator = sourceCode.getTokenAfter(endNode)!
+      // Adjust the start range back by indent and any leading comments
+      const start = declarationStartPunctuator.range[0] + 1
+      // The end of the body includes the punctuator and comments if any
+      const end = declarationEndPunctuator.range[0]
+
+      const fixedBodyText = getFixedBodyText(sourceCode, sortedBody, body)
+      yield fixer.replaceTextRange([start, end], fixedBodyText)
     },
   })
 }
