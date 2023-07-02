@@ -68,28 +68,10 @@ function getCommentsText(
     .join('')
 }
 
-/**
- * The punctuator after the node, if any.
- */
-export function getNodePunctuator(sourceCode: SourceCode, node: Node) {
-  const punctuator = sourceCode.getTokenAfter(node, {
-    filter: n => n.type === AST_TOKEN_TYPES.Punctuator && n.value !== ':',
-    includeComments: false,
-  })
-
-  // Check the punctuator value outside of filter because we
-  // want to stop traversal on any terminating punctuator
-  return punctuator && /^[,;]$/.test(punctuator.value) ? punctuator : undefined
-}
-
 // Returns a string containing the node's punctuation, if any
 function getPunctuation(sourceCode: SourceCode, node: Node) {
   const nodeText = sourceCode.getText(node)
-  return getNodePunctuator(sourceCode, node)?.value ?? nodeText.endsWith(',')
-    ? ','
-    : nodeText.endsWith(';')
-    ? ';'
-    : ''
+  return nodeText.trim().endsWith(',') ? ',' : nodeText.trim().endsWith(';') ? ';' : ''
 }
 
 /**
@@ -101,8 +83,8 @@ function getTextFixedPunctuation(sourceCode: SourceCode, node: Node, isLast: boo
   let nodeText = sourceCode.getText(node)
 
   // Case when the node was sorted last with punctuation
-  if (isLast && punctuation === ',') {
-    if (nodeText.endsWith(punctuation)) {
+  if (isLast) {
+    if (punctuation === ',' && nodeText.endsWith(punctuation)) {
       nodeText = nodeText.slice(0, -1)
     }
   } else {
@@ -114,6 +96,7 @@ function getTextFixedPunctuation(sourceCode: SourceCode, node: Node, isLast: boo
       nodeText += ', '
     }
   }
+
   return nodeText
 }
 
@@ -170,10 +153,12 @@ function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
   const lastBodyNodeComments = getCommentsAfter(sourceCode, lastBodyNode)
   const latestBodyNodeComment = getLatestNode([...lastBodyNodeComments, lastBodyNode])
   const lastComments = sourceCode.getCommentsAfter(latestBodyNodeComment)
-  return (
-    getTextBetween(sourceCode, latestBodyNodeComment, getEarliestNode(lastComments)) +
-    getCommentsText(sourceCode, lastComments)
-  )
+
+  const textBeforeComment =
+    lastComments.length > 0
+      ? getTextBetween(sourceCode, latestBodyNodeComment, getEarliestNode(lastComments))
+      : ''
+  return textBeforeComment + getCommentsText(sourceCode, lastComments)
 }
 
 /**
