@@ -93,7 +93,7 @@ function getTextFixedPunctuation(sourceCode: SourceCode, node: Node, isLast: boo
      * Default to comma
      */
     if (!punctuation) {
-      nodeText += ', '
+      nodeText += ','
     }
   }
 
@@ -136,12 +136,31 @@ function getIndentationMap(sourceCode: SourceCode, body: Node[]) {
   )
 }
 
+/**
+ * Returns the nodes for outer bracket punctuators of an interface or enum declaration.
+ */
+export function getDeclarationPunctuators(sourceCode: SourceCode, body: Node[]) {
+  const startNode = body[0]
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const declarationStartPunctuator = sourceCode.getTokenBefore(startNode)!
+  const endNode = body[body.length - 1]
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const declarationEndPunctuator = sourceCode.getTokenAfter(endNode)!
+  return { declarationStartPunctuator, declarationEndPunctuator }
+}
+
+/**
+ * Returns the node with the highest range in the list
+ */
 function getLatestNode(body: Node[]) {
   return body.reduce((acc, node) => {
     return node.range[1] >= acc.range[1] ? node : acc
   }, body[0])
 }
 
+/**
+ * Returns the node with the lowest range in the list
+ */
 function getEarliestNode(body: Node[]) {
   return body.reduce((acc, node) => {
     return node.range[1] <= acc.range[1] ? node : acc
@@ -154,11 +173,26 @@ function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
   const latestBodyNodeComment = getLatestNode([...lastBodyNodeComments, lastBodyNode])
   const lastComments = sourceCode.getCommentsAfter(latestBodyNodeComment)
 
-  const textBeforeComment =
-    lastComments.length > 0
-      ? getTextBetween(sourceCode, latestBodyNodeComment, getEarliestNode(lastComments))
-      : ''
-  return textBeforeComment + getCommentsText(sourceCode, lastComments)
+  const lastCommentsText = getCommentsText(sourceCode, lastComments)
+
+  const lastWhitespace = getTextBetween(
+    sourceCode,
+    getLatestNode([...lastComments, lastBodyNode]),
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    sourceCode.getTokenAfter(lastBodyNode)!,
+  )
+
+  if (lastComments.length > 0) {
+    const textBeforeComment = getTextBetween(
+      sourceCode,
+      latestBodyNodeComment,
+      getEarliestNode(lastComments),
+    )
+
+    return textBeforeComment + lastCommentsText + lastWhitespace
+  }
+
+  return lastCommentsText + lastWhitespace
 }
 
 /**

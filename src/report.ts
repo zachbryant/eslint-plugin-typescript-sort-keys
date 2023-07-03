@@ -9,7 +9,7 @@ import {
   TSType,
 } from './types'
 import { getPropertyName } from './utils/ast'
-import { getFixedBodyText } from './utils/sourceCodeHelper'
+import { getDeclarationPunctuators, getFixedBodyText } from './utils/sourceCodeHelper'
 
 import { TSESLint, TSESTree } from '@typescript-eslint/utils'
 
@@ -37,15 +37,10 @@ export function reportParentNode(
       // Replace the entire body with the sorted body
       const sourceCode = createReporterArgs.context.getSourceCode() as SourceCode
 
-      const startNode = body[0]
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const declarationStartPunctuator = sourceCode.getTokenBefore(startNode)!
-      const endNode = body[body.length - 1]
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const declarationEndPunctuator = sourceCode.getTokenAfter(endNode)!
-      // Adjust the start range back by indent and any leading comments
+      const { declarationStartPunctuator, declarationEndPunctuator } =
+        getDeclarationPunctuators(sourceCode, body)
+      // Adjust the start range ahead of the punctuator
       const start = declarationStartPunctuator.range[0] + 1
-      // The end of the body includes the punctuator and comments if any
       const end = declarationEndPunctuator.range[0]
 
       const fixedBodyText = getFixedBodyText(sourceCode, sortedBody, body)
