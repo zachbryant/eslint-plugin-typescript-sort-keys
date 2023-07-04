@@ -61,7 +61,7 @@ export function createReporter(
 
     if (unsortedCount > 0) {
       reportParentNode(createReporterArgs, bodyParent, body, sortedBody, unsortedCount)
-      reportUnsortedBody(createReporterArgs, nodePositions, sortedBody)
+      reportUnsortedBody(createReporterArgs, nodePositions, body, sortedBody)
     }
   }
 }
