@@ -1,13 +1,13 @@
 import { Rule, RuleTester } from 'eslint'
 
 import { name, rule } from 'rules/string-enum'
-import { typescriptConfig } from '../helpers/configs'
+import { typescriptConfig } from '../../helpers/configs'
 import {
   PreInvalidTestCaseObject,
   PreValidTestCaseObject,
   processInvalidTestCase,
   processValidTestCase,
-} from '../helpers/processCases'
+} from '../../helpers/processCases'
 
 const valid: PreValidTestCaseObject = {
   /**

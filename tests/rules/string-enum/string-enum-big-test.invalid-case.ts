@@ -28,7 +28,7 @@ export enum BigTest {
   ABPA = '',
   // ABRE comment 1
   // ABRE comment 2
-  ABRE = '', // ABRE comment 3
+  /*ABRE inline 1*/ ABRE = '' /*ABRE inline 2*/, // ABRE comment 3
   // ABUA comment 1
   ABUA = '',
   ABMPA = '',
