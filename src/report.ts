@@ -1,36 +1,11 @@
 import assert from 'assert'
 
 import { getOptions } from 'common/options'
-import {
-  AllRuleOptions,
-  CreateReporterArgs,
-  NodePositionInfo,
-  SourceCode,
-  TSType,
-} from './types'
+import { AllRuleOptions, CreateReporterArgs, NodePositionInfo, TSType } from './types'
 import { getPropertyName } from './utils/ast'
-import { getDeclarationPunctuators, getFixedBodyText } from './utils/sourceCodeHelper'
 
-import { TSESLint, TSESTree } from '@typescript-eslint/utils'
-
-const getFixerFunction = (
-  createReporterArgs: Pick<CreateReporterArgs<string, AllRuleOptions>, 'context'>,
-  body: TSType[],
-  sortedBody: TSType[],
-) =>
-  function* (fixer: TSESLint.RuleFixer) {
-    // Replace the entire body with the sorted body
-    const sourceCode = createReporterArgs.context.getSourceCode() as SourceCode
-
-    const { declarationStartPunctuator, declarationEndPunctuator } =
-      getDeclarationPunctuators(sourceCode, body)
-    // Adjust the start range ahead of the punctuator
-    const start = declarationStartPunctuator.range[0] + 1
-    const end = declarationEndPunctuator.range[0]
-
-    const fixedBodyText = getFixedBodyText(sourceCode, sortedBody, body)
-    yield fixer.replaceTextRange([start, end], fixedBodyText)
-  }
+import { TSESTree } from '@typescript-eslint/utils'
+import { ReportFixFunction } from '@typescript-eslint/utils/dist/ts-eslint'
 
 export function reportParentNode(
   createReporterArgs: Omit<
@@ -38,9 +13,8 @@ export function reportParentNode(
     'createReportPropertiesObject'
   >,
   bodyParent: TSESTree.Node,
-  body: TSType[],
-  sortedBody: TSType[],
   unsortedCount: number,
+  fixerFunction: ReportFixFunction,
 ) {
   const { context, createReportParentObject } = createReporterArgs
   const { loc, messageId } = createReportParentObject(bodyParent)
@@ -52,8 +26,7 @@ export function reportParentNode(
     data: {
       unsortedCount,
     },
-
-    fix: getFixerFunction(createReporterArgs, body, sortedBody),
+    fix: fixerFunction,
   })
 }
 
@@ -63,8 +36,8 @@ export function reportUnsortedBody(
     'createReportParentObject'
   >,
   nodePositions: Map<TSType, NodePositionInfo>,
-  body: TSType[],
   sortedBody: TSType[],
+  fixerFunction: ReportFixFunction,
 ) {
   const { context, createReportPropertiesObject } = createReporterArgs
   const { isInsensitive, isNatural, isRequiredFirst, order } = getOptions(
@@ -97,7 +70,7 @@ export function reportUnsortedBody(
           natural: isNatural ? 'natural ' : '',
           requiredFirst: isRequiredFirst ? 'required first ' : '',
         },
-        fix: getFixerFunction(createReporterArgs, body, sortedBody),
+        fix: fixerFunction,
       })
     }
   }

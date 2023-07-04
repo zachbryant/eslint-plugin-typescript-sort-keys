@@ -4,6 +4,7 @@ import { compareFn } from './utils/compare'
 import { reportParentNode, reportUnsortedBody } from './report'
 import { getOptions } from 'common/options'
 import { TSType, CreateReporterArgs, NodePositionInfo, AllRuleOptions } from './types'
+import { getFixerFunction } from 'fixer'
 
 function getSortedBody(
   body: TSType[],
@@ -60,8 +61,9 @@ export function createReporter(
     )
 
     if (unsortedCount > 0) {
-      reportParentNode(createReporterArgs, bodyParent, body, sortedBody, unsortedCount)
-      reportUnsortedBody(createReporterArgs, nodePositions, body, sortedBody)
+      const fixerFunction = getFixerFunction(createReporterArgs, body, sortedBody)
+      reportParentNode(createReporterArgs, bodyParent, unsortedCount, fixerFunction)
+      reportUnsortedBody(createReporterArgs, nodePositions, sortedBody, fixerFunction)
     }
   }
 }
