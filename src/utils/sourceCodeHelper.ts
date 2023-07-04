@@ -1,7 +1,6 @@
 import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils'
-import { Node, SourceCode } from 'types'
-import { isComment } from './ast'
 import assert from 'assert'
+import { Node, SourceCode } from 'types'
 
 /**
  * Returns comments before a node, but only if they belong to it.
@@ -48,8 +47,7 @@ function getCommentsAfter(sourceCode: SourceCode, node: Node) {
 /**
  * Returns text between the node and previous (previous may be a comment)
  */
-function getTextBetweenNodeAndPrev(sourceCode: SourceCode, node?: Node) {
-  if (!node) return ''
+function getTextBetweenNodeAndPrevious(sourceCode: SourceCode, node: Node) {
   const prevNode = getPreviousNodeIncludingComments(sourceCode, [node])
   if (!prevNode) return ''
 
@@ -59,8 +57,7 @@ function getTextBetweenNodeAndPrev(sourceCode: SourceCode, node?: Node) {
 /**
  * Returns text between the node and next (next may be a comment)
  */
-function getTextBetweenNodeAndNext(sourceCode: SourceCode, node?: Node) {
-  if (!node) return ''
+function getTextBetweenNodeAndNext(sourceCode: SourceCode, node: Node) {
   const nextNode = getNextNodeIncludingComments(sourceCode, [node])
   if (!nextNode) return ''
 
@@ -74,9 +71,14 @@ function getTextBetweenNodeAndNext(sourceCode: SourceCode, node?: Node) {
 function getCommentsText(sourceCode: SourceCode, comments: TSESTree.Comment[]): string {
   return comments
     .map((comment, index) => {
-      const indentation = getTextBetweenNodeAndPrev(sourceCode, comment)
       let commentText = sourceCode.getText(comment)
-      if (index < comments.length - 1) {
+      const isLast = index === comments.length - 1
+      if (!isLast || comments.length === 1) {
+        // Conflicts with space between comments when this is added to the last comment
+        const indentation = getTextBetweenNodeAndPrevious(sourceCode, comment)
+        commentText = indentation + commentText
+      }
+      if (!isLast) {
         // Preserve whitespace between comments
         const textBetween = getTextBetween(sourceCode, comment, comments[index + 1])
         commentText += textBetween
@@ -89,7 +91,7 @@ function getCommentsText(sourceCode: SourceCode, comments: TSESTree.Comment[]): 
       ) {
         commentText += '\n'
       }
-      return indentation + commentText
+      return commentText
     })
     .join('')
 }
@@ -165,7 +167,7 @@ function getTextProcessed(sourceCode: SourceCode, node: Node, isLast: boolean) {
     }
   }
 
-  const indentation = getTextBetweenNodeAndPrev(sourceCode, node)
+  const indentation = getTextBetweenNodeAndPrevious(sourceCode, node)
   return indentation + nodeText
 }
 
@@ -175,24 +177,9 @@ function getTextProcessed(sourceCode: SourceCode, node: Node, isLast: boolean) {
  * given node is a comment, the respective range is from the comment itself.
  */
 function getTextBetween(sourceCode: SourceCode, startNode: Node, endNode: Node) {
-  let startNodeEnd = startNode.range[1]
-  if (!isComment(startNode)) {
-    startNodeEnd = Math.max(
-      startNodeEnd,
-      ...getCommentsAfter(sourceCode, startNode)
-        .filter(_ => _ !== endNode)
-        .map(_ => _.range[1]),
-    )
-  }
-  let endNodeStart = endNode.range[0]
-  if (!isComment(endNode)) {
-    endNodeStart = Math.min(
-      endNodeStart,
-      ...getCommentsBefore(sourceCode, endNode)
-        .filter(_ => _ !== startNode)
-        .map(_ => _.range[0]),
-    )
-  }
+  const startNodeEnd = startNode.range[1]
+  const endNodeStart = endNode.range[0]
+
   return sourceCode.text.slice(startNodeEnd, endNodeStart)
 }
 

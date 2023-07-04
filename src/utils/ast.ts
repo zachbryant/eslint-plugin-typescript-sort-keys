@@ -1,7 +1,7 @@
-import { TSESTree, AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils'
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils'
 
+import { TSType } from 'types'
 import { indexSignature } from './common'
-import { Node, TSType } from 'types'
 
 export function getObjectBody(
   node:
@@ -99,8 +99,4 @@ export function getPropertyIsOptional(node: TSType) {
   }
 
   return false
-}
-
-export function isComment(node: Node): node is TSESTree.Comment {
-  return node.type === AST_TOKEN_TYPES.Line || node.type === AST_TOKEN_TYPES.Block
 }
