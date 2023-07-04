@@ -3,8 +3,8 @@ import assert from 'assert'
 import { Node, SourceCode } from 'types'
 
 /**
- * Returns comments before a node, but only if they belong to it.
- * Excludes line comments directly after the previous node which are on the same line as prev.
+ * Returns comments before a node, but only if they belong to it. Excludes line
+ * comments directly after the previous node which are on the same line as prev.
  */
 function getCommentsBefore(sourceCode: SourceCode, node: Node) {
   const prevNode = sourceCode.getTokenBefore(node)
@@ -25,6 +25,10 @@ function getCommentsBefore(sourceCode: SourceCode, node: Node) {
   })
 }
 
+/**
+ * Returns comments after a node, but only if they belong to it. Excludes
+ * comments directly before the next node which are on the same line as next.
+ */
 function getCommentsAfter(sourceCode: SourceCode, node: Node) {
   const comments = sourceCode.getCommentsAfter(node)
   const nodeEndLine = node.loc.end.line
@@ -35,7 +39,7 @@ function getCommentsAfter(sourceCode: SourceCode, node: Node) {
     const isNextPunctuator = nextNode?.type !== AST_TOKEN_TYPES.Punctuator
     const nextBeforeComments = nextNode ? getCommentsBefore(sourceCode, nextNode) : []
 
-    // Comments on another line after pertain to the next node, or belong at the end of the declaration
+    // Comments on line after pertain to the next node
     return (
       commentStartLine === nodeEndLine &&
       !(isNextPunctuator && nextBeforeComments.includes(comment)) &&
@@ -48,7 +52,7 @@ function getCommentsAfter(sourceCode: SourceCode, node: Node) {
  * Returns text between the node and previous (previous may be a comment)
  */
 function getTextBetweenNodeAndPrevious(sourceCode: SourceCode, node: Node) {
-  const prevNode = getPreviousNodeIncludingComments(sourceCode, [node])
+  const prevNode = sourceCode.getTokenBefore(node, { includeComments: true })
   if (!prevNode) return ''
 
   return getTextBetween(sourceCode, prevNode, node)
@@ -58,7 +62,7 @@ function getTextBetweenNodeAndPrevious(sourceCode: SourceCode, node: Node) {
  * Returns text between the node and next (next may be a comment)
  */
 function getTextBetweenNodeAndNext(sourceCode: SourceCode, node: Node) {
-  const nextNode = getNextNodeIncludingComments(sourceCode, [node])
+  const nextNode = sourceCode.getTokenAfter(node, { includeComments: true })
   if (!nextNode) return ''
 
   return getTextBetween(sourceCode, node, nextNode)
@@ -87,7 +91,7 @@ function getCommentsText(sourceCode: SourceCode, comments: TSESTree.Comment[]): 
       if (
         comment.type === AST_TOKEN_TYPES.Line &&
         !commentText.endsWith('\n') &&
-        !getTextBetweenNodeAndNext(sourceCode, comment)?.includes('\n')
+        !getTextBetweenNodeAndNext(sourceCode, comment).includes('\n')
       ) {
         commentText += '\n'
       }
@@ -110,38 +114,6 @@ function getCommentsTextAfter(sourceCode: SourceCode, node: Node) {
 function getPunctuation(sourceCode: SourceCode, node: Node) {
   const nodeText = sourceCode.getText(node)
   return nodeText.trim().endsWith(',') ? ',' : nodeText.trim().endsWith(';') ? ';' : ''
-}
-
-/**
- * Augments SourceCode.getTokenBefore by also possibly returning a comment, if
- * a comment comes between the previous punctuator and the node
- */
-function getPreviousNodeIncludingComments(sourceCode: SourceCode, nodes: Node[]) {
-  if (nodes.length > 0) {
-    const startNode = getEarliestNode(nodes)
-    const tokenBefore = sourceCode.getTokenBefore(startNode)
-    return getLatestNode(
-      [tokenBefore, ...getCommentsBefore(sourceCode, startNode)].filter(
-        Boolean,
-      ) as Node[],
-    )
-  }
-  return undefined
-}
-
-/**
- * Augments SourceCode.getTokenAfter by also possibly returning a comment, if
- * a comment comes between the next node and the node
- */
-function getNextNodeIncludingComments(sourceCode: SourceCode, nodes: Node[]) {
-  if (nodes.length > 0) {
-    const endNode = getLatestNode(nodes)
-    const tokenAfter = sourceCode.getTokenAfter(endNode)
-    return getEarliestNode(
-      [tokenAfter, ...getCommentsAfter(sourceCode, endNode)].filter(Boolean) as Node[],
-    )
-  }
-  return undefined
 }
 
 /**
@@ -259,6 +231,20 @@ function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
 }
 
 /**
+ * Returns a map from index of source code to indentation string.
+ */
+function getIndentationMap(sourceCode: SourceCode, body: Node[]) {
+  return new Map<number, string>(
+    body.map((node, nodeIndex) => {
+      const prevNode = sourceCode.getTokenBefore(node, { includeComments: true })
+      const indent = prevNode ? getTextBetween(sourceCode, prevNode, node) : ''
+
+      return [nodeIndex, indent]
+    }),
+  )
+}
+
+/**
  * Returns the text of the entire body, rebuilt from the source code in order given.
  */
 export function getFixedBodyText(
@@ -266,21 +252,28 @@ export function getFixedBodyText(
   bodyToEmit: Node[],
   originalBody: Node[],
 ) {
+  const indentations = getIndentationMap(sourceCode, originalBody)
   // Capture any trailing comments + whitespace
   const lastCommentsText = getLastCommentText(sourceCode, originalBody)
+  // if parts are on same line, use indent new position indent then get original whitespace between
+  // if parts are on different lines, use original whitespace all the time
 
   return (
     bodyToEmit
       .map((node, index) => {
         const isLast = index === bodyToEmit.length - 1
+        const text =
+          indentations.get(index) +
+          [
+            getCommentsTextBefore(sourceCode, node),
+            getTextProcessed(sourceCode, node, isLast),
+            getCommentsTextAfter(sourceCode, node),
+          ]
+            .filter(Boolean)
+            .join('')
+            .trimStart()
 
-        return [
-          getCommentsTextBefore(sourceCode, node),
-          getTextProcessed(sourceCode, node, isLast),
-          getCommentsTextAfter(sourceCode, node),
-        ]
-          .filter(Boolean)
-          .join('')
+        return text
       })
       .join('') + lastCommentsText
   )
