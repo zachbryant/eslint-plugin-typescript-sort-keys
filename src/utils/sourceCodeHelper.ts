@@ -1,6 +1,7 @@
 import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils'
 import { Node, SourceCode } from 'types'
 import { isComment } from './ast'
+import assert from 'assert'
 
 /**
  * Returns comments before a node, but only if they belong to it.
@@ -44,28 +45,63 @@ function getCommentsAfter(sourceCode: SourceCode, node: Node) {
   })
 }
 
-function getCommentsText(
-  sourceCode: SourceCode,
-  comments: TSESTree.Comment[],
-  nextIndentation?: string,
-): string {
+/**
+ * Returns text between the node and previous (previous may be a comment)
+ */
+function getTextBetweenNodeAndPrev(sourceCode: SourceCode, node?: Node) {
+  if (!node) return ''
+  const prevNode = getPreviousNodeIncludingComments(sourceCode, [node])
+  if (!prevNode) return ''
+
+  return getTextBetween(sourceCode, prevNode, node)
+}
+
+/**
+ * Returns text between the node and next (next may be a comment)
+ */
+function getTextBetweenNodeAndNext(sourceCode: SourceCode, node?: Node) {
+  if (!node) return ''
+  const nextNode = getNextNodeIncludingComments(sourceCode, [node])
+  if (!nextNode) return ''
+
+  return getTextBetween(sourceCode, node, nextNode)
+}
+
+/**
+ * Returns the text of comment nodes, preserving whitespace (including leading
+ * whitespace between comments and previous punctuator/body node)
+ */
+function getCommentsText(sourceCode: SourceCode, comments: TSESTree.Comment[]): string {
   return comments
     .map((comment, index) => {
+      const indentation = getTextBetweenNodeAndPrev(sourceCode, comment)
       let commentText = sourceCode.getText(comment)
       if (index < comments.length - 1) {
+        // Preserve whitespace between comments
         const textBetween = getTextBetween(sourceCode, comment, comments[index + 1])
         commentText += textBetween
       }
+      // Don't put a line comment on the same line as anything else
       if (
         comment.type === AST_TOKEN_TYPES.Line &&
         !commentText.endsWith('\n') &&
-        !nextIndentation?.includes('\n')
+        !getTextBetweenNodeAndNext(sourceCode, comment)?.includes('\n')
       ) {
         commentText += '\n'
       }
-      return commentText
+      return indentation + commentText
     })
     .join('')
+}
+
+/* Get text of comments before a node, if any, with leading whitespace */
+function getCommentsTextBefore(sourceCode: SourceCode, node: Node) {
+  return getCommentsText(sourceCode, getCommentsBefore(sourceCode, node))
+}
+
+/* Get text of comments after a node, if any, with leading whitespace */
+function getCommentsTextAfter(sourceCode: SourceCode, node: Node) {
+  return getCommentsText(sourceCode, getCommentsAfter(sourceCode, node))
 }
 
 // Returns a string containing the node's punctuation, if any
@@ -75,9 +111,41 @@ function getPunctuation(sourceCode: SourceCode, node: Node) {
 }
 
 /**
- *
+ * Augments SourceCode.getTokenBefore by also possibly returning a comment, if
+ * a comment comes between the previous punctuator and the node
  */
-function getTextFixedPunctuation(sourceCode: SourceCode, node: Node, isLast: boolean) {
+function getPreviousNodeIncludingComments(sourceCode: SourceCode, nodes: Node[]) {
+  if (nodes.length > 0) {
+    const startNode = getEarliestNode(nodes)
+    const tokenBefore = sourceCode.getTokenBefore(startNode)
+    return getLatestNode(
+      [tokenBefore, ...getCommentsBefore(sourceCode, startNode)].filter(
+        Boolean,
+      ) as Node[],
+    )
+  }
+  return undefined
+}
+
+/**
+ * Augments SourceCode.getTokenAfter by also possibly returning a comment, if
+ * a comment comes between the next node and the node
+ */
+function getNextNodeIncludingComments(sourceCode: SourceCode, nodes: Node[]) {
+  if (nodes.length > 0) {
+    const endNode = getLatestNode(nodes)
+    const tokenAfter = sourceCode.getTokenAfter(endNode)
+    return getEarliestNode(
+      [tokenAfter, ...getCommentsAfter(sourceCode, endNode)].filter(Boolean) as Node[],
+    )
+  }
+  return undefined
+}
+
+/**
+ * Returns the node with proper punctuation and indentation
+ */
+function getTextProcessed(sourceCode: SourceCode, node: Node, isLast: boolean) {
   const punctuation = getPunctuation(sourceCode, node)
 
   let nodeText = sourceCode.getText(node)
@@ -97,9 +165,15 @@ function getTextFixedPunctuation(sourceCode: SourceCode, node: Node, isLast: boo
     }
   }
 
-  return nodeText
+  const indentation = getTextBetweenNodeAndPrev(sourceCode, node)
+  return indentation + nodeText
 }
 
+/**
+ * Returns the text between two nodes, excluding comments between them.
+ * Range of start/end is from the comments between the nodes, if any. If a
+ * given node is a comment, the respective range is from the comment itself.
+ */
 function getTextBetween(sourceCode: SourceCode, startNode: Node, endNode: Node) {
   let startNodeEnd = startNode.range[1]
   if (!isComment(startNode)) {
@@ -123,29 +197,26 @@ function getTextBetween(sourceCode: SourceCode, startNode: Node, endNode: Node) 
 }
 
 /**
- * Returns a map from index of source code to indentation string.
- */
-function getIndentationMap(sourceCode: SourceCode, body: Node[]) {
-  return new Map<number, string>(
-    body.map((node, index) => {
-      const prevNode = sourceCode.getTokenBefore(node)
-      const indent = prevNode ? getTextBetween(sourceCode, prevNode, node) : ''
-
-      return [index, indent]
-    }),
-  )
-}
-
-/**
  * Returns the nodes for outer bracket punctuators of an interface or enum declaration.
+ * Asserts that the punctuators exist due to use of non-null operator.
  */
 export function getDeclarationPunctuators(sourceCode: SourceCode, body: Node[]) {
-  const startNode = body[0]
+  const startNode = getEarliestNode(body)
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const declarationStartPunctuator = sourceCode.getTokenBefore(startNode)!
-  const endNode = body[body.length - 1]
+  assert(
+    !!declarationStartPunctuator,
+    `Expected declaration end punctuator after ${sourceCode.getText(startNode)}`,
+  )
+
+  const endNode = getLatestNode(body)
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const declarationEndPunctuator = sourceCode.getTokenAfter(endNode)!
+  assert(
+    !!declarationStartPunctuator,
+    `Expected declaration end punctuator after ${sourceCode.getText(endNode)}`,
+  )
+
   return { declarationStartPunctuator, declarationEndPunctuator }
 }
 
@@ -167,20 +238,25 @@ function getEarliestNode(body: Node[]) {
   }, body[0])
 }
 
+/**
+ * Returns the text of the last comment in the body
+ */
 function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
-  const lastBodyNode = body[body.length - 1]
+  const lastBodyNode = getLatestNode(body)
   const lastBodyNodeComments = getCommentsAfter(sourceCode, lastBodyNode)
   const latestBodyNodeComment = getLatestNode([...lastBodyNodeComments, lastBodyNode])
+  // Comments after the comments that belong to the last property in the body
   const lastComments = sourceCode.getCommentsAfter(latestBodyNodeComment)
-
   const lastCommentsText = getCommentsText(sourceCode, lastComments)
 
+  const { declarationEndPunctuator } = getDeclarationPunctuators(sourceCode, body)
   const lastWhitespace = getTextBetween(
     sourceCode,
     getLatestNode([...lastComments, lastBodyNode]),
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    sourceCode.getTokenAfter(lastBodyNode)!,
+    declarationEndPunctuator,
   )
+
+  const lastCommentsTextWithWhitespace = lastCommentsText + lastWhitespace
 
   if (lastComments.length > 0) {
     const textBeforeComment = getTextBetween(
@@ -189,10 +265,10 @@ function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
       getEarliestNode(lastComments),
     )
 
-    return textBeforeComment + lastCommentsText + lastWhitespace
+    return textBeforeComment + lastCommentsTextWithWhitespace
   }
 
-  return lastCommentsText + lastWhitespace
+  return lastCommentsTextWithWhitespace
 }
 
 /**
@@ -200,38 +276,21 @@ function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
  */
 export function getFixedBodyText(
   sourceCode: SourceCode,
-  body: Node[],
-  unsortedBody: Node[],
+  bodyToEmit: Node[],
+  originalBody: Node[],
 ) {
-  const indentations = getIndentationMap(sourceCode, unsortedBody)
-
-  const lastCommentsText = getLastCommentText(sourceCode, unsortedBody)
+  // Capture any trailing comments + whitespace
+  const lastCommentsText = getLastCommentText(sourceCode, originalBody)
 
   return (
-    body
+    bodyToEmit
       .map((node, index) => {
-        const isLast = index === body.length - 1
-        const commentsBefore = getCommentsBefore(sourceCode, node)
-        const commentsAfter = getCommentsAfter(sourceCode, node)
-        const nodeLineText = getTextFixedPunctuation(sourceCode, node, isLast)
-
-        const textBetweenCommentsAndNode =
-          commentsBefore.length > 0
-            ? getTextBetween(sourceCode, getLatestNode(commentsBefore), node)
-            : undefined
-
-        const textBetweenNodeAndComments =
-          commentsAfter.length > 0
-            ? getTextBetween(sourceCode, node, getEarliestNode(commentsAfter))
-            : undefined
+        const isLast = index === bodyToEmit.length - 1
 
         return [
-          indentations.get(index),
-          getCommentsText(sourceCode, commentsBefore),
-          textBetweenCommentsAndNode,
-          nodeLineText,
-          textBetweenNodeAndComments,
-          getCommentsText(sourceCode, commentsAfter, indentations.get(index + 1)),
+          getCommentsTextBefore(sourceCode, node),
+          getTextProcessed(sourceCode, node, isLast),
+          getCommentsTextAfter(sourceCode, node),
         ]
           .filter(Boolean)
           .join('')
