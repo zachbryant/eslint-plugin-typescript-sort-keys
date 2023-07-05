@@ -6,7 +6,7 @@ import { ESLint, Linter } from 'eslint'
 import plugin from '../src'
 import recommended from 'config/recommended'
 import { typescriptConfig } from './helpers/configs'
-import { SortingOrder } from 'types'
+import requiredFirst from 'config/requiredFirst'
 
 describe('autofix', () => {
   beforeEach(() => {
@@ -15,20 +15,7 @@ describe('autofix', () => {
 
   it.each([
     [recommended, 'autofix.output.ts'],
-    [
-      {
-        plugins: recommended.plugins,
-        rules: {
-          ...recommended.rules,
-          'typescript-sort-keys/interface': [
-            'error' as const,
-            SortingOrder.Ascending,
-            { caseSensitive: true, natural: true, requiredFirst: true },
-          ] as Linter.RuleEntry,
-        },
-      },
-      'requiredFirst.output.ts',
-    ],
+    [requiredFirst, 'requiredFirst.output.ts'],
   ])(
     'should autofix and properly format comments and indent level',
     async (config, fileName) => {
