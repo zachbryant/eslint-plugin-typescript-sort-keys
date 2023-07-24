@@ -1,4 +1,4 @@
-import { AllRuleOptions, SortingOrder } from 'types'
+import { AllRuleOptions, SortingOrder, SortingParamsOptions } from 'types'
 
 export type OptionsSet = {
   /**
@@ -9,7 +9,7 @@ export type OptionsSet = {
 /**
  * Option sets by test category
  */
-export const optionsSets = {
+export const optionsSetsWithRequiredFirst = {
   ascendingOnly: [[SortingOrder.Ascending]],
   ascending: [
     [],
@@ -92,4 +92,26 @@ export const optionsSets = {
   noOptions: [[]],
 }
 
-export type OptionsSetsKey = keyof typeof optionsSets
+// Delete requiredFirst, so we can keep the schemas strict
+export const optionsSetsNoRequired: Record<
+  OptionsSetsKey,
+  Array<AllRuleOptions>
+> = Object.entries(optionsSetsWithRequiredFirst).reduce(
+  (acc, [key, value]) => ({
+    ...acc,
+    [key as OptionsSetsKey]: value.map(opts => {
+      if (opts.length < 2) return opts
+      return [
+        opts[0] as SortingOrder,
+        Object.fromEntries(
+          Object.entries(opts[1] as SortingParamsOptions).filter(
+            ([key]) => key !== 'requiredFirst',
+          ) as Array<[string, SortingParamsOptions[keyof SortingParamsOptions]]>,
+        ),
+      ]
+    }),
+  }),
+  {},
+) as Record<OptionsSetsKey, Array<AllRuleOptions>>
+
+export type OptionsSetsKey = keyof typeof optionsSetsWithRequiredFirst

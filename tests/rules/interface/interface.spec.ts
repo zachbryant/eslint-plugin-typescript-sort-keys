@@ -869,7 +869,7 @@ describe('TypeScript', () => {
   const ruleTester = new RuleTester(typescriptConfig)
 
   ruleTester.run(name, rule as unknown as Rule.RuleModule, {
-    valid: processValidTestCase(valid),
-    invalid: processInvalidTestCase(invalid),
+    valid: processValidTestCase(valid, true),
+    invalid: processInvalidTestCase(invalid, true),
   })
 })

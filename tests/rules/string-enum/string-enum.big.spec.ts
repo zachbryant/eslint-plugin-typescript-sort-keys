@@ -1,5 +1,5 @@
 import { Rule, RuleTester } from 'eslint'
-
+import path from 'path'
 import { name, rule } from 'rules/string-enum'
 import { typescriptConfig } from '../../helpers/configs'
 import {
@@ -12,10 +12,10 @@ import {
 import fs from 'fs'
 
 const validBigTestCode = fs
-  .readFileSync('tests/rules/string-enum-big-test.valid-case.ts')
+  .readFileSync(path.resolve(__dirname, 'string-enum-big-test.valid-case.ts'))
   .toString('utf-8')
 const invalidBigTestCode = fs
-  .readFileSync('tests/rules/string-enum-big-test.invalid-case.ts')
+  .readFileSync(path.resolve(__dirname, 'string-enum-big-test.invalid-case.ts'))
   .toString('utf-8')
 
 const valid: PreValidTestCaseObject = {
@@ -36,7 +36,7 @@ describe('TypeScript large enum', () => {
   const ruleTester = new RuleTester(typescriptConfig)
 
   ruleTester.run(name, rule as unknown as Rule.RuleModule, {
-    valid: processValidTestCase(valid),
-    invalid: processInvalidTestCase(invalid),
+    valid: processValidTestCase(valid, false),
+    invalid: processInvalidTestCase(invalid, false),
   })
 })

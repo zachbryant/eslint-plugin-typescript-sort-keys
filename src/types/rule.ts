@@ -1,6 +1,7 @@
 import { SortingOrderOption, SortingParamsOptions } from './options'
 
 export type RuleOptionsGeneric<T> =
+  | []
   | [SortingOrderOption]
   | [SortingOrderOption, Partial<T>]
 

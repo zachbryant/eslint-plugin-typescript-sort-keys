@@ -1,7 +1,12 @@
 import { RuleTester as ESLintRuleTester } from 'eslint'
 import { AllRuleOptions } from 'types'
 import { filename } from './configs'
-import { OptionsSet, OptionsSetsKey, optionsSets } from './options'
+import {
+  OptionsSet,
+  OptionsSetsKey,
+  optionsSetsNoRequired,
+  optionsSetsWithRequiredFirst,
+} from './options'
 import { getCountErrorString, getEndErrorString, getSwapErrorString } from './strings'
 
 /* Types for processing test cases */
@@ -45,6 +50,7 @@ function processErrorArgs(
 
 function preProcessInvalidTestCase(
   testCases: PreInvalidTestCaseObject,
+  withRequiredFirstOption: boolean,
 ): InvalidTestCase[] {
   const processedCases = [] as InvalidTestCase[]
 
@@ -55,7 +61,9 @@ function preProcessInvalidTestCase(
       processedCases.push(
         ...cases.map(({ code, output, errors: errorArgs }) => {
           const errors = processErrorArgs(optionsSetsKey, errorArgs)
-          const optionsSet = optionsSets[optionsSetsKey] as AllRuleOptions[]
+          const optionsSet = (
+            withRequiredFirstOption ? optionsSetsWithRequiredFirst : optionsSetsNoRequired
+          )[optionsSetsKey] as AllRuleOptions[]
           return {
             code,
             output,
@@ -69,7 +77,10 @@ function preProcessInvalidTestCase(
   return processedCases
 }
 
-function preProcessValidTestCase(testCases: PreValidTestCaseObject): ValidTestCase[] {
+function preProcessValidTestCase(
+  testCases: PreValidTestCaseObject,
+  withRequiredFirstOption: boolean,
+): ValidTestCase[] {
   const processedCases = [] as ValidTestCase[]
   for (const key in testCases) {
     const optionsSetsKey = key as OptionsSetsKey
@@ -77,7 +88,9 @@ function preProcessValidTestCase(testCases: PreValidTestCaseObject): ValidTestCa
     if (cases && cases.length > 0) {
       processedCases.push(
         ...cases.map(code => {
-          const optionsSet = optionsSets[optionsSetsKey] as AllRuleOptions[]
+          const optionsSet = (
+            withRequiredFirstOption ? optionsSetsWithRequiredFirst : optionsSetsNoRequired
+          )[optionsSetsKey] as AllRuleOptions[]
           return {
             code,
             optionsSet,
@@ -105,8 +118,9 @@ function processTestCases<T>(cases: (InvalidTestCase | ValidTestCase)[]) {
  */
 export function processInvalidTestCase(
   testCases: PreInvalidTestCaseObject,
+  withRequiredFirstOption: boolean,
 ): ESLintRuleTester.InvalidTestCase[] {
-  return processTestCases(preProcessInvalidTestCase(testCases))
+  return processTestCases(preProcessInvalidTestCase(testCases, withRequiredFirstOption))
 }
 
 /**
@@ -114,6 +128,7 @@ export function processInvalidTestCase(
  */
 export function processValidTestCase(
   testCases: PreValidTestCaseObject,
+  withRequiredFirstOption: boolean,
 ): ESLintRuleTester.ValidTestCase[] {
-  return processTestCases(preProcessValidTestCase(testCases))
+  return processTestCases(preProcessValidTestCase(testCases, withRequiredFirstOption))
 }
