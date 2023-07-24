@@ -1,11 +1,14 @@
 import { TSESTree } from '@typescript-eslint/utils'
+import { getOptions } from 'common/options'
+import { getFixerFunction } from 'fixer'
+import { reportBodyNodes, reportParentNode } from './report'
+import { AllRuleOptions, CreateReporterArgs, NodePositionInfo, TSType } from './types'
 import { getPropertyIsOptional, getPropertyName } from './utils/ast'
 import { compareFn } from './utils/compare'
-import { reportParentNode, reportUnsortedBody } from './report'
-import { getOptions } from 'common/options'
-import { TSType, CreateReporterArgs, NodePositionInfo, AllRuleOptions } from './types'
-import { getFixerFunction } from 'fixer'
 
+/**
+ * Returns the body sorted according to the options and sorting function.
+ */
 function getSortedBody(
   body: TSType[],
   isRequiredFirst: boolean,
@@ -36,6 +39,7 @@ export function createReporter(
   const sortFunction = (a: TSType, b: TSType) =>
     compare(getPropertyName(a), getPropertyName(b))
 
+  // Reporter function
   return (bodyParent: TSESTree.Node, body: TSType[]) => {
     if (body.length < 2) {
       return
@@ -63,7 +67,7 @@ export function createReporter(
     if (unsortedCount > 0) {
       const fixerFunction = getFixerFunction(createReporterArgs, body, sortedBody)
       reportParentNode(createReporterArgs, bodyParent, unsortedCount, fixerFunction)
-      reportUnsortedBody(createReporterArgs, nodePositions, sortedBody, fixerFunction)
+      reportBodyNodes(createReporterArgs, nodePositions, sortedBody, fixerFunction)
     }
   }
 }

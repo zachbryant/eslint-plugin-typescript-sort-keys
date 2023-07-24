@@ -7,6 +7,9 @@ import { getPropertyName } from './utils/ast'
 import { TSESTree } from '@typescript-eslint/utils'
 import { ReportFixFunction } from '@typescript-eslint/utils/dist/ts-eslint'
 
+/**
+ * Report the parent node if
+ */
 export function reportParentNode(
   createReporterArgs: Omit<
     CreateReporterArgs<string, AllRuleOptions>,
@@ -30,7 +33,10 @@ export function reportParentNode(
   })
 }
 
-export function reportUnsortedBody(
+/**
+ * Report the body nodes if they're unsorted.
+ */
+export function reportBodyNodes(
   createReporterArgs: Omit<
     CreateReporterArgs<string, AllRuleOptions>,
     'createReportParentObject'
@@ -43,8 +49,7 @@ export function reportUnsortedBody(
   const { isInsensitive, isNatural, isRequiredFirst, order } = getOptions(
     createReporterArgs.context,
   )
-  for (const [node, nodePositionInfo] of nodePositions.entries()) {
-    const { initialIndex, finalIndex } = nodePositionInfo
+  for (const [node, { initialIndex, finalIndex }] of nodePositions.entries()) {
     // If the node is not in the correct position, report it
     if (initialIndex !== finalIndex) {
       const { loc, messageId } = createReportPropertiesObject(node)
@@ -53,18 +58,16 @@ export function reportUnsortedBody(
       assert(loc, 'createReportObject return value must include a node location')
       assert(messageId, 'createReportObject return value must include a problem message')
 
-      const nextSortedNode =
-        finalIndex + 1 < sortedBody.length ? sortedBody[finalIndex + 1] : undefined
-
       context.report({
         loc,
         messageId,
         node,
         data: {
           nodeName: getPropertyName(node),
-          messageShouldBeWhere: nextSortedNode
-            ? `before '${getPropertyName(nextSortedNode)}'`
-            : 'at the end',
+          messageShouldBeWhere:
+            finalIndex + 1 < sortedBody.length
+              ? `before '${getPropertyName(sortedBody[finalIndex + 1])}'`
+              : 'at the end',
           order,
           insensitive: isInsensitive ? 'insensitive ' : '',
           natural: isNatural ? 'natural ' : '',
