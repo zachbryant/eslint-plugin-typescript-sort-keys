@@ -1,5 +1,5 @@
 import { SortingOrder } from 'types'
-import recommended from './recommended'
+import recommended from './recommended.config'
 import { Linter } from 'eslint'
 
 export default {

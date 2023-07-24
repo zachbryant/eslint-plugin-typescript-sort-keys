@@ -9,9 +9,9 @@ export function getOptions(
   const order = context.options[0] || SortingOrder.Ascending
   const options = context.options[1]
   const isAscending = order === SortingOrder.Ascending
-  const isInsensitive = Boolean(options?.caseSensitive) === false
+  const isInsensitive = Boolean(options?.caseSensitive)
   const isNatural = Boolean(options?.natural)
-  const isRequiredFirst = Boolean(options?.requiredFirst) === true
+  const isRequiredFirst = Boolean(options?.requiredFirst)
 
   return {
     isAscending,

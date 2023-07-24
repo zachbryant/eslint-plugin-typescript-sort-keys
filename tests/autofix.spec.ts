@@ -1,12 +1,12 @@
-import path from 'path'
+import { ESLint } from 'eslint'
 import fs from 'fs'
+import path from 'path'
 import tmp from 'tmp'
-import { ESLint, Linter } from 'eslint'
 
+import recommended from 'config/recommended.config'
+import requiredFirst from 'config/requiredFirst.config'
 import plugin from '../src'
-import recommended from 'config/recommended'
 import { typescriptConfig } from './helpers/configs'
-import requiredFirst from 'config/requiredFirst'
 
 describe('autofix', () => {
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('autofix', () => {
 
       const testFilePath = path.join(tmpDir, 'autofix.ts')
       const input = fs.readFileSync('tests/fixtures/autofix.input.ts', 'utf8')
-      const expected = fs.readFileSync(`tests/fixtures/${fileName}`, 'utf8')
+      const expectedOutput = fs.readFileSync(`tests/fixtures/${fileName}`, 'utf8')
 
       fs.writeFileSync(testFilePath, input)
 
@@ -56,7 +56,7 @@ describe('autofix', () => {
 
       const output = fs.readFileSync(testFilePath, 'utf8')
 
-      expect(output).toStrictEqual(expected)
+      expect(output).toStrictEqual(expectedOutput)
     },
   )
 })
