@@ -1,6 +1,6 @@
 import { ReportFixFunction } from '@typescript-eslint/utils/dist/ts-eslint'
-import { AllRuleOptions, CreateReporterArgs, SourceCode, TSType } from './types'
-import { getDeclarationPunctuators, getFixedBodyText } from './utils/sourceCodeHelper'
+import { AllRuleOptions, CreateReporterArgs, Node, SourceCode, TSType } from './types'
+import { getBodyRange, getFixedBodyText } from './utils/sourceCodeHelper'
 
 import { TSESLint } from '@typescript-eslint/utils'
 
@@ -10,15 +10,15 @@ export const getFixerFunction = (
   sortedBody: TSType[],
 ): ReportFixFunction =>
   function* (fixer: TSESLint.RuleFixer) {
-    // Replace the entire body with the sorted body
     const sourceCode = createReporterArgs.context.getSourceCode() as SourceCode
 
-    const { declarationStartPunctuator, declarationEndPunctuator } =
-      getDeclarationPunctuators(sourceCode, body)
-    // Adjust the start range ahead of the punctuator
-    const start = declarationStartPunctuator.range[0] + 1
-    const end = declarationEndPunctuator.range[0]
+    const bodyRange = getBodyRange(sourceCode, body as unknown as Node[])
 
-    const fixedBodyText = getFixedBodyText(sourceCode, sortedBody, body)
-    yield fixer.replaceTextRange([start, end], fixedBodyText)
+    // Replace the entire body with the sorted body
+    const fixedBodyText = getFixedBodyText(
+      sourceCode,
+      sortedBody as unknown as Node[],
+      body as unknown as Node[],
+    )
+    yield fixer.replaceTextRange(bodyRange, fixedBodyText)
   }
