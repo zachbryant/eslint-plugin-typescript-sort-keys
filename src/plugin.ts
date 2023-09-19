@@ -65,7 +65,12 @@ export function createReporter(
     )
 
     if (unsortedCount > 0) {
-      const fixerFunction = getFixerFunction(createReporterArgs, body, sortedBody)
+      const fixerFunction = getFixerFunction(
+        createReporterArgs,
+        body,
+        bodyParent,
+        sortedBody,
+      )
       reportParentNode(createReporterArgs, bodyParent, unsortedCount, fixerFunction)
       reportBodyNodes(createReporterArgs, nodePositions, sortedBody, fixerFunction)
     }

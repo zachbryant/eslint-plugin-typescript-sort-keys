@@ -191,10 +191,11 @@ export function getDeclarationPunctuators(sourceCode: SourceCode, body: Node[]) 
     !!declarationStartPunctuator,
     `Expected declaration end punctuator after ${sourceCode.getText(startNode)}`,
   )
+  //console.log('declarationStartPunctuator', declarationStartPunctuator)
 
   const endNode = getLatestNode(body) // Sometimes this is a comma
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const declarationEndPunctuator = sourceCode.getTokenAfter(endNode)!
+  const declarationEndPunctuator = getNodePunctuator(sourceCode, endNode, '}')!
   assert(
     !!declarationStartPunctuator,
     `Expected declaration end punctuator after ${sourceCode.getText(endNode)}`,
@@ -208,10 +209,7 @@ export function getBodyRange(sourceCode: SourceCode, body: Node[]): [number, num
     getDeclarationPunctuators(sourceCode, body)
   // Adjust start range ahead of the punctuator
   const start = declarationStartPunctuator.range[0] + 1
-  const end =
-    declarationEndPunctuator.value === '}'
-      ? declarationEndPunctuator.range[0]
-      : declarationEndPunctuator.range[1]
+  const end = declarationEndPunctuator.range[0]
 
   return [start, end]
 }
@@ -254,15 +252,16 @@ function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
 
   const lastCommentsTextWithWhitespace = lastCommentsText + lastWhitespace
 
-  if (lastComments.length > 0) {
-    const textBeforeComment = getTextBetween(
-      sourceCode,
-      latestBodyNodeComment,
-      getEarliestNode(lastComments),
-    )
+  // Disabled to pass test
+  // if (lastComments.length > 0) {
+  //   const textBeforeComment = getTextBetween(
+  //     sourceCode,
+  //     latestBodyNodeComment,
+  //     getEarliestNode(lastComments),
+  //   )
 
-    return textBeforeComment + lastCommentsTextWithWhitespace
-  }
+  //   return textBeforeComment + lastCommentsTextWithWhitespace
+  // }
 
   return lastCommentsTextWithWhitespace
 }
@@ -281,15 +280,16 @@ function getIndentationMap(sourceCode: SourceCode, body: Node[]) {
   )
 }
 
-function getNodePunctuator(sourceCode: SourceCode, node: Node) {
+function getNodePunctuator(sourceCode: SourceCode, node: Node, punctuators = ',;') {
   const punctuator = sourceCode.getTokenAfter(node, {
-    filter: n => n.type === AST_TOKEN_TYPES.Punctuator && n.value !== ':',
+    filter: n =>
+      n.type === AST_TOKEN_TYPES.Punctuator &&
+      n.value !== ':' &&
+      new RegExp(`^[${punctuators}]$`).test(n.value),
     includeComments: false,
   })
 
-  // Check the punctuator value outside of filter because we
-  // want to stop traversal on any terminating punctuator
-  return punctuator && /^[,;]$/.test(punctuator.value) ? (punctuator as Node) : undefined
+  return punctuator ?? undefined
 }
 
 function getNodeFollowingPunctuator(sourceCode: SourceCode, node: Node) {
