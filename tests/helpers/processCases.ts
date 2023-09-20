@@ -27,10 +27,11 @@ export type PreValidTestCaseObject = Partial<Record<OptionsSetsKey, string[]>>
 
 function processErrorArgs(
   optionsSetsKey: OptionsSetsKey,
-  errorArgs: string[][] | number | undefined,
+  errorArgs: string[][] | number,
 ) {
   if (Array.isArray(errorArgs)) {
     return [
+      getCountErrorString(errorArgs.length),
       ...(errorArgs
         .map((args: string[]) => {
           switch (args.length) {
@@ -38,13 +39,14 @@ function processErrorArgs(
               return getEndErrorString(optionsSetsKey, args[0])
             case 2:
               return getSwapErrorString(optionsSetsKey, args[0], args[1])
+            default:
+              return undefined
           }
-          return undefined
         })
         .filter(Boolean) as string[]),
-      getCountErrorString(errorArgs.length),
     ]
   }
+  // Can return count of errors for test case instead of strings
   return errorArgs
 }
 
@@ -107,7 +109,6 @@ function processTestCases<T>(cases: (InvalidTestCase | ValidTestCase)[]) {
     testCase.optionsSet.map(options => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { optionsSet, ...eslintTestCase } = testCase
-
       return { filename, ...eslintTestCase, options }
     }),
   ) as T[]

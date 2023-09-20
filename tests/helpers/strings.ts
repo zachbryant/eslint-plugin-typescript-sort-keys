@@ -24,9 +24,9 @@ export const orderStrings: Record<OptionsSetsKey, string> = {
 }
 
 export const getSwapErrorString = (order: OptionsSetsKey, a: string, b: string) =>
-  `Espected string enum members to be in ${orderStrings[order]}order. '${a}' should be before '${b}'.`
+  `Expected string enum members to be in ${orderStrings[order]}order. '${a}' should be before '${b}'. Run autofix to sort entire body.`
 
 export const getEndErrorString = (order: OptionsSetsKey, a: string) =>
-  `Espected string enum members to be in ${orderStrings[order]} order. '${a}' should be at the end.`
+  `Expected string enum members to be in ${orderStrings[order]}order. '${a}' should be at the end. Run autofix to sort entire body.`
 
 export const getCountErrorString = (count: number) => `Found ${count} keys out of order.`
