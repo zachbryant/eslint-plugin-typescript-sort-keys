@@ -1,4 +1,15 @@
-import { AllRuleOptions, CreateReporterArgs, SortingOrder } from '../types'
+import {
+  AllRuleOptions,
+  CreateReporterArgs,
+  SortingOrder,
+  SortingParamsOptions,
+} from '../types'
+
+const defaultOptions: SortingParamsOptions = {
+  caseSensitive: true,
+  natural: false,
+  requiredFirst: false,
+}
 
 /**
  * Get the options from the context
@@ -9,9 +20,9 @@ export function getOptions(
   const order = context.options[0] || SortingOrder.Ascending
   const options = context.options[1]
   const isAscending = order === SortingOrder.Ascending
-  const isInsensitive = !options?.caseSensitive
-  const isNatural = Boolean(options?.natural)
-  const isRequiredFirst = Boolean(options?.requiredFirst)
+  const isInsensitive = !(options?.caseSensitive ?? defaultOptions.caseSensitive)
+  const isNatural = options?.natural ?? defaultOptions.natural
+  const isRequiredFirst = options?.requiredFirst ?? defaultOptions.requiredFirst
 
   return {
     isAscending,
