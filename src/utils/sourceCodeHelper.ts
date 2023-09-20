@@ -48,7 +48,7 @@ function getCommentsAfter(
   if (punctuator) comments.push(...sourceCode.getCommentsAfter(punctuator))
 
   const nextNode = getNodeFollowingPunctuator(sourceCode, node)
-  const nextNodeStartPos = nextNode ? nextNode.range[0] : -1
+  const nextNodeStartPos = nextNode?.range[0] ?? Infinity
 
   const commentsAfter = comments.filter(comment => {
     const commentStartLine = comment.loc.start.line
@@ -63,8 +63,6 @@ function getCommentsAfter(
       (!type || comment.type === type)
     )
   })
-
-  //console.log(`after '${sourceCode.getText(node)}'`,commentsAfter,'next is',nextNode?.value)
 
   return commentsAfter
 }
@@ -132,7 +130,11 @@ function getCommentsText(sourceCode: SourceCode, comments: TSESTree.Comment[]): 
 
 /* Get text of comments before a node, if any, with leading whitespace. */
 function getCommentsTextBefore(sourceCode: SourceCode, node: Node) {
-  return getCommentsText(sourceCode, getCommentsBefore(sourceCode, node))
+  let commentText = getCommentsText(sourceCode, getCommentsBefore(sourceCode, node))
+  if (commentText) {
+    commentText += getTextBetweenNodeAndPrevious(sourceCode, node)
+  }
+  return commentText
 }
 
 /* Get text of comments after a node, if any, with leading whitespace. */
@@ -146,25 +148,24 @@ function getCommentsTextAfter(
 
 // Returns a string containing the node's punctuation, if any.
 function getPunctuation(sourceCode: SourceCode, node: Node) {
-  return getNodePunctuator(sourceCode, node)?.value ?? ''
+  return getNodePunctuator(sourceCode, node)?.value ?? ','
 }
 
 /**
- * Returns the node with proper punctuation and indentation.
+ * Returns the node with proper punctuation.
  */
 function getProcessedText(sourceCode: SourceCode, node: Node, isLast: boolean) {
-  let nodeText = sourceCode.getText(node)
+  const nodeText = sourceCode.getText(node)
 
   // Case when the node was sorted last with punctuation
-  if (isLast) {
-    const punctuation = getPunctuation(sourceCode, node)
-    if (punctuation === ',' && nodeText.endsWith(punctuation)) {
-      nodeText = nodeText.slice(0, -1)
-    }
-  }
+  // if (isLast) {
+  //   const punctuation = getPunctuation(sourceCode, node)
+  //   if (punctuation === ',' && nodeText.endsWith(punctuation)) {
+  //     nodeText = nodeText.slice(0, -1)
+  //   }
+  // }
 
-  const indentation = getTextBetweenNodeAndPrevious(sourceCode, node)
-  return indentation + nodeText
+  return nodeText
 }
 
 /**
@@ -241,7 +242,6 @@ function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
   const latestBodyNodeComment = getLatestNode([...lastBodyNodeComments, lastBodyNode])
   // Comments after the comments that belong to the last property in the body
   const lastComments = sourceCode.getCommentsAfter(latestBodyNodeComment)
-  const lastCommentsText = getCommentsText(sourceCode, lastComments)
 
   const { declarationEndPunctuator } = getDeclarationPunctuators(sourceCode, body)
   const lastWhitespace = getTextBetween(
@@ -250,7 +250,8 @@ function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
     declarationEndPunctuator,
   )
 
-  const lastCommentsTextWithWhitespace = lastCommentsText + lastWhitespace
+  const lastCommentsTextWithWhitespace =
+    getCommentsText(sourceCode, lastComments) + lastWhitespace
 
   // Disabled to pass test
   // if (lastComments.length > 0) {
@@ -272,12 +273,19 @@ function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
 function getIndentationMap(sourceCode: SourceCode, body: Node[]) {
   return new Map<number, string>(
     body.map((node, nodeIndex) => {
-      const prevNode = sourceCode.getTokenBefore(node, { includeComments: true })
-      const indent = prevNode ? getTextBetween(sourceCode, prevNode, node) : ''
+      // Special case: block comment in between two nodes
+      const commentsBefore = getCommentsBefore(sourceCode, node)
+      const earliestNode = getEarliestNode([...commentsBefore, node])
+      const indent = getTextBetweenNodeAndPrevious(sourceCode, earliestNode)
 
       return [nodeIndex, indent]
     }),
   )
+}
+
+function getNextNonCommentNode(sourceCode: SourceCode, node: Node) {
+  const nextNode = sourceCode.getTokenAfter(node, { includeComments: false })
+  return nextNode ?? undefined
 }
 
 function getNodePunctuator(sourceCode: SourceCode, node: Node, punctuators = ',;') {
@@ -295,7 +303,7 @@ function getNodePunctuator(sourceCode: SourceCode, node: Node, punctuators = ',;
 function getNodeFollowingPunctuator(sourceCode: SourceCode, node: Node) {
   const punctuator = getNodePunctuator(sourceCode, node)
   if (!punctuator) return undefined
-  return sourceCode.getTokenAfter(punctuator, { includeComments: false })
+  return getNextNonCommentNode(sourceCode, punctuator)
 }
 
 /**
@@ -306,10 +314,9 @@ export function getFixedBodyText(
   bodyToEmit: Node[],
   originalBody: Node[],
 ) {
-  // const indentations = getIndentationMap(sourceCode, originalBody)
+  const indentations = getIndentationMap(sourceCode, originalBody)
   // Capture any trailing comments + whitespace
   const lastCommentsText = getLastCommentText(sourceCode, originalBody)
-
   return (
     bodyToEmit
       .map((node, index) => {
@@ -324,15 +331,24 @@ export function getFixedBodyText(
         //   getPunctuation(sourceCode, node),
         //   getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Line),
         // )
-        const resultNodeText = [
-          getCommentsTextBefore(sourceCode, node),
-          getProcessedText(sourceCode, node, isLast),
-          getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Block),
-          getPunctuation(sourceCode, node),
-          getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Line),
-        ]
-          .filter(Boolean)
-          .join('')
+        const resultNodeText =
+          indentations.get(index) +
+          [
+            getCommentsTextBefore(sourceCode, node),
+            sourceCode.getText(node),
+            getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Block),
+            !isLast && getPunctuation(sourceCode, node),
+            getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Line),
+          ]
+            .filter(Boolean)
+            .join('')
+            .trimStart()
+
+        if (sourceCode.getText(node).startsWith('SANRE')) {
+          console.log(`'${resultNodeText}'`)
+          console.log(`'${indentations.get(index)}'`)
+          console.log('original line', sourceCode.lines[index])
+        }
 
         return resultNodeText
       })
