@@ -287,80 +287,77 @@ const invalid: PreInvalidTestCaseObject = {
     //   },
   ],
   // /**
-  //  * descending
+  //  * descending (case sensitive)
   //  */
   descendingOnly: [
-    //   {
-    //     code: 'enum U {a="T", _="T", b="T"}',
-    //     output: 'enum U {b="T", _="T", a="T",}',
-    //     errors: [['b', '_']],
-    //   },
-    //   {
-    //     code: 'enum U {a="T", c="T", b="T"}',
-    //     output: 'enum U {c="T", a="T", b="T"}',
-    //     errors: [['c', 'a']],
-    //   },
-    //   {
-    //     code: 'enum U {b_="T", a="T", b="T"}',
-    //     output: 'enum U {b_="T", b="T", a="T"}',
-    //     errors: [['b', 'a']],
-    //   },
-    //   {
-    //     code: 'enum U {b_="T", c="T", C="T"}',
-    //     output: 'enum U {c="T", b_="T", C="T"}',
-    //     errors: [['c', 'b_']],
-    //   },
-    //   {
-    //     code: 'enum U {$="T", _="T", A="T", a="T"}',
-    //     output: 'enum U {a="T", _="T", A="T", $="T"}',
-    //     errors: [
-    //       ['_', '$'],
-    //       ['a', 'A'],
-    //     ],
-    //   },
-    //   {
-    //     code: "enum U {'#'='T', À='T', 'Z'='T', è='T'}",
-    //     output: "enum U {è='T', À='T', 'Z'='T', '#'='T'}",
-    //     errors: [['è', 'À'], ['#']],
-    //   },
+    {
+      code: 'enum U {a="T", _="T", b="T"}',
+      output: 'enum U {b="T", a="T", _="T"}',
+      errors: [['a', '_'], ['_'], ['b', 'a']],
+    },
+    {
+      code: 'enum U {a="T", c="T", b="T"}',
+      output: 'enum U {c="T", b="T", a="T"}',
+      errors: [['a'], ['c', 'b'], ['b', 'a']],
+    },
+    {
+      code: 'enum U {b_="T", a="T", b="T"}',
+      output: 'enum U {b_="T", b="T", a="T"}',
+      errors: [['a'], ['b', 'a']],
+    },
+    {
+      code: 'enum U {b_="T", c="T", C="T"}',
+      output: 'enum U {c="T", b_="T", C="T"}',
+      errors: [
+        ['b_', 'C'],
+        ['c', 'b_'],
+      ],
+    },
+    {
+      code: 'enum U {$="T", _="T", A="T", a="T"}',
+      output: 'enum U {a="T", _="T", A="T", $="T"}',
+      errors: [['$'], ['a', '_']],
+    },
+    {
+      code: "enum U {'#'='T', À='T', 'Z'='T', è='T'}",
+      output: "enum U {è='T', À='T', 'Z'='T', '#'='T'}",
+      errors: [['#'], ['è', 'À']],
+    },
   ],
   // /**
   //  * descending, insensitive
   //  */
   descendingInsensitive: [
-    //   {
-    //     code: 'enum U {a="T", _="T", b="T"}',
-    //     output: 'enum U {b="T", _="T", a="T",}',
-    //     errors: [['b', '_']],
-    //   },
-    //   {
-    //     code: 'enum U {a="T", c="T", b="T"}',
-    //     output: 'enum U {c="T", a="T", b="T"}',
-    //     errors: [['c', 'a']],
-    //   },
-    //   {
-    //     code: 'enum U {b_="T", a="T", b="T"}',
-    //     output: 'enum U {b_="T", b="T", a="T"}',
-    //     errors: [['b', 'a']],
-    //   },
-    //   {
-    //     code: 'enum U {b_="T", c="T", C="T"}',
-    //     output: 'enum U {c="T", b_="T", C="T"}',
-    //     errors: [['c', 'b_']],
-    //   },
-    //   {
-    //     code: 'enum U {$="T", _="T", A="T", a="T"}',
-    //     output: 'enum U {A="T", _="T", $="T", a="T"}',
-    //     errors: [
-    //       ['_', '$'],
-    //       ['A', '_'],
-    //     ],
-    //   },
-    //   {
-    //     code: "enum U {'#'='T', À='T', 'Z'='T', è='T'}",
-    //     output: "enum U {è='T', À='T', 'Z'='T', '#'='T'}",
-    //     errors: [['è', 'À'], ['#']],
-    //   },
+    {
+      code: 'enum U {a="T", _="T", b="T"}',
+      output: 'enum U {b="T", a="T", _="T"}',
+      errors: [['a', '_'], ['_'], ['b', 'a']],
+    },
+    {
+      code: 'enum U {a="T", c="T", b="T"}',
+      output: 'enum U {c="T", b="T", a="T"}',
+      errors: [['a'], ['c', 'b'], ['b', 'a']],
+    },
+    {
+      code: 'enum U {b_="T", a="T", b="T"}',
+      output: 'enum U {b_="T", b="T", a="T"}',
+      errors: [['a'], ['b', 'a']],
+    },
+    {
+      code: 'enum U {b_="T", c="T", C="T"}',
+      output: 'enum U {c="T", C="T", b_="T"}',
+      errors: [['b_'], ['c', 'C'], ['C', 'b_']],
+    },
+    {
+      code: 'enum U {$="T", _="T", A="T", a="T"}',
+      output: 'enum U {A="T", a="T", _="T", $="T"}',
+      errors: [['$'], ['_', '$'], ['A', 'a'], ['a', '_']],
+    },
+    {
+      code: "enum U {'#'='T', À='T', 'Z'='T', è='T'}",
+      output: "enum U {è='T', À='T', 'Z'='T', '#'='T'}",
+      errors: [['#'], ['è', 'À']],
+    },
   ],
   // /**
   //  * descending, natural
