@@ -488,6 +488,6 @@ export enum BigTest {
   WTR = '',
   WTE = '',
   WVE = '' /* end */, // end
-  WDFF = '', // end comment do sort
+  WDFF = '' // end comment do sort
   // end comment dont sort
 }
