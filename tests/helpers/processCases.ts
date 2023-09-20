@@ -29,22 +29,20 @@ function processErrorArgs(
   optionsSetsKey: OptionsSetsKey,
   errorArgs: string[][] | number,
 ) {
+  const errorMessages: string[] = []
   if (Array.isArray(errorArgs)) {
-    return [
-      getCountErrorString(errorArgs.length),
-      ...(errorArgs
-        .map((args: string[]) => {
-          switch (args.length) {
-            case 1:
-              return getEndErrorString(optionsSetsKey, args[0])
-            case 2:
-              return getSwapErrorString(optionsSetsKey, args[0], args[1])
-            default:
-              return undefined
-          }
-        })
-        .filter(Boolean) as string[]),
-    ]
+    errorMessages.push(getCountErrorString(errorArgs.length))
+    errorArgs.forEach((args: string[]) => {
+      switch (args.length) {
+        case 1:
+          errorMessages.push(getEndErrorString(optionsSetsKey, args[0]))
+          break
+        case 2:
+          errorMessages.push(getSwapErrorString(optionsSetsKey, args[0], args[1]))
+          break
+      }
+    })
+    return errorMessages
   }
   // Can return count of errors for test case instead of strings
   return errorArgs

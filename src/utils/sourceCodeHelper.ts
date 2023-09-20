@@ -321,16 +321,6 @@ export function getFixedBodyText(
     bodyToEmit
       .map((node, index) => {
         const isLast = index === bodyToEmit.length - 1
-        // console.log(
-        //   'before',
-        //   getCommentsTextBefore(sourceCode, node),
-        //   'text',
-        //   getProcessedText(sourceCode, node, isLast),
-        //   'after',
-        //   getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Block),
-        //   getPunctuation(sourceCode, node),
-        //   getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Line),
-        // )
         const resultNodeText =
           indentations.get(index) +
           [
@@ -343,12 +333,6 @@ export function getFixedBodyText(
             .filter(Boolean)
             .join('')
             .trimStart()
-
-        if (sourceCode.getText(node).startsWith('SANRE')) {
-          console.log(`'${resultNodeText}'`)
-          console.log(`'${indentations.get(index)}'`)
-          console.log('original line', sourceCode.lines[index])
-        }
 
         return resultNodeText
       })
