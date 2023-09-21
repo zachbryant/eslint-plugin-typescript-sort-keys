@@ -39,15 +39,10 @@ const valid: PreValidTestCaseObject = {
    */
   ascendingInsensitive: [
     'interface U {_:T; a:T; b:T;}',
-
     'interface U {a:T; b:T; c:T;}',
-
     'interface U {a:T; b:T; b_:T;}',
-
     'interface U {b_:T; C:T; c:T;}',
-
     'interface U {b_:T; c:T; C:T;}',
-
     'interface U {$:T; _:T; A:T; a:T;}',
     "interface U {1:T; '11':T; 2:T; A:T;}",
   ],
