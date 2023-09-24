@@ -1,6 +1,6 @@
 import { ReportFixFunction } from '@typescript-eslint/utils/dist/ts-eslint'
 import { AllRuleOptions, CreateReporterArgs, Node, SourceCode, TSType } from './types'
-import { getBodyRange, getFixedBodyText } from './utils/sourceCodeHelper'
+import { getBodyRange, getFixedBodyText } from './utils/sourcecode'
 
 import { TSESLint } from '@typescript-eslint/utils'
 import { getMemoized, memoize } from 'utils/memo'
