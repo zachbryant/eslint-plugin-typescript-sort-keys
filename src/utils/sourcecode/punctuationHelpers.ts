@@ -1,4 +1,4 @@
-import { AST_TOKEN_TYPES } from '@typescript-eslint/utils'
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils'
 import assert from 'assert'
 import { Node, SourceCode } from 'types'
 import { getEarliestNode, getLatestNode, getNextNonCommentNode } from './nodeHelpers'
@@ -52,7 +52,10 @@ export function getDeclarationPunctuators(sourceCode: SourceCode, body: Node[]) 
 
 // Returns a string containing the node's punctuation, if any.
 export function getPunctuation(sourceCode: SourceCode, node: Node) {
-  return getNodePunctuator(sourceCode, node)?.value ?? ','
+  return (
+    getNodePunctuator(sourceCode, node)?.value ??
+    (node.type === AST_NODE_TYPES.TSEnumMember ? ',' : ';')
+  )
 }
 
 export function getBodyRange(sourceCode: SourceCode, body: Node[]): [number, number] {

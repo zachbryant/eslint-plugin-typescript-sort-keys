@@ -1,4 +1,4 @@
-import { AST_TOKEN_TYPES } from '@typescript-eslint/utils'
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils'
 import { Node, SourceCode } from 'types'
 import {
   getCommentsTextAfter,
@@ -25,13 +25,15 @@ export function getFixedBodyText(
     bodyToEmit
       .map((node, index) => {
         const isLast = index === bodyToEmit.length - 1
+        const punctuation = getPunctuation(sourceCode, node)
+        const shouldHavePunctuation = !isLast || node.type !== AST_NODE_TYPES.TSEnumMember
         const resultNodeText =
           indentations.get(index) +
           [
             getCommentsTextBefore(sourceCode, node),
             getProcessedText(sourceCode, node),
             getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Block),
-            !isLast && getPunctuation(sourceCode, node),
+            shouldHavePunctuation && punctuation,
             getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Line),
           ]
             .filter(Boolean)
