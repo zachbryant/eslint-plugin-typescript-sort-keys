@@ -10,6 +10,7 @@ import {
 } from '../../helpers/processCases'
 
 import fs from 'fs'
+import { CaseCategory } from '../../helpers/strings'
 
 const validBigTestCode = fs
   .readFileSync(path.resolve(__dirname, 'string-enum-big-test.valid-case.ts'))
@@ -37,6 +38,6 @@ describe('TypeScript large enum', () => {
 
   ruleTester.run(name, rule as unknown as Rule.RuleModule, {
     valid: processValidTestCase(valid, false),
-    invalid: processInvalidTestCase(invalid, false),
+    invalid: processInvalidTestCase(invalid, CaseCategory.StringEnum, false),
   })
 })

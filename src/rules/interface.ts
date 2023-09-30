@@ -56,7 +56,7 @@ const defaultOptions: RuleOptions = [
  */
 const errorMessages = {
   invalidOrderProperties: ErrorMessage.InterfaceInvalidOrder,
-  invalidOrderParent: ErrorMessage.ParentInvalidOrder,
+  invalidOrderParent: ErrorMessage.InterfaceParentInvalidOrder,
 } as const
 type errorMessageKeys = keyof typeof errorMessages
 

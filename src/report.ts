@@ -28,6 +28,7 @@ export function reportParentNode(
     node: bodyParent,
     data: {
       unsortedCount,
+      plural: unsortedCount > 1 ? 's' : '',
     },
     fix: fixerFunction,
   })

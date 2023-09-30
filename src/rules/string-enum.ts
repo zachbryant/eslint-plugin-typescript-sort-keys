@@ -2,6 +2,8 @@ import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils'
 import { JSONSchema4 } from 'json-schema'
 import { createReporter } from 'plugin'
 
+import { getObjectBody } from 'utils/ast'
+import { RuleMetaData, createRule } from 'utils/rule'
 import {
   ErrorMessage,
   RuleOptionsGeneric,
@@ -9,8 +11,6 @@ import {
   SortingParamsOptions,
   sortingOrderOptionSchema,
 } from '../types'
-import { getObjectBody } from 'utils/ast'
-import { createRule, RuleMetaData } from 'utils/rule'
 
 /**
  * The name of this rule.
@@ -53,7 +53,7 @@ const defaultOptions: RuleOptions = [
  */
 const errorMessages = {
   invalidOrderProperties: ErrorMessage.StringEnumInvalidOrder,
-  invalidOrderParent: ErrorMessage.ParentInvalidOrder,
+  invalidOrderParent: ErrorMessage.StringEnumParentInvalidOrder,
 } as const
 type errorMessageKeys = keyof typeof errorMessages
 

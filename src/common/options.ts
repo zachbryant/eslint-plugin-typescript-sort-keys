@@ -5,7 +5,7 @@ import {
   SortingParamsOptions,
 } from '../types'
 
-const defaultOptions: SortingParamsOptions = {
+export const defaultOptions: SortingParamsOptions = {
   caseSensitive: true,
   natural: false,
   requiredFirst: false,

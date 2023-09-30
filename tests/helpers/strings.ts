@@ -10,7 +10,7 @@ export const orderStrings: Record<OptionsSetsKey, string> = {
   descendingNatural: 'natural descending ',
   descendingInsensitiveNatural: 'insensitive natural descending ',
   noOptions: '',
-  ascendingOnly: '',
+  ascendingOnly: 'ascending ',
   ascendingSensitive: '',
   ascendingInsensitiveNaturalRequired: '',
   ascendingInsensitiveNaturalNotRequired: '',
@@ -23,10 +23,52 @@ export const orderStrings: Record<OptionsSetsKey, string> = {
   descendingRequired: '',
 }
 
-export const getSwapErrorString = (order: OptionsSetsKey, a: string, b: string) =>
-  `Expected string enum members to be in ${orderStrings[order]}order. '${a}' should be before '${b}'. Run autofix to sort entire body.`
+export enum CaseCategory {
+  Interface,
+  StringEnum,
+}
 
-export const getEndErrorString = (order: OptionsSetsKey, a: string) =>
-  `Expected string enum members to be in ${orderStrings[order]}order. '${a}' should be at the end. Run autofix to sort entire body.`
+function getCategoryErrorString(category: CaseCategory) {
+  switch (category) {
+    case CaseCategory.Interface:
+      return 'interface keys'
+    case CaseCategory.StringEnum:
+    default:
+      return 'string enum members'
+  }
+}
 
-export const getCountErrorString = (count: number) => `Found ${count} keys out of order.`
+function getCategoryParentErrorString(category: CaseCategory) {
+  switch (category) {
+    case CaseCategory.Interface:
+      return 'key'
+    case CaseCategory.StringEnum:
+    default:
+      return 'member'
+  }
+}
+
+export const getSwapErrorString = (
+  category: CaseCategory,
+  order: OptionsSetsKey,
+  a: string,
+  b: string,
+) => {
+  return `Expected ${getCategoryErrorString(category)} to be in ${
+    orderStrings[order]
+  }order. '${a}' should be before '${b}'. Run autofix to sort entire body.`
+}
+
+export const getEndErrorString = (
+  category: CaseCategory,
+  order: OptionsSetsKey,
+  a: string,
+) =>
+  `Expected ${getCategoryErrorString(category)} to be in ${
+    orderStrings[order]
+  }order. '${a}' should be at the end. Run autofix to sort entire body.`
+
+export const getCountErrorString = (category: CaseCategory, count: number) =>
+  `Found ${count} ${getCategoryParentErrorString(category)}${
+    count > 1 ? 's' : ''
+  } out of order.`

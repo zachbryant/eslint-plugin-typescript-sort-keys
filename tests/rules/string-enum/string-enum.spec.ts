@@ -8,6 +8,7 @@ import {
   processInvalidTestCase,
   processValidTestCase,
 } from '../../helpers/processCases'
+import { CaseCategory } from '../../helpers/strings'
 
 const valid: PreValidTestCaseObject = {
   /**
@@ -487,6 +488,6 @@ describe('TypeScript', () => {
   //ValidTestCase<Options>[]
   ruleTester.run(name, rule as unknown as Rule.RuleModule, {
     valid: processValidTestCase(valid, false),
-    invalid: processInvalidTestCase(invalid, false),
+    invalid: processInvalidTestCase(invalid, CaseCategory.StringEnum, false),
   })
 })
