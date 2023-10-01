@@ -14,91 +14,91 @@ const valid: PreValidTestCaseObject = {
   /**
    * ascending, caseSensitive (default)
    */
-  // ascendingSensitive: [
-  //   'interface U {_:T; a:T; b:T;}',
-  //   'interface U {a:T; b:T; c:T;}',
-  //   'interface U {a:T; b:T; b_:T;}',
-  //   'interface U {C:T; b_:T; c:T;}',
-  //   'interface U {$:T; A:T; _:T; a:T;}',
-  //   "interface U {1:T; '11':T; 2:T; A:T;}",
-  //   "interface U {'#':T; 'Z':T; À:T; è:T;}",
-  //   /**
-  //    * computed
-  //    */
-  //   'interface U {a:T; ["ab"]:T; b:T; c:T;}',
-  //   /**
-  //    * nested
-  //    */
-  //   'interface U {a:T; b:{x:T; y:T;}; c:T;}',
-  //   'interface U {a:T; b:{x:T; y:T; z:{i:T; j:T;};}; c:T;}',
-  //   'type U = {a:T; b:{x:T; y:T;}; c:T;}',
-  //   'type U = {a:T; b:{x:T; y:T; z:{i:T; j:T;};}; c:T;}',
-  // ],
+  ascendingSensitive: [
+    'interface U {_:T; a:T; b:T;}',
+    'interface U {a:T; b:T; c:T;}',
+    'interface U {a:T; b:T; b_:T;}',
+    'interface U {C:T; b_:T; c:T;}',
+    'interface U {$:T; A:T; _:T; a:T;}',
+    "interface U {1:T; '11':T; 2:T; A:T;}",
+    "interface U {'#':T; 'Z':T; À:T; è:T;}",
+    /**
+     * computed
+     */
+    'interface U {a:T; ["ab"]:T; b:T; c:T;}',
+    /**
+     * nested
+     */
+    'interface U {a:T; b:{x:T; y:T;}; c:T;}',
+    'interface U {a:T; b:{x:T; y:T; z:{i:T; j:T;};}; c:T;}',
+    'type U = {a:T; b:{x:T; y:T;}; c:T;}',
+    'type U = {a:T; b:{x:T; y:T; z:{i:T; j:T;};}; c:T;}',
+  ],
   // /**
   //  * ascending, insensitive
   //  */
-  // ascendingInsensitive: [
-  //   'interface U {_:T; a:T; b:T;}',
-  //   'interface U {a:T; b:T; c:T;}',
-  //   'interface U {a:T; b:T; b_:T;}',
-  //   'interface U {b_:T; C:T; c:T;}',
-  //   'interface U {b_:T; c:T; C:T;}',
-  //   'interface U {$:T; _:T; A:T; a:T;}',
-  //   "interface U {1:T; '11':T; 2:T; A:T;}",
-  // ],
-  // ascendingNatural: ["interface U {'#':T; 'Z':T; À:T; è:T;}"],
+  ascendingInsensitive: [
+    'interface U {_:T; a:T; b:T;}',
+    'interface U {a:T; b:T; c:T;}',
+    'interface U {a:T; b:T; b_:T;}',
+    'interface U {b_:T; C:T; c:T;}',
+    'interface U {b_:T; c:T; C:T;}',
+    'interface U {$:T; _:T; A:T; a:T;}',
+    "interface U {1:T; '11':T; 2:T; A:T;}",
+  ],
+  ascendingNatural: ["interface U {'#':T; 'Z':T; À:T; è:T;}"],
   // /**
   //  * ascending, natural, insensitive
   //  */
-  // ascendingInsensitiveNatural: [
-  //   'interface U {_:T; a:T; b:T;}',
-  //   'interface U {a:T; b:T; c:T;}',
-  //   'interface U {a:T; b:T; b_:T;}',
-  //   'interface U {b_:T; C:T; c:T;}',
-  //   'interface U {b_:T; c:T; C:T;}',
-  //   'interface U {$:T; _:T; A:T; a:T;}',
-  //   "interface U {1:T; 2:T; '11':T; A:T;}",
-  //   "interface U {'#':T; 'Z':T; À:T; è:T;}",
-  // ],
+  ascendingInsensitiveNatural: [
+    'interface U {_:T; a:T; b:T;}',
+    'interface U {a:T; b:T; c:T;}',
+    'interface U {a:T; b:T; b_:T;}',
+    'interface U {b_:T; C:T; c:T;}',
+    'interface U {b_:T; c:T; C:T;}',
+    'interface U {$:T; _:T; A:T; a:T;}',
+    "interface U {1:T; 2:T; '11':T; A:T;}",
+    "interface U {'#':T; 'Z':T; À:T; è:T;}",
+  ],
   // /**
   //  * ascending, natural, insensitive, required
   //  */
-  // ascendingInsensitiveNaturalRequired: [
-  //   'interface U {_:T; b:T; a?:T;}',
-  //   'interface U {a:T; c:T; b?:T;}',
-  //   'interface U {b:T; b_:T; a?:T;}',
-  //   'interface U {C:T; c:T; b_?:T;}',
-  //   'interface U {c:T; C:T; b_?:T;}',
-  //   'interface U {$:T; _:T; A?:T; a?:T;}',
-  //   "interface U {1:T; '11':T; A:T; 2?:T;}",
-  //   "interface U {'Z':T; À:T; è:T; '#'?:T;}",
-  // ],
+  ascendingInsensitiveNaturalRequired: [
+    'interface U {_:T; b:T; a?:T;}',
+    'interface U {a:T; c:T; b?:T;}',
+    'interface U {b:T; b_:T; a?:T;}',
+    'interface U {C:T; c:T; b_?:T;}',
+    'interface U {c:T; C:T; b_?:T;}',
+    'interface U {$:T; _:T; A?:T; a?:T;}',
+    "interface U {1:T; '11':T; A:T; 2?:T;}",
+    "interface U {'Z':T; À:T; è:T; '#'?:T;}",
+  ],
   // /**
   //  * ascending, required
   //  */
-  // ascendingRequired: [
-  //   'interface U {_:T; b:T; a?:T;}',
-  //   'interface U {a:T; c:T; b?:T;}',
-  //   'interface U {b:T; b_:T; a?:T;}',
-  //   'interface U {C:T; c:T; b_?:T;}',
-  //   'interface U {1:T; 11:T; 9:T; 111?:T;}',
-  //   'interface U {$:T; _:T; A?:T; a?:T;}',
-  //   "interface U {10:T; '11':T; 1?:T; 12?:T; 2?:T;}",
-  //   "interface U {'Z':T; À:T; è:T; '#'?:T;}",
-  // ],
+  ascendingRequired: [
+    'interface U {_:T; b:T; a?:T;}',
+    'interface U {a:T; c:T; b?:T;}',
+    'interface U {b:T; b_:T; a?:T;}',
+    'interface U {C:T; c:T; b_?:T;}',
+    'interface U {1:T; 11:T; 9:T; 111?:T;}',
+    'interface U {$:T; _:T; A?:T; a?:T;}',
+    "interface U {10:T; '11':T; 1?:T; 12?:T; 2?:T;}",
+    "interface U {'Z':T; À:T; è:T; '#'?:T;}",
+  ],
   // /**
   //  * ascending, natural, insensitive, not-required
   //  */
-  // ascendingInsensitiveNaturalNotRequired: [
-  //   'interface U {_:T; a?:T; b:T;}',
-  //   'interface U {a:T; b?:T; c:T;}',
-  //   'interface U {a?:T; b:T; b_:T;}',
-  //   'interface U {b_?:T; C:T; c:T;}',
-  //   'interface U {b_?:T; c:T; C:T;}',
-  //   'interface U {$:T; _:T; A?:T; a?:T;}',
-  //   "interface U {1:T;  2?:T; '11':T; A:T;}",
-  //   "interface U {'#'?:T; 'Z':T; À:T; è:T;}",
-  // ],
+  ascendingInsensitiveNaturalNotRequired: [
+    'interface U {_:T; a?:T; b:T;}',
+    'interface U {a:T; b?:T; c:T;}',
+    'interface U {a?:T; b:T; b_:T;}',
+    'interface U {b_?:T; C:T; c:T;}',
+    'interface U {b_?:T; c:T; C:T;}',
+    'interface U {$:T; _:T; A?:T; a?:T;}',
+    "interface U {1:T;  2?:T; '11':T; A:T;}",
+    "interface U {'#'?:T; 'Z':T; À:T; è:T;}",
+  ],
   // /**
   //  * descending
   //  */
@@ -114,80 +114,80 @@ const valid: PreValidTestCaseObject = {
   // /**
   //  * descending, insensitive, non-natural
   //  */
-  // descendingInsensitiveNonNatural: [
-  //   'interface U {b:T; a:T; _:T;}',
-  //   'interface U {c:T; b:T; a:T;}',
-  //   'interface U {b_:T; b:T; a:T;}',
-  //   'interface U {c:T; C:T; b_:T;}',
-  //   'interface U {C:T; c:T; b_:T;}',
-  //   'interface U {a:T; A:T; _:T; $:T;}',
-  //   "interface U {A:T; 2:T; '11':T; 1:T;}",
-  //   "interface U {è:T; À:T; 'Z':T; '#':T;}",
-  // ],
+  descendingInsensitiveNonNatural: [
+    'interface U {b:T; a:T; _:T;}',
+    'interface U {c:T; b:T; a:T;}',
+    'interface U {b_:T; b:T; a:T;}',
+    'interface U {c:T; C:T; b_:T;}',
+    'interface U {C:T; c:T; b_:T;}',
+    'interface U {a:T; A:T; _:T; $:T;}',
+    "interface U {A:T; 2:T; '11':T; 1:T;}",
+    "interface U {è:T; À:T; 'Z':T; '#':T;}",
+  ],
   // /**
   //  * descending, case-sensitive, natural
   //  */
-  // descendingSensitiveNatural: [
-  //   'interface U {b:T; a:T; _:T;}',
-  //   'interface U {c:T; b:T; a:T;}',
-  //   'interface U {b_:T; b:T; a:T;}',
-  //   'interface U {c:T; b_:T; C:T;}',
-  //   'interface U {a:T; A:T; _:T; $:T;}',
-  //   "interface U {A:T; '11':T; 2:T; 1:T;}",
-  //   "interface U {è:T; À:T; 'Z':T; '#':T;}",
-  // ],
+  descendingSensitiveNatural: [
+    'interface U {b:T; a:T; _:T;}',
+    'interface U {c:T; b:T; a:T;}',
+    'interface U {b_:T; b:T; a:T;}',
+    'interface U {c:T; b_:T; C:T;}',
+    'interface U {a:T; A:T; _:T; $:T;}',
+    "interface U {A:T; '11':T; 2:T; 1:T;}",
+    "interface U {è:T; À:T; 'Z':T; '#':T;}",
+  ],
   // /**
   //  * descending, natural, insensitive
   //  */
-  // descendingInsensitiveNatural: [
-  //   'interface U {b:T; a:T; _:T;}',
-  //   'interface U {c:T; b:T; a:T;}',
-  //   'interface U {b_:T; b:T; a:T;}',
-  //   'interface U {c:T; C:T; b_:T;}',
-  //   'interface U {C:T; c:T; b_:T;}',
-  //   'interface U {a:T; A:T; _:T; $:T;}',
-  //   "interface U {A:T; '11':T; 2:T; 1:T;}",
-  //   "interface U {è:T; À:T; 'Z':T; '#':T;}",
-  // ],
+  descendingInsensitiveNatural: [
+    'interface U {b:T; a:T; _:T;}',
+    'interface U {c:T; b:T; a:T;}',
+    'interface U {b_:T; b:T; a:T;}',
+    'interface U {c:T; C:T; b_:T;}',
+    'interface U {C:T; c:T; b_:T;}',
+    'interface U {a:T; A:T; _:T; $:T;}',
+    "interface U {A:T; '11':T; 2:T; 1:T;}",
+    "interface U {è:T; À:T; 'Z':T; '#':T;}",
+  ],
   // /**
   //  * descending, natural, insensitive, required
   //  */
-  // descendingInsensitiveNaturalRequired: [
-  //   'interface U {b:T; _:T; a?:T;}',
-  //   'interface U {c:T; a:T; b?:T;}',
-  //   'interface U {b_:T; b:T; a?:T;}',
-  //   'interface U {c:T; C:T; b_?:T;}',
-  //   'interface U {C:T; c:T; b_?:T;}',
-  //   'interface U {_:T; $:T; a?:T; A?:T;}',
-  //   "interface U { A:T; '11':T; 1:T; 2?:T;}",
-  //   "interface U {è:T; 'Z':T; À?:T; '#'?:T;}",
-  // ],
+  descendingInsensitiveNaturalRequired: [
+    'interface U {b:T; _:T; a?:T;}',
+    'interface U {c:T; a:T; b?:T;}',
+    'interface U {b_:T; b:T; a?:T;}',
+    'interface U {c:T; C:T; b_?:T;}',
+    'interface U {C:T; c:T; b_?:T;}',
+    'interface U {_:T; $:T; a?:T; A?:T;}',
+    "interface U { A:T; '11':T; 1:T; 2?:T;}",
+    "interface U {è:T; 'Z':T; À?:T; '#'?:T;}",
+  ],
   // /**
   //  * descending, required
   //  */
-  // descendingRequired: [
-  //   'interface U {b:T; _:T; a?:T;}',
-  //   'interface U {c:T; a:T; b?:T;}',
-  //   'interface U {b_:T; b:T; a?:T;}',
-  //   'interface U {c:T; C:T; b_?:T;}',
-  //   'interface U {9:T; 11:T; 1:T; 111?:T;}',
-  //   'interface U {_:T; $:T; a?:T; A?:T;}',
-  //   "interface U {'11':T; 10:T; 2?:T; 12?:T; 1?:T;}",
-  //   "interface U {è:T; À:T; 'Z':T; '#'?:T;}",
-  // ],
+  descendingRequired: [
+    'interface U {b:T; _:T; a?:T;}',
+    'interface U {c:T; a:T; b?:T;}',
+    'interface U {b_:T; b:T; a?:T;}',
+    'interface U {c:T; C:T; b_?:T;}',
+    'interface U {9:T; 11:T; 1:T; 111?:T;}',
+    'interface U {_:T; $:T; a?:T; A?:T;}',
+    "interface U {'11':T; 10:T; 2?:T; 12?:T; 1?:T;}",
+    "interface U {è:T; À:T; 'Z':T; '#'?:T;}",
+  ],
   // /**
   //  * descending, natural, insensitive, not-required
   //  */
-  // descendingInsensitiveNaturalNotRequired: [
-  //   'interface U {b:T; a?:T; _:T;}',
-  //   'interface U {c:T; b?:T; a:T;}',
-  //   'interface U {b_:T; b:T; a?:T;}',
-  //   'interface U {c:T; C:T; b_?:T;}',
-  //   'interface U {C:T; c:T; b_?:T;}',
-  //   'interface U {a?:T; A?:T; _:T; $:T;}',
-  //   "interface U {A:T; '11':T; 2?:T; 1:T;}",
-  //   "interface U {è:T; À:T; 'Z':T; '#'?:T;}",
-  // ],
+  descendingInsensitiveNaturalNotRequired: [
+    'interface U {b:T; a?:T; _:T;}',
+    'interface U {c:T; b?:T; a:T;}',
+    'interface U {b_:T; b:T; a?:T;}',
+    'interface U {c:T; C:T; b_?:T;}',
+    'interface U {C:T; c:T; b_?:T;}',
+    'interface U {a?:T; A?:T; _:T; $:T;}',
+    "interface U {A:T; '11':T; 2?:T; 1:T;}",
+    "interface U {è:T; À:T; 'Z':T; '#'?:T;}",
+  ],
   // /**
   //  * index signatures
   //  */
