@@ -1,25 +1,25 @@
 import { OptionsSetsKey } from './options'
 
 export const orderStrings: Record<OptionsSetsKey, string> = {
-  ascending: 'ascending ',
-  ascendingInsensitive: 'insensitive ascending ',
-  ascendingNatural: 'natural ascending ',
-  ascendingInsensitiveNatural: 'insensitive natural ascending ',
-  descendingOnly: 'descending ',
-  descendingInsensitive: 'insensitive descending ',
-  descendingNatural: 'natural descending ',
-  descendingInsensitiveNatural: 'insensitive natural descending ',
+  ascending: 'ascending',
+  ascendingInsensitive: 'insensitive ascending',
+  ascendingNatural: 'natural ascending',
+  ascendingInsensitiveNatural: 'insensitive natural ascending',
+  descendingOnly: 'descending',
+  descendingInsensitive: 'insensitive descending',
+  descendingNatural: 'natural descending',
+  descendingInsensitiveNatural: 'insensitive natural descending',
   noOptions: '',
-  ascendingOnly: 'ascending ',
+  ascendingOnly: 'ascending',
   ascendingSensitive: '',
   ascendingInsensitiveNaturalRequired: '',
-  ascendingInsensitiveNaturalNotRequired: '',
+  ascendingInsensitiveNaturalNotRequired: 'insensitive natural ascending',
   ascendingRequired: '',
-  descending: 'descending ',
+  descending: 'descending',
   descendingInsensitiveNonNatural: '',
   descendingSensitiveNatural: '',
-  descendingInsensitiveNaturalRequired: '',
-  descendingInsensitiveNaturalNotRequired: '',
+  descendingInsensitiveNaturalRequired: 'required first insensitive natural descending',
+  descendingInsensitiveNaturalNotRequired: 'insensitive natural descending',
   descendingRequired: '',
 }
 
@@ -56,7 +56,7 @@ export const getSwapErrorString = (
 ) => {
   return `Expected ${getCategoryErrorString(category)} to be in ${
     orderStrings[order]
-  }order. '${a}' should be before '${b}'. Run autofix to sort entire body.`
+  } order. '${a}' should be before '${b}'. Run autofix to sort entire body.`
 }
 
 export const getEndErrorString = (
@@ -66,7 +66,7 @@ export const getEndErrorString = (
 ) =>
   `Expected ${getCategoryErrorString(category)} to be in ${
     orderStrings[order]
-  }order. '${a}' should be at the end. Run autofix to sort entire body.`
+  } order. '${a}' should be at the end. Run autofix to sort entire body.`
 
 export const getCountErrorString = (category: CaseCategory, count: number) =>
   `Found ${count} ${getCategoryParentErrorString(category)}${

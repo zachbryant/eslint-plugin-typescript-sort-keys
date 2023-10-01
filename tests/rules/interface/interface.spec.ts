@@ -201,639 +201,618 @@ const invalid: PreInvalidTestCaseObject = {
   /**
    * ascending sensitive (default)
    */
-  // ascendingSensitive: [
-  //   {
-  //     code: 'interface U {a:T; _:T; b:T;}',
-  //     output: 'interface U {_:T; a:T; b:T;}',
-  //     errors: [['_', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; c:T; b:T;}',
-  //     output: 'interface U {a:T; b:T; c:T;}',
-  //     errors: [['b', 'c']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; a:T; b:T;}',
-  //     output: 'interface U {a:T; b_:T; b:T;}',
-  //     errors: [['a', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; c:T; C:T;}',
-  //     output: 'interface U {C:T; c:T; b_:T;}',
-  //     errors: [['C', 'c']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; _:T; A:T; a:T;}',
-  //     output: 'interface U {$:T; A:T; _:T; a:T;}',
-  //     errors: [['A', '_']],
-  //   },
-  //   {
-  //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-  //     output: "interface U {1:T; '11':T; A:T; 2:T;}",
-  //     errors: [['11', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-  //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-  //     errors: [['Z', 'À']],
-  //   },
-  //   /**
-  //    * methods
-  //    */
-  //   {
-  //     code: "interface U {1:T; 2:T; A():T; '11':T;}",
-  //     output: "interface U {1:T; '11':T; A():T; 2:T;}",
-  //     errors: [['11', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {'#'():T; À():T; 'Z':T; è:T;}",
-  //     output: "interface U {'#'():T; 'Z':T; À():T; è:T;}",
-  //     errors: [['Z', 'À']],
-  //   },
-  //   /**
-  //    * not ignore simple computed properties.
-  //    */
-  //   {
-  //     code: 'interface U {a:T; b:T; ["a"]:T; c:T;}',
-  //     output: 'interface U {a:T; ["a"]:T; b:T; c:T;}',
-  //     errors: [['a', 'b']],
-  //   },
-  //   /**
-  //    * nested
-  //    */
-  //   {
-  //     code: 'interface U {a:T; c:{y:T; x:T;}, b:T;}',
-  //     output: 'interface U {a:T; b:T; c:{y:T; x:T;}}',
-  //     errors: [
-  //       ['x', 'y'],
-  //       ['b', 'c'],
-  //     ],
-  //   },
-  //   {
-  //     code: 'type U = {a:T; c:{y:T; x:T;}, b:T;}',
-  //     output: 'type U = {a:T; b:T; c:{y:T; x:T;}}',
-  //     errors: [
-  //       ['x', 'y'],
-  //       ['b', 'c'],
-  //     ],
-  //   },
-  //   /**
-  //    * asc
-  //    */
-  //   {
-  //     code: 'interface U {a:T; _:T; b:T;}',
-  //     output: 'interface U {_:T; a:T; b:T;}',
-  //     errors: [['_', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; c:T; b:T;}',
-  //     output: 'interface U {a:T; b:T; c:T;}',
-  //     errors: [['b', 'c']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; a:T; b:T;}',
-  //     output: 'interface U {a:T; b_:T; b:T;}',
-  //     errors: [['a', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; c:T; C:T;}',
-  //     output: 'interface U {C:T; c:T; b_:T;}',
-  //     errors: [['C', 'c']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; _:T; A:T; a:T;}',
-  //     output: 'interface U {$:T; A:T; _:T; a:T;}',
-  //     errors: [['A', '_']],
-  //   },
-  //   {
-  //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-  //     output: "interface U {1:T; '11':T; A:T; 2:T;}",
-  //     errors: [['11', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-  //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-  //     errors: [['Z', 'À']],
-  //   },
-  // ],
+  ascendingSensitive: [
+    //   {
+    //     code: 'interface U {a:T; _:T; b:T;}',
+    //     output: 'interface U {_:T; a:T; b:T;}',
+    //     errors: [['_', 'a']],
+    //   },
+    //   {
+    //     code: 'interface U {a:T; c:T; b:T;}',
+    //     output: 'interface U {a:T; b:T; c:T;}',
+    //     errors: [['b', 'c']],
+    //   },
+    //   {
+    //     code: 'interface U {b_:T; a:T; b:T;}',
+    //     output: 'interface U {a:T; b_:T; b:T;}',
+    //     errors: [['a', 'b_']],
+    //   },
+    //   {
+    //     code: 'interface U {b_:T; c:T; C:T;}',
+    //     output: 'interface U {C:T; c:T; b_:T;}',
+    //     errors: [['C', 'c']],
+    //   },
+    //   {
+    //     code: 'interface U {$:T; _:T; A:T; a:T;}',
+    //     output: 'interface U {$:T; A:T; _:T; a:T;}',
+    //     errors: [['A', '_']],
+    //   },
+    //   {
+    //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
+    //     output: "interface U {1:T; '11':T; A:T; 2:T;}",
+    //     errors: [['11', 'A']],
+    //   },
+    //   {
+    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
+    //     errors: [['Z', 'À']],
+    //   },
+    //   /**
+    //    * methods
+    //    */
+    //   {
+    //     code: "interface U {1:T; 2:T; A():T; '11':T;}",
+    //     output: "interface U {1:T; '11':T; A():T; 2:T;}",
+    //     errors: [['11', 'A']],
+    //   },
+    //   {
+    //     code: "interface U {'#'():T; À():T; 'Z':T; è:T;}",
+    //     output: "interface U {'#'():T; 'Z':T; À():T; è:T;}",
+    //     errors: [['Z', 'À']],
+    //   },
+    //   /**
+    //    * not ignore simple computed properties.
+    //    */
+    //   {
+    //     code: 'interface U {a:T; b:T; ["a"]:T; c:T;}',
+    //     output: 'interface U {a:T; ["a"]:T; b:T; c:T;}',
+    //     errors: [['a', 'b']],
+    //   },
+    //   /**
+    //    * nested
+    //    */
+    //   {
+    //     code: 'interface U {a:T; c:{y:T; x:T;}, b:T;}',
+    //     output: 'interface U {a:T; b:T; c:{y:T; x:T;}}',
+    //     errors: [
+    //       ['x', 'y'],
+    //       ['b', 'c'],
+    //     ],
+    //   },
+    //   {
+    //     code: 'type U = {a:T; c:{y:T; x:T;}, b:T;}',
+    //     output: 'type U = {a:T; b:T; c:{y:T; x:T;}}',
+    //     errors: [
+    //       ['x', 'y'],
+    //       ['b', 'c'],
+    //     ],
+    //   },
+    //   /**
+    //    * asc
+    //    */
+    //   {
+    //     code: 'interface U {a:T; _:T; b:T;}',
+    //     output: 'interface U {_:T; a:T; b:T;}',
+    //     errors: [['_', 'a']],
+    //   },
+    //   {
+    //     code: 'interface U {a:T; c:T; b:T;}',
+    //     output: 'interface U {a:T; b:T; c:T;}',
+    //     errors: [['b', 'c']],
+    //   },
+    //   {
+    //     code: 'interface U {b_:T; a:T; b:T;}',
+    //     output: 'interface U {a:T; b_:T; b:T;}',
+    //     errors: [['a', 'b_']],
+    //   },
+    //   {
+    //     code: 'interface U {b_:T; c:T; C:T;}',
+    //     output: 'interface U {C:T; c:T; b_:T;}',
+    //     errors: [['C', 'c']],
+    //   },
+    //   {
+    //     code: 'interface U {$:T; _:T; A:T; a:T;}',
+    //     output: 'interface U {$:T; A:T; _:T; a:T;}',
+    //     errors: [['A', '_']],
+    //   },
+    //   {
+    //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
+    //     output: "interface U {1:T; '11':T; A:T; 2:T;}",
+    //     errors: [['11', 'A']],
+    //   },
+    //   {
+    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
+    //     errors: [['Z', 'À']],
+    //   },
+  ],
   // /**
   //  * ascending, insensitive
   //  */
-  // ascendingInsensitive: [
-  //   {
-  //     code: 'interface U {a:T; _:T; b:T;}',
-  //     output: 'interface U {_:T; a:T; b:T;}',
-  //     errors: [['_', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; c:T; b:T;}',
-  //     output: 'interface U {a:T; b:T; c:T;}',
-  //     errors: [['b', 'c']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; a:T; b:T;}',
-  //     output: 'interface U {a:T; b_:T; b:T;}',
-  //     errors: [['a', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; A:T; _:T; a:T;}',
-  //     output: 'interface U {$:T; _:T; A:T; a:T;}',
-  //     errors: [['_', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-  //     output: "interface U {1:T; '11':T; A:T; 2:T;}",
-  //     errors: [['11', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-  //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-  //     errors: [['Z', 'À']],
-  //   },
-  // ],
+  ascendingInsensitive: [
+    //   {
+    //     code: 'interface U {a:T; _:T; b:T;}',
+    //     output: 'interface U {_:T; a:T; b:T;}',
+    //     errors: [['_', 'a']],
+    //   },
+    //   {
+    //     code: 'interface U {a:T; c:T; b:T;}',
+    //     output: 'interface U {a:T; b:T; c:T;}',
+    //     errors: [['b', 'c']],
+    //   },
+    //   {
+    //     code: 'interface U {b_:T; a:T; b:T;}',
+    //     output: 'interface U {a:T; b_:T; b:T;}',
+    //     errors: [['a', 'b_']],
+    //   },
+    //   {
+    //     code: 'interface U {$:T; A:T; _:T; a:T;}',
+    //     output: 'interface U {$:T; _:T; A:T; a:T;}',
+    //     errors: [['_', 'A']],
+    //   },
+    //   {
+    //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
+    //     output: "interface U {1:T; '11':T; A:T; 2:T;}",
+    //     errors: [['11', 'A']],
+    //   },
+    //   {
+    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
+    //     errors: [['Z', 'À']],
+    //   },
+  ],
   // /**
   //  * ascending, natural
   //  */
-  // ascendingNatural: [
-  //   {
-  //     code: 'interface U {a:T; _:T; b:T;}',
-  //     output: 'interface U {_:T; a:T; b:T;}',
-  //     errors: [['_', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; c:T; b:T;}',
-  //     output: 'interface U {a:T; b:T; c:T;}',
-  //     errors: [['b', 'c']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; a:T; b:T;}',
-  //     output: 'interface U {a:T; b_:T; b:T;}',
-  //     errors: [['a', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; c:T; C:T;}',
-  //     output: 'interface U {C:T; c:T; b_:T;}',
-  //     errors: [['C', 'c']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; A:T; _:T; a:T;}',
-  //     output: 'interface U {$:T; _:T; A:T; a:T;}',
-  //     errors: [['_', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-  //     output: "interface U {1:T; 2:T; '11':T; A:T;}",
-  //     errors: [['11', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-  //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-  //     errors: [['Z', 'À']],
-  //   },
-  // ],
+  ascendingNatural: [
+    //   {
+    //     code: 'interface U {a:T; _:T; b:T;}',
+    //     output: 'interface U {_:T; a:T; b:T;}',
+    //     errors: [['_', 'a']],
+    //   },
+    //   {
+    //     code: 'interface U {a:T; c:T; b:T;}',
+    //     output: 'interface U {a:T; b:T; c:T;}',
+    //     errors: [['b', 'c']],
+    //   },
+    //   {
+    //     code: 'interface U {b_:T; a:T; b:T;}',
+    //     output: 'interface U {a:T; b_:T; b:T;}',
+    //     errors: [['a', 'b_']],
+    //   },
+    //   {
+    //     code: 'interface U {b_:T; c:T; C:T;}',
+    //     output: 'interface U {C:T; c:T; b_:T;}',
+    //     errors: [['C', 'c']],
+    //   },
+    //   {
+    //     code: 'interface U {$:T; A:T; _:T; a:T;}',
+    //     output: 'interface U {$:T; _:T; A:T; a:T;}',
+    //     errors: [['_', 'A']],
+    //   },
+    //   {
+    //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
+    //     output: "interface U {1:T; 2:T; '11':T; A:T;}",
+    //     errors: [['11', 'A']],
+    //   },
+    //   {
+    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
+    //     errors: [['Z', 'À']],
+    //   },
+  ],
   // /**
   //  * ascending, natural, insensitive
   //  */
-  // ascendingInsensitiveNatural: [
-  //   {
-  //     code: 'interface U {a:T; _:T; b:T;}',
-  //     output: 'interface U {_:T; a:T; b:T;}',
-  //     errors: [['_', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; c:T; b:T;}',
-  //     output: 'interface U {a:T; b:T; c:T;}',
-  //     errors: [['b', 'c']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; a:T; b:T;}',
-  //     output: 'interface U {a:T; b_:T; b:T;}',
-  //     errors: [['a', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; A:T; _:T; a:T;}',
-  //     output: 'interface U {$:T; _:T; A:T; a:T;}',
-  //     errors: [['_', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {1:T; '11':T; 2:T; A:T;}",
-  //     output: "interface U {1:T; 2:T; '11':T; A:T;}",
-  //     errors: [['2', '11']],
-  //   },
-  //   {
-  //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-  //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-  //     errors: [['Z', 'À']],
-  //   },
-  // ],
+  ascendingInsensitiveNatural: [
+    //   {
+    //     code: 'interface U {a:T; _:T; b:T;}',
+    //     output: 'interface U {_:T; a:T; b:T;}',
+    //     errors: [['_', 'a']],
+    //   },
+    //   {
+    //     code: 'interface U {a:T; c:T; b:T;}',
+    //     output: 'interface U {a:T; b:T; c:T;}',
+    //     errors: [['b', 'c']],
+    //   },
+    //   {
+    //     code: 'interface U {b_:T; a:T; b:T;}',
+    //     output: 'interface U {a:T; b_:T; b:T;}',
+    //     errors: [['a', 'b_']],
+    //   },
+    //   {
+    //     code: 'interface U {$:T; A:T; _:T; a:T;}',
+    //     output: 'interface U {$:T; _:T; A:T; a:T;}',
+    //     errors: [['_', 'A']],
+    //   },
+    //   {
+    //     code: "interface U {1:T; '11':T; 2:T; A:T;}",
+    //     output: "interface U {1:T; 2:T; '11':T; A:T;}",
+    //     errors: [['2', '11']],
+    //   },
+    //   {
+    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
+    //     errors: [['Z', 'À']],
+    //   },
+  ],
   // /**
   //  * ascending, natural, insensitive, required
   //  */
-  // ascendingInsensitiveNaturalRequired: [
-  //   {
-  //     code: 'interface U {_:T; a?:T; b:T;}',
-  //     output: 'interface U {_:T; b:T; a?:T;}',
-  //     errors: [['b', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; b?:T; c:T;}',
-  //     output: 'interface U {a:T; c:T; b?:T;}',
-  //     errors: [['c', 'b']],
-  //   },
-  //   {
-  //     code: 'interface U {b:T; a?:T; b_:T;}',
-  //     output: 'interface U {b:T; b_:T; a?:T;}',
-  //     errors: [['b_', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {C:T; b_?:T; c:T;}',
-  //     output: 'interface U {C:T; c:T; b_?:T;}',
-  //     errors: [['c', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {C:T; b_?:T; c:T;}',
-  //     output: 'interface U {C:T; c:T; b_?:T;}',
-  //     errors: [['c', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; A?:T; _:T; a?:T;}',
-  //     output: 'interface U {$:T; _:T; A?:T; a?:T;}',
-  //     errors: [['_', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {1:T; '11':T; 2?:T; A:T;}",
-  //     output: "interface U {1:T; '11':T; A:T; 2?:T;}",
-  //     errors: [['A', '2']],
-  //   },
-  //   {
-  //     code: "interface U {'Z':T; À:T; '#'?:T; è:T;}",
-  //     output: "interface U {'Z':T; À:T; è:T; '#'?:T;}",
-  //     errors: [['è', '#']],
-  //   },
-  // ],
+  ascendingInsensitiveNaturalRequired: [
+    //   {
+    //     code: 'interface U {_:T; a?:T; b:T;}',
+    //     output: 'interface U {_:T; b:T; a?:T;}',
+    //     errors: [['b', 'a']],
+    //   },
+    //   {
+    //     code: 'interface U {a:T; b?:T; c:T;}',
+    //     output: 'interface U {a:T; c:T; b?:T;}',
+    //     errors: [['c', 'b']],
+    //   },
+    //   {
+    //     code: 'interface U {b:T; a?:T; b_:T;}',
+    //     output: 'interface U {b:T; b_:T; a?:T;}',
+    //     errors: [['b_', 'a']],
+    //   },
+    //   {
+    //     code: 'interface U {C:T; b_?:T; c:T;}',
+    //     output: 'interface U {C:T; c:T; b_?:T;}',
+    //     errors: [['c', 'b_']],
+    //   },
+    //   {
+    //     code: 'interface U {C:T; b_?:T; c:T;}',
+    //     output: 'interface U {C:T; c:T; b_?:T;}',
+    //     errors: [['c', 'b_']],
+    //   },
+    //   {
+    //     code: 'interface U {$:T; A?:T; _:T; a?:T;}',
+    //     output: 'interface U {$:T; _:T; A?:T; a?:T;}',
+    //     errors: [['_', 'A']],
+    //   },
+    //   {
+    //     code: "interface U {1:T; '11':T; 2?:T; A:T;}",
+    //     output: "interface U {1:T; '11':T; A:T; 2?:T;}",
+    //     errors: [['A', '2']],
+    //   },
+    //   {
+    //     code: "interface U {'Z':T; À:T; '#'?:T; è:T;}",
+    //     output: "interface U {'Z':T; À:T; è:T; '#'?:T;}",
+    //     errors: [['è', '#']],
+    //   },
+  ],
   // /**
   //  * ascending, natural, insensitive, not-required
   //  */
-  // ascendingInsensitiveNaturalNotRequired: [
-  //   {
-  //     code: 'interface U {_:T; b:T; a?:T;}',
-  //     output: 'interface U {_:T; a?:T; b:T;}',
-  //     errors: [['a', 'b']],
-  //   },
-  //   {
-  //     code: 'interface U {b?:T; a:T; c:T;}',
-  //     output: 'interface U {a:T; b?:T; c:T;}',
-  //     errors: [['a', 'b']],
-  //   },
-  //   {
-  //     code: 'interface U {b:T; a?:T; b_:T;}',
-  //     output: 'interface U {a?:T; b:T; b_:T;}',
-  //     errors: [['a', 'b']],
-  //   },
-  //   {
-  //     code: 'interface U {C:T; c:T; b_?:T;}',
-  //     output: 'interface U {b_?:T; c:T; C:T;}',
-  //     errors: [['b_', 'c']],
-  //   },
-  //   {
-  //     code: 'interface U {C:T; b_?:T; c:T;}',
-  //     output: 'interface U {b_?:T; C:T; c:T;}',
-  //     errors: [['b_', 'C']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; A?:T; _:T; a?:T;}',
-  //     output: 'interface U {$:T; _:T; A?:T; a?:T;}',
-  //     errors: [['_', 'A']],
-  //   },
-  //   {
-  //     code: "interface U {1:T; '11':T; 2?:T; A:T;}",
-  //     output: "interface U {1:T; 2?:T; '11':T; A:T;}",
-  //     errors: [['2', '11']],
-  //   },
-  //   {
-  //     code: "interface U {'Z':T; À:T; '#'?:T; è:T;}",
-  //     output: "interface U {'#'?:T; À:T; 'Z':T; è:T;}",
-  //     errors: [['#', 'À']],
-  //   },
-  // ],
+  ascendingInsensitiveNaturalNotRequired: [
+    {
+      code: 'interface U {_:T; b:T; a?:T;}',
+      output: 'interface U {_:T; a?:T; b:T;}',
+      errors: [['b'], ['a', 'b']],
+    },
+    {
+      code: 'interface U {b?:T; a:T; c:T;}',
+      output: 'interface U {a:T; b?:T; c:T;}',
+      errors: [
+        ['b', 'c'],
+        ['a', 'b'],
+      ],
+    },
+    {
+      code: 'interface U {b:T; a?:T; b_:T;}',
+      output: 'interface U {a?:T; b:T; b_:T;}',
+      errors: [
+        ['b', 'b_'],
+        ['a', 'b'],
+      ],
+    },
+    {
+      code: 'interface U {C:T; b_?:T; c:T;}',
+      output: 'interface U {b_?:T; C:T; c:T;}',
+      errors: [
+        ['C', 'c'],
+        ['b_', 'C'],
+      ],
+    },
+    {
+      code: 'interface U {$:T; A?:T; _:T; a?:T;}',
+      output: 'interface U {$:T; _:T; A?:T; a?:T;}',
+      errors: [
+        ['A', 'a'],
+        ['_', 'A'],
+      ],
+    },
+    {
+      code: "interface U {1:T; '11':T; 2?:T; A:T;}",
+      output: "interface U {1:T; 2?:T; '11':T; A:T;}",
+      errors: [
+        ['11', 'A'],
+        ['2', '11'],
+      ],
+    },
+    {
+      code: "interface U {'Z':T; À:T; '#'?:T; è:T;}",
+      output: "interface U {'#'?:T; 'Z':T; À:T; è:T;}",
+      errors: [
+        ['Z', 'À'],
+        ['À', 'è'],
+        ['#', 'Z'],
+      ],
+    },
+  ],
   // /**
   //  * descending
   //  */
-  // descendingOnly: [
-  //   {
-  //     code: 'interface U {a:T; _:T; b:T;}',
-  //     output: 'interface U {b:T; _:T; a:T;}',
-  //     errors: [['b', '_']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; c:T; b:T;}',
-  //     output: 'interface U {c:T; a:T; b:T;}',
-  //     errors: [['c', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; a:T; b:T;}',
-  //     output: 'interface U {b_:T; b:T; a:T;}',
-  //     errors: [['b', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; c:T; C:T;}',
-  //     output: 'interface U {c:T; b_:T; C:T;}',
-  //     errors: [['c', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; _:T; A:T; a:T;}',
-  //     output: 'interface U {a:T; _:T; A:T; $:T;}',
-  //     errors: [
-  //       ['_', '$'],
-  //       ['a', 'A'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-  //     output: "interface U {A:T; 2:T; 1:T; '11':T;}",
-  //     errors: [
-  //       ['2', '1'],
-  //       ['A', '2'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-  //     output: "interface U {è:T; À:T; 'Z':T; '#':T;}",
-  //     errors: [
-  //       ['À', '#'],
-  //       ['è', 'Z'],
-  //     ],
-  //   },
-  //   {
-  //     code: 'interface U<T> { _: T; [skey: string]: T; A: T; }',
-  //     output: 'interface U<T> { _: T; A: T; [skey: string]: T; }',
-  //     errors: [['A', '[index: skey]']],
-  //   },
-  // ],
+  descendingOnly: [
+    {
+      code: 'interface U {a:T; _:T; b:T;}',
+      output: 'interface U {b:T; a:T; _:T;}',
+      errors: [['a', '_'], ['_'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {a:T; c:T; b:T;}',
+      output: 'interface U {c:T; b:T; a:T;}',
+      errors: [['a'], ['c', 'b'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {b_:T; a:T; b:T;}',
+      output: 'interface U {b_:T; b:T; a:T;}',
+      errors: [['a'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {b_:T; c:T; C:T;}',
+      output: 'interface U {c:T; b_:T; C:T;}',
+      errors: [
+        ['b_', 'C'],
+        ['c', 'b_'],
+      ],
+    },
+    {
+      code: 'interface U {$:T; _:T; A:T; a:T;}',
+      output: 'interface U {a:T; _:T; A:T; $:T;}',
+      errors: [['$'], ['a', '_']],
+    },
+    {
+      code: "interface U {1:T; 2:T; A:T; '11':T;}",
+      output: "interface U {A:T; 2:T; '11':T; 1:T;}",
+      errors: [['1'], ['A', '2'], ['11', '1']],
+    },
+    {
+      code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+      output: "interface U {è:T; À:T; 'Z':T; '#':T;}",
+      errors: [['#'], ['è', 'À']],
+    },
+    {
+      code: 'interface U<T> { _: T; [skey: string]: T; A: T; }',
+      output: 'interface U<T> { _: T; A: T; [skey: string]: T; }',
+      errors: [['[index: skey]'], ['A', '[index: skey]']],
+    },
+  ],
   // /**
   //  * descending, insensitive
   //  */
-  // descendingInsensitive: [
-  //   {
-  //     code: 'interface U {a:T; _:T; b:T;}',
-  //     output: 'interface U {b:T; _:T; a:T;}',
-  //     errors: [['b', '_']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; c:T; b:T;}',
-  //     output: 'interface U {c:T; a:T; b:T;}',
-  //     errors: [['c', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; a:T; b:T;}',
-  //     output: 'interface U {b_:T; b:T; a:T;}',
-  //     errors: [['b', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; c:T; C:T;}',
-  //     output: 'interface U {c:T; b_:T; C:T;}',
-  //     errors: [['c', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; _:T; A:T; a:T;}',
-  //     output: 'interface U {A:T; _:T; $:T; a:T;}',
-  //     errors: [
-  //       ['_', '$'],
-  //       ['A', '_'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-  //     output: "interface U {A:T; 2:T; 1:T; '11':T;}",
-  //     errors: [
-  //       ['2', '1'],
-  //       ['A', '2'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-  //     output: "interface U {è:T; À:T; 'Z':T; '#':T;}",
-  //     errors: [
-  //       ['À', '#'],
-  //       ['è', 'Z'],
-  //     ],
-  //   },
-  // ],
+  descendingInsensitive: [
+    {
+      code: 'interface U {a:T; _:T; b:T;}',
+      output: 'interface U {b:T; a:T; _:T;}',
+      errors: [['a', '_'], ['_'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {a:T; c:T; b:T;}',
+      output: 'interface U {c:T; b:T; a:T;}',
+      errors: [['a'], ['c', 'b'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {b_:T; a:T; b:T;}',
+      output: 'interface U {b_:T; b:T; a:T;}',
+      errors: [['a'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {b_:T; c:T; C:T;}',
+      output: 'interface U {c:T; C:T; b_:T;}',
+      errors: [['b_'], ['c', 'C'], ['C', 'b_']],
+    },
+    {
+      code: 'interface U {$:T; _:T; A:T; a:T;}',
+      output: 'interface U {A:T; a:T; _:T; $:T;}',
+      errors: [['$'], ['_', '$'], ['A', 'a'], ['a', '_']],
+    },
+    {
+      code: "interface U {1:T; 2:T; A:T; '11':T;}",
+      output: "interface U {A:T; 2:T; '11':T; 1:T;}",
+      errors: [['1'], ['A', '2'], ['11', '1']],
+    },
+    {
+      code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+      output: "interface U {è:T; À:T; 'Z':T; '#':T;}",
+      errors: [['#'], ['è', 'À']],
+    },
+  ],
   // /**
   //  * descending, natural
   //  */
-  // descendingNatural: [
-  //   {
-  //     code: 'interface U {a:T; _:T; b:T;}',
-  //     output: 'interface U {b:T; _:T; a:T;}',
-  //     errors: [['b', '_']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; c:T; b:T;}',
-  //     output: 'interface U {c:T; a:T; b:T;}',
-  //     errors: [['c', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; a:T; b:T;}',
-  //     output: 'interface U {b_:T; b:T; a:T;}',
-  //     errors: [['b', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; c:T; C:T;}',
-  //     output: 'interface U {c:T; b_:T; C:T;}',
-  //     errors: [['c', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; _:T; A:T; a:T;}',
-  //     output: 'interface U {a:T; _:T; A:T; $:T;}',
-  //     errors: [
-  //       ['_', '$'],
-  //       ['A', '_'],
-  //       ['a', 'A'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-  //     output: "interface U {A:T; 2:T; 1:T; '11':T;}",
-  //     errors: [
-  //       ['2', '1'],
-  //       ['A', '2'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-  //     output: "interface U {è:T; À:T; 'Z':T; '#':T;}",
-  //     errors: [
-  //       ['À', '#'],
-  //       ['è', 'Z'],
-  //     ],
-  //   },
-  // ],
+  descendingNatural: [
+    {
+      code: 'interface U {a:T; _:T; b:T;}',
+      output: 'interface U {b:T; a:T; _:T;}',
+      errors: [['a', '_'], ['_'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {a:T; c:T; b:T;}',
+      output: 'interface U {c:T; b:T; a:T;}',
+      errors: [['a'], ['c', 'b'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {b_:T; a:T; b:T;}',
+      output: 'interface U {b_:T; b:T; a:T;}',
+      errors: [['a'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {b_:T; c:T; C:T;}',
+      output: 'interface U {c:T; b_:T; C:T;}',
+      errors: [
+        ['b_', 'C'],
+        ['c', 'b_'],
+      ],
+    },
+    {
+      code: 'interface U {$:T; _:T; A:T; a:T;}',
+      output: 'interface U {a:T; A:T; _:T; $:T;}',
+      errors: [['$'], ['_', '$'], ['A', '_'], ['a', 'A']],
+    },
+    {
+      code: "interface U {1:T; 2:T; A:T; '11':T;}",
+      output: "interface U {A:T; '11':T; 2:T; 1:T;}",
+      errors: [['1'], ['2', '1'], ['A', '11'], ['11', '2']],
+    },
+    {
+      code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+      output: "interface U {è:T; À:T; 'Z':T; '#':T;}",
+      errors: [['#'], ['è', 'À']],
+    },
+  ],
   // /**
   //  * descending, natural, insensitive
   //  */
-  // descendingInsensitiveNatural: [
-  //   {
-  //     code: 'interface U {a:T; _:T; b:T;}',
-  //     output: 'interface U {b:T; _:T; a:T;}',
-  //     errors: [['b', '_']],
-  //   },
-  //   {
-  //     code: 'interface U {a:T; c:T; b:T;}',
-  //     output: 'interface U {c:T; a:T; b:T;}',
-  //     errors: [['c', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; a:T; b:T;}',
-  //     output: 'interface U {b_:T; b:T; a:T;}',
-  //     errors: [['b', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b_:T; c:T; C:T;}',
-  //     output: 'interface U {c:T; b_:T; C:T;}',
-  //     errors: [['c', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {$:T; _:T; A:T; a:T;}',
-  //     output: 'interface U {A:T; _:T; $:T; a:T;}',
-  //     errors: [
-  //       ['_', '$'],
-  //       ['A', '_'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {1:T; 2:T; '11':T; A:T;}",
-  //     output: "interface U {A:T; 2:T; '11':T; 1:T;}",
-  //     errors: [
-  //       ['2', '1'],
-  //       ['11', '2'],
-  //       ['A', '11'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-  //     output: "interface U {è:T; À:T; 'Z':T; '#':T;}",
-  //     errors: [
-  //       ['À', '#'],
-  //       ['è', 'Z'],
-  //     ],
-  //   },
-  // ],
+  descendingInsensitiveNatural: [
+    {
+      code: 'interface U {a:T; _:T; b:T;}',
+      output: 'interface U {b:T; a:T; _:T;}',
+      errors: [['a', '_'], ['_'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {a:T; c:T; b:T;}',
+      output: 'interface U {c:T; b:T; a:T;}',
+      errors: [['a'], ['c', 'b'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {b_:T; a:T; b:T;}',
+      output: 'interface U {b_:T; b:T; a:T;}',
+      errors: [['a'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {b_:T; c:T; C:T;}',
+      output: 'interface U {c:T; C:T; b_:T;}',
+      errors: [['b_'], ['c', 'C'], ['C', 'b_']],
+    },
+    {
+      code: 'interface U {$:T; _:T; A:T; a:T;}',
+      output: 'interface U {A:T; a:T; _:T; $:T;}',
+      errors: [['$'], ['_', '$'], ['A', 'a'], ['a', '_']],
+    },
+    {
+      code: "interface U {1:T; 2:T; '11':T; A:T;}",
+      output: "interface U {A:T; '11':T; 2:T; 1:T;}",
+      errors: [['1'], ['2', '1'], ['11', '2'], ['A', '11']],
+    },
+    {
+      code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+      output: "interface U {è:T; À:T; 'Z':T; '#':T;}",
+      errors: [['#'], ['è', 'À']],
+    },
+  ],
   // /**
   //  * descending, natural, insensitive, required
   //  */
-  // descendingInsensitiveNaturalRequired: [
-  //   {
-  //     code: 'interface U {_:T; a?:T; b:T;}',
-  //     output: 'interface U {b:T; a?:T; _:T;}',
-  //     errors: [['b', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b:T; a?:T; _:T;}',
-  //     output: 'interface U {b:T; _:T; a?:T;}',
-  //     errors: [['_', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b:T; b_:T; a?:T;}',
-  //     output: 'interface U {b_:T; b:T; a?:T;}',
-  //     errors: [['b_', 'b']],
-  //   },
-  //   {
-  //     code: 'interface U {c:T; b_?:T; C:T;}',
-  //     output: 'interface U {c:T; C:T; b_?:T;}',
-  //     errors: [['C', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {b_?:T; C:T; c:T;}',
-  //     output: 'interface U {C:T; b_?:T; c:T;}',
-  //     errors: [['C', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {_:T; a?:T; $:T; A?:T;}',
-  //     output: 'interface U {_:T; $:T; a?:T; A?:T;}',
-  //     errors: [['$', 'a']],
-  //   },
-  //   {
-  //     code: "interface U {2?:T; A:T; 1:T; '11':T;}",
-  //     output: "interface U {A:T; 2?:T; 1:T; '11':T;}",
-  //     errors: [
-  //       ['A', '2'],
-  //       ['11', '1'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {è:T; 'Z':T; '#'?:T; À?:T;}",
-  //     output: "interface U {è:T; 'Z':T; À?:T; '#'?:T;}",
-  //     errors: [['À', '#']],
-  //   },
-  //   {
-  //     code: "interface U {À?:T; 'Z':T; '#'?:T; è:T;}",
-  //     output: "interface U {è:T; 'Z':T; '#'?:T; À?:T;}",
-  //     errors: [
-  //       ['Z', 'À'],
-  //       ['è', '#'],
-  //     ],
-  //   },
-  // ],
+  descendingInsensitiveNaturalRequired: [
+    {
+      code: 'interface U {_:T; a?:T; b:T;}',
+      output: 'interface U {b:T; _:T; a?:T;}',
+      errors: [['_', 'a'], ['a'], ['b', '_']],
+    },
+    {
+      code: 'interface U {b:T; a?:T; _:T;}',
+      output: 'interface U {b:T; _:T; a?:T;}',
+      errors: [['a'], ['_', 'a']],
+    },
+    {
+      code: 'interface U {b:T; b_:T; a?:T;}',
+      output: 'interface U {b_:T; b:T; a?:T;}',
+      errors: [
+        ['b', 'a'],
+        ['b_', 'b'],
+      ],
+    },
+    {
+      code: 'interface U {c:T; b_?:T; C:T;}',
+      output: 'interface U {c:T; C:T; b_?:T;}',
+      errors: [['b_'], ['C', 'b_']],
+    },
+    {
+      code: 'interface U {b_?:T; C:T; c:T;}',
+      output: 'interface U {C:T; c:T; b_?:T;}',
+      errors: [['b_'], ['C', 'c'], ['c', 'b_']],
+    },
+    {
+      code: 'interface U {_:T; a?:T; $:T; A?:T;}',
+      output: 'interface U {_:T; $:T; a?:T; A?:T;}',
+      errors: [
+        ['a', 'A'],
+        ['$', 'a'],
+      ],
+    },
+    {
+      code: "interface U {2?:T; A:T; 1:T; '11':T;}",
+      output: "interface U {A:T; '11':T; 1:T; 2?:T;}",
+      errors: [['2'], ['A', '11'], ['11', '1']],
+    },
+    {
+      code: "interface U {è:T; 'Z':T; '#'?:T; À?:T;}",
+      output: "interface U {è:T; 'Z':T; À?:T; '#'?:T;}",
+      errors: [['#'], ['À', '#']],
+    },
+    {
+      code: "interface U {À?:T; 'Z':T; '#'?:T; è:T;}",
+      output: "interface U {è:T; 'Z':T; À?:T; '#'?:T;}",
+      errors: [['À', '#'], ['#'], ['è', 'Z']],
+    },
+  ],
   // /**
   //  * descending, natural, insensitive, not-required
   //  */
-  // descendingInsensitiveNaturalNotRequired: [
-  //   {
-  //     code: 'interface U {_:T; a?:T; b:T;}',
-  //     output: 'interface U {b:T; a?:T; _:T;}',
-  //     errors: [
-  //       ['a', '_'],
-  //       ['b', 'a'],
-  //     ],
-  //   },
-  //   {
-  //     code: 'interface U {a?:T; b:T; _:T;}',
-  //     output: 'interface U {b:T; a?:T; _:T;}',
-  //     errors: [['b', 'a']],
-  //   },
-  //   {
-  //     code: 'interface U {b:T; b_:T; a?:T;}',
-  //     output: 'interface U {b_:T; b:T; a?:T;}',
-  //     errors: [['b_', 'b']],
-  //   },
-  //   {
-  //     code: 'interface U {c:T; b_?:T; C:T;}',
-  //     output: 'interface U {c:T; C:T; b_?:T;}',
-  //     errors: [['C', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {b_?:T; C:T; c:T;}',
-  //     output: 'interface U {C:T; b_?:T; c:T;}',
-  //     errors: [['C', 'b_']],
-  //   },
-  //   {
-  //     code: 'interface U {_:T; a?:T; $:T; A?:T;}',
-  //     output: 'interface U {a?:T; _:T; $:T; A?:T;}',
-  //     errors: [
-  //       ['a', '_'],
-  //       ['A', '$'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {2?:T; A:T; 1:T; '11':T;}",
-  //     output: "interface U {A:T; 2?:T; 1:T; '11':T;}",
-  //     errors: [
-  //       ['A', '2'],
-  //       ['11', '1'],
-  //     ],
-  //   },
-  //   {
-  //     code: "interface U {è:T; 'Z':T; '#'?:T; À?:T;}",
-  //     output: "interface U {è:T; À?:T; '#'?:T; 'Z':T;}",
-  //     errors: [['À', '#']],
-  //   },
-  //   {
-  //     code: "interface U {À?:T; 'Z':T; '#'?:T; è:T;}",
-  //     output: "interface U {è:T; 'Z':T; '#'?:T; À?:T;}",
-  //     errors: [['è', '#']],
-  //   },
-  // ],
+  descendingInsensitiveNaturalNotRequired: [
+    {
+      code: 'interface U {_:T; a?:T; b:T;}',
+      output: 'interface U {b:T; a?:T; _:T;}',
+      errors: [['_'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {a?:T; b:T; _:T;}',
+      output: 'interface U {b:T; a?:T; _:T;}',
+      errors: [
+        ['a', '_'],
+        ['b', 'a'],
+      ],
+    },
+    {
+      code: 'interface U {b:T; b_:T; a?:T;}',
+      output: 'interface U {b_:T; b:T; a?:T;}',
+      errors: [
+        ['b', 'a'],
+        ['b_', 'b'],
+      ],
+    },
+    {
+      code: 'interface U {c:T; b_?:T; C:T;}',
+      output: 'interface U {c:T; C:T; b_?:T;}',
+      errors: [['b_'], ['C', 'b_']],
+    },
+    {
+      code: 'interface U {b_?:T; C:T; c:T;}',
+      output: 'interface U {C:T; c:T; b_?:T;}',
+      errors: [['b_'], ['C', 'c'], ['c', 'b_']],
+    },
+    {
+      code: 'interface U {_:T; a?:T; $:T; A?:T;}',
+      output: 'interface U {a?:T; A?:T; _:T; $:T;}',
+      errors: [['_', '$'], ['a', 'A'], ['$'], ['A', '_']],
+    },
+    {
+      code: "interface U {2?:T; A:T; 1:T; '11':T;}",
+      output: "interface U {A:T; '11':T; 2?:T; 1:T;}",
+      errors: [['2', '1'], ['A', '11'], ['1'], ['11', '2']],
+    },
+    {
+      code: "interface U {è:T; 'Z':T; '#'?:T; À?:T;}",
+      output: "interface U {è:T; À?:T; 'Z':T; '#'?:T;}",
+      errors: [['Z', '#'], ['#'], ['À', 'Z']],
+    },
+    {
+      code: "interface U {À?:T; 'Z':T; '#'?:T; è:T;}",
+      output: "interface U {è:T; À?:T; 'Z':T; '#'?:T;}",
+      errors: [['À', 'Z'], ['Z', '#'], ['#'], ['è', 'À']],
+    },
+  ],
   // /**
   //  * index signatures
   //  */
