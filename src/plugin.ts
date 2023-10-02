@@ -46,11 +46,11 @@ export function createReporter(
       return
     }
 
+    const sourceCode = createReporterArgs.context.getSourceCode()
     const baseMemoKey = JSON.stringify({
-      unsortedCount: body
-        .map(node => createReporterArgs.context.getSourceCode().getText(node))
-        .join(''),
+      unsorted: body.map(node => sourceCode.getText(node)).join(''),
       context: createReporterArgs.context,
+      sourceCode: sourceCode.text,
     })
 
     const sortedBody: TSType[] = memoize(
@@ -79,8 +79,9 @@ export function createReporter(
     )
 
     if (unsortedCount > 0) {
+      const fixerFunctionMemoKey = `fixerFunction_${baseMemoKey}`
       const fixerFunction = memoize(
-        `fixerFunction_${baseMemoKey}`,
+        fixerFunctionMemoKey,
         getFixerFunction(createReporterArgs, body, sortedBody),
       )
       reportParentNode(createReporterArgs, bodyParent, unsortedCount, fixerFunction)

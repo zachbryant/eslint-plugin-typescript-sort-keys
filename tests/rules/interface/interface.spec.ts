@@ -34,9 +34,9 @@ const valid: PreValidTestCaseObject = {
     'type U = {a:T; b:{x:T; y:T;}; c:T;}',
     'type U = {a:T; b:{x:T; y:T; z:{i:T; j:T;};}; c:T;}',
   ],
-  // /**
-  //  * ascending, insensitive
-  //  */
+  /**
+   * ascending, insensitive
+   */
   ascendingInsensitive: [
     'interface U {_:T; a:T; b:T;}',
     'interface U {a:T; b:T; c:T;}',
@@ -47,9 +47,9 @@ const valid: PreValidTestCaseObject = {
     "interface U {1:T; '11':T; 2:T; A:T;}",
   ],
   ascendingNatural: ["interface U {'#':T; 'Z':T; À:T; è:T;}"],
-  // /**
-  //  * ascending, natural, insensitive
-  //  */
+  /**
+   * ascending, natural, insensitive
+   */
   ascendingInsensitiveNatural: [
     'interface U {_:T; a:T; b:T;}',
     'interface U {a:T; b:T; c:T;}',
@@ -60,9 +60,9 @@ const valid: PreValidTestCaseObject = {
     "interface U {1:T; 2:T; '11':T; A:T;}",
     "interface U {'#':T; 'Z':T; À:T; è:T;}",
   ],
-  // /**
-  //  * ascending, natural, insensitive, required
-  //  */
+  /**
+   * ascending, natural, insensitive, required first
+   */
   ascendingInsensitiveNaturalRequired: [
     'interface U {_:T; b:T; a?:T;}',
     'interface U {a:T; c:T; b?:T;}',
@@ -73,9 +73,9 @@ const valid: PreValidTestCaseObject = {
     "interface U {1:T; '11':T; A:T; 2?:T;}",
     "interface U {'Z':T; À:T; è:T; '#'?:T;}",
   ],
-  // /**
-  //  * ascending, required
-  //  */
+  /**
+   * ascending, required first
+   */
   ascendingRequired: [
     'interface U {_:T; b:T; a?:T;}',
     'interface U {a:T; c:T; b?:T;}',
@@ -86,9 +86,9 @@ const valid: PreValidTestCaseObject = {
     "interface U {10:T; '11':T; 1?:T; 12?:T; 2?:T;}",
     "interface U {'Z':T; À:T; è:T; '#'?:T;}",
   ],
-  // /**
-  //  * ascending, natural, insensitive, not-required
-  //  */
+  /**
+   * ascending, natural, insensitive, not-required first
+   */
   ascendingInsensitiveNaturalNotRequired: [
     'interface U {_:T; a?:T; b:T;}',
     'interface U {a:T; b?:T; c:T;}',
@@ -99,21 +99,21 @@ const valid: PreValidTestCaseObject = {
     "interface U {1:T;  2?:T; '11':T; A:T;}",
     "interface U {'#'?:T; 'Z':T; À:T; è:T;}",
   ],
-  // /**
-  //  * descending
-  //  */
-  // descending: [
-  //   'interface U {b:T; a:T; _:T;}',
-  //   'interface U {c:T; b:T; a:T;}',
-  //   'interface U {b_:T; b:T; a:T;}',
-  //   'interface U {c:T; b_:T; C:T;}',
-  //   'interface U {a:T; _:T; A:T; $:T;}',
-  //   "interface U {A:T; 2:T; '11':T; 1:T;}",
-  //   "interface U {è:T; À:T; 'Z':T; '#':T;}",
-  // ],
-  // /**
-  //  * descending, insensitive, non-natural
-  //  */
+  /**
+   * descending
+   */
+  descending: [
+    'interface U {b:T; a:T; _:T;}',
+    'interface U {c:T; b:T; a:T;}',
+    'interface U {b_:T; b:T; a:T;}',
+    'interface U {c:T; b_:T; C:T;}',
+    'interface U {a:T; _:T; A:T; $:T;}',
+    "interface U {A:T; 2:T; '11':T; 1:T;}",
+    "interface U {è:T; À:T; 'Z':T; '#':T;}",
+  ],
+  /**
+   * descending, insensitive, non-natural
+   */
   descendingInsensitiveNonNatural: [
     'interface U {b:T; a:T; _:T;}',
     'interface U {c:T; b:T; a:T;}',
@@ -124,9 +124,9 @@ const valid: PreValidTestCaseObject = {
     "interface U {A:T; 2:T; '11':T; 1:T;}",
     "interface U {è:T; À:T; 'Z':T; '#':T;}",
   ],
-  // /**
-  //  * descending, case-sensitive, natural
-  //  */
+  /**
+   * descending, case-sensitive, natural
+   */
   descendingSensitiveNatural: [
     'interface U {b:T; a:T; _:T;}',
     'interface U {c:T; b:T; a:T;}',
@@ -136,9 +136,9 @@ const valid: PreValidTestCaseObject = {
     "interface U {A:T; '11':T; 2:T; 1:T;}",
     "interface U {è:T; À:T; 'Z':T; '#':T;}",
   ],
-  // /**
-  //  * descending, natural, insensitive
-  //  */
+  /**
+   * descending, natural, insensitive
+   */
   descendingInsensitiveNatural: [
     'interface U {b:T; a:T; _:T;}',
     'interface U {c:T; b:T; a:T;}',
@@ -149,9 +149,9 @@ const valid: PreValidTestCaseObject = {
     "interface U {A:T; '11':T; 2:T; 1:T;}",
     "interface U {è:T; À:T; 'Z':T; '#':T;}",
   ],
-  // /**
-  //  * descending, natural, insensitive, required
-  //  */
+  /**
+   * descending, natural, insensitive, required first
+   */
   descendingInsensitiveNaturalRequired: [
     'interface U {b:T; _:T; a?:T;}',
     'interface U {c:T; a:T; b?:T;}',
@@ -162,9 +162,9 @@ const valid: PreValidTestCaseObject = {
     "interface U { A:T; '11':T; 1:T; 2?:T;}",
     "interface U {è:T; 'Z':T; À?:T; '#'?:T;}",
   ],
-  // /**
-  //  * descending, required
-  //  */
+  /**
+   * descending, required first
+   */
   descendingRequired: [
     'interface U {b:T; _:T; a?:T;}',
     'interface U {c:T; a:T; b?:T;}',
@@ -175,9 +175,9 @@ const valid: PreValidTestCaseObject = {
     "interface U {'11':T; 10:T; 2?:T; 12?:T; 1?:T;}",
     "interface U {è:T; À:T; 'Z':T; '#'?:T;}",
   ],
-  // /**
-  //  * descending, natural, insensitive, not-required
-  //  */
+  /**
+   * descending, natural, insensitive, not-required first
+   */
   descendingInsensitiveNaturalNotRequired: [
     'interface U {b:T; a?:T; _:T;}',
     'interface U {c:T; b?:T; a:T;}',
@@ -188,292 +188,319 @@ const valid: PreValidTestCaseObject = {
     "interface U {A:T; '11':T; 2?:T; 1:T;}",
     "interface U {è:T; À:T; 'Z':T; '#'?:T;}",
   ],
-  // /**
-  //  * index signatures
-  //  */
-  // ascendingOnly: [
-  //   `interface U<T> { [nkey: number]: T; [skey: string]: T; $: T; A: T; _: T; a: T; }`,
-  //   `interface U<T> { a: T; _: T; A: T; $: T; [skey: string]: T; [nkey: number]: T; }`,
-  // ],
+  /**
+   * index signatures
+   */
+  ascendingOnly: [
+    `interface U<T> { [nkey: number]: T; [skey: string]: T; $: T; A: T; _: T; a: T; }`,
+  ],
+  descendingOnly: [
+    `interface U<T> { a: T; _: T; A: T; $: T; [skey: string]: T; [nkey: number]: T; }`,
+  ],
 }
 
 const invalid: PreInvalidTestCaseObject = {
   /**
+   * index signatures
+   */
+  ascendingOnly: [
+    {
+      code: 'interface U<T> { A: T; [skey: string]: T; _: T; }',
+      output: 'interface U<T> { [skey: string]: T; A: T; _: T; }',
+      errors: [
+        ['A', '_'],
+        ['[index: skey]', 'A'],
+      ],
+    },
+  ],
+  /**
    * ascending sensitive (default)
    */
   ascendingSensitive: [
-    //   {
-    //     code: 'interface U {a:T; _:T; b:T;}',
-    //     output: 'interface U {_:T; a:T; b:T;}',
-    //     errors: [['_', 'a']],
-    //   },
-    //   {
-    //     code: 'interface U {a:T; c:T; b:T;}',
-    //     output: 'interface U {a:T; b:T; c:T;}',
-    //     errors: [['b', 'c']],
-    //   },
-    //   {
-    //     code: 'interface U {b_:T; a:T; b:T;}',
-    //     output: 'interface U {a:T; b_:T; b:T;}',
-    //     errors: [['a', 'b_']],
-    //   },
-    //   {
-    //     code: 'interface U {b_:T; c:T; C:T;}',
-    //     output: 'interface U {C:T; c:T; b_:T;}',
-    //     errors: [['C', 'c']],
-    //   },
-    //   {
-    //     code: 'interface U {$:T; _:T; A:T; a:T;}',
-    //     output: 'interface U {$:T; A:T; _:T; a:T;}',
-    //     errors: [['A', '_']],
-    //   },
-    //   {
-    //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-    //     output: "interface U {1:T; '11':T; A:T; 2:T;}",
-    //     errors: [['11', 'A']],
-    //   },
-    //   {
-    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-    //     errors: [['Z', 'À']],
-    //   },
-    //   /**
-    //    * methods
-    //    */
-    //   {
-    //     code: "interface U {1:T; 2:T; A():T; '11':T;}",
-    //     output: "interface U {1:T; '11':T; A():T; 2:T;}",
-    //     errors: [['11', 'A']],
-    //   },
-    //   {
-    //     code: "interface U {'#'():T; À():T; 'Z':T; è:T;}",
-    //     output: "interface U {'#'():T; 'Z':T; À():T; è:T;}",
-    //     errors: [['Z', 'À']],
-    //   },
-    //   /**
-    //    * not ignore simple computed properties.
-    //    */
-    //   {
-    //     code: 'interface U {a:T; b:T; ["a"]:T; c:T;}',
-    //     output: 'interface U {a:T; ["a"]:T; b:T; c:T;}',
-    //     errors: [['a', 'b']],
-    //   },
-    //   /**
-    //    * nested
-    //    */
-    //   {
-    //     code: 'interface U {a:T; c:{y:T; x:T;}, b:T;}',
-    //     output: 'interface U {a:T; b:T; c:{y:T; x:T;}}',
-    //     errors: [
-    //       ['x', 'y'],
-    //       ['b', 'c'],
-    //     ],
-    //   },
-    //   {
-    //     code: 'type U = {a:T; c:{y:T; x:T;}, b:T;}',
-    //     output: 'type U = {a:T; b:T; c:{y:T; x:T;}}',
-    //     errors: [
-    //       ['x', 'y'],
-    //       ['b', 'c'],
-    //     ],
-    //   },
-    //   /**
-    //    * asc
-    //    */
-    //   {
-    //     code: 'interface U {a:T; _:T; b:T;}',
-    //     output: 'interface U {_:T; a:T; b:T;}',
-    //     errors: [['_', 'a']],
-    //   },
-    //   {
-    //     code: 'interface U {a:T; c:T; b:T;}',
-    //     output: 'interface U {a:T; b:T; c:T;}',
-    //     errors: [['b', 'c']],
-    //   },
-    //   {
-    //     code: 'interface U {b_:T; a:T; b:T;}',
-    //     output: 'interface U {a:T; b_:T; b:T;}',
-    //     errors: [['a', 'b_']],
-    //   },
-    //   {
-    //     code: 'interface U {b_:T; c:T; C:T;}',
-    //     output: 'interface U {C:T; c:T; b_:T;}',
-    //     errors: [['C', 'c']],
-    //   },
-    //   {
-    //     code: 'interface U {$:T; _:T; A:T; a:T;}',
-    //     output: 'interface U {$:T; A:T; _:T; a:T;}',
-    //     errors: [['A', '_']],
-    //   },
-    //   {
-    //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-    //     output: "interface U {1:T; '11':T; A:T; 2:T;}",
-    //     errors: [['11', 'A']],
-    //   },
-    //   {
-    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-    //     errors: [['Z', 'À']],
-    //   },
+    {
+      code: 'interface U {b_:T; a:T; b:T;}',
+      output: 'interface U {a:T; b:T; b_:T;}',
+      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
+    },
+    {
+      code: 'interface U {b_:T; c:T; C:T;}',
+      output: 'interface U {C:T; b_:T; c:T;}',
+      errors: [['b_', 'c'], ['c'], ['C', 'b_']],
+    },
+    {
+      code: "interface U {1:T; 2:T; A:T; '11':T;}",
+      output: "interface U {1:T; '11':T; 2:T; A:T;}",
+      errors: [['2', 'A'], ['A'], ['11', '2']],
+    },
+    {
+      code: 'interface U {a:T; _:T; b:T;}',
+      output: 'interface U {_:T; a:T; b:T;}',
+      errors: [
+        ['a', 'b'],
+        ['_', 'a'],
+      ],
+    },
+    {
+      code: 'interface U {a:T; c:T; b:T;}',
+      output: 'interface U {a:T; b:T; c:T;}',
+      errors: [['c'], ['b', 'c']],
+    },
+    {
+      code: 'interface U {b_:T; a:T; b:T;}',
+      output: 'interface U {a:T; b:T; b_:T;}',
+      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
+    },
+    {
+      code: 'interface U {$:T; _:T; A:T; a:T;}',
+      output: 'interface U {$:T; A:T; _:T; a:T;}',
+      errors: [
+        ['_', 'a'],
+        ['A', '_'],
+      ],
+    },
+    {
+      code: "interface U {1:T; 2:T; A:T; '11':T;}",
+      output: "interface U {1:T; '11':T; 2:T; A:T;}",
+      errors: [['2', 'A'], ['A'], ['11', '2']],
+    },
+    {
+      code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+      output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
+      errors: [
+        ['À', 'è'],
+        ['Z', 'À'],
+      ],
+    },
+    /**
+     * methods
+     */
+    {
+      code: "interface U {1:T; 2:T; A():T; '11':T;}",
+      output: "interface U {1:T; '11':T; 2:T; A():T;}",
+      errors: [['2', 'A'], ['A'], ['11', '2']],
+    },
+    {
+      code: "interface U {'#'():T; À():T; 'Z':T; è:T;}",
+      output: "interface U {'#'():T; 'Z':T; À():T; è:T;}",
+      errors: [
+        ['À', 'è'],
+        ['Z', 'À'],
+      ],
+    },
+    /**
+     * not ignore simple computed properties.
+     */
+    {
+      code: 'interface U {a:T; b:T; ["a"]:T; c:T;}',
+      output: 'interface U {a:T; ["a"]:T; b:T; c:T;}',
+      errors: [
+        ['b', 'c'],
+        ['a', 'b'],
+      ],
+    },
+    /**
+     * nested
+     */
+    // TODO sorted nested interface getting overwritten by value of node from parent sort
+    {
+      code: 'interface U {a:T; c:{y:T; x:T;}, b:T;}',
+      output: 'interface U {a:T; b:T; c:{y:T; x:T;};}',
+      errors: [2, ['c'], 2, ['y'], ['x', 'y'], ['b', 'c']],
+      omitInferredErrorCount: true,
+    },
+    {
+      code: 'type U = {a:T; c:{y:T; x:T;}, b:T;}',
+      output: 'type U = {a:T; b:T; c:{y:T; x:T;};}',
+      errors: [2, ['c'], 2, ['y'], ['x', 'y'], ['b', 'c']],
+      omitInferredErrorCount: true,
+    },
   ],
-  // /**
-  //  * ascending, insensitive
-  //  */
+  /**
+   * ascending, insensitive
+   */
   ascendingInsensitive: [
-    //   {
-    //     code: 'interface U {a:T; _:T; b:T;}',
-    //     output: 'interface U {_:T; a:T; b:T;}',
-    //     errors: [['_', 'a']],
-    //   },
-    //   {
-    //     code: 'interface U {a:T; c:T; b:T;}',
-    //     output: 'interface U {a:T; b:T; c:T;}',
-    //     errors: [['b', 'c']],
-    //   },
-    //   {
-    //     code: 'interface U {b_:T; a:T; b:T;}',
-    //     output: 'interface U {a:T; b_:T; b:T;}',
-    //     errors: [['a', 'b_']],
-    //   },
-    //   {
-    //     code: 'interface U {$:T; A:T; _:T; a:T;}',
-    //     output: 'interface U {$:T; _:T; A:T; a:T;}',
-    //     errors: [['_', 'A']],
-    //   },
-    //   {
-    //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-    //     output: "interface U {1:T; '11':T; A:T; 2:T;}",
-    //     errors: [['11', 'A']],
-    //   },
-    //   {
-    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-    //     errors: [['Z', 'À']],
-    //   },
+    {
+      code: 'interface U {a:T; _:T; b:T;}',
+      output: 'interface U {_:T; a:T; b:T;}',
+      errors: [
+        ['a', 'b'],
+        ['_', 'a'],
+      ],
+    },
+    {
+      code: 'interface U {a:T; c:T; b:T;}',
+      output: 'interface U {a:T; b:T; c:T;}',
+      errors: [['c'], ['b', 'c']],
+    },
+    {
+      code: 'interface U {b_:T; a:T; b:T;}',
+      output: 'interface U {a:T; b:T; b_:T;}',
+      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
+    },
+    {
+      code: 'interface U {$:T; A:T; _:T; a:T;}',
+      output: 'interface U {$:T; _:T; A:T; a:T;}',
+      errors: [
+        ['A', 'a'],
+        ['_', 'A'],
+      ],
+    },
+    {
+      code: "interface U {1:T; 2:T; A:T; '11':T;}",
+      output: "interface U {1:T; '11':T; 2:T; A:T;}",
+      errors: [['2', 'A'], ['A'], ['11', '2']],
+    },
+    {
+      code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+      output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
+      errors: [
+        ['À', 'è'],
+        ['Z', 'À'],
+      ],
+    },
   ],
-  // /**
-  //  * ascending, natural
-  //  */
+  /**
+   * ascending, natural
+   */
   ascendingNatural: [
-    //   {
-    //     code: 'interface U {a:T; _:T; b:T;}',
-    //     output: 'interface U {_:T; a:T; b:T;}',
-    //     errors: [['_', 'a']],
-    //   },
-    //   {
-    //     code: 'interface U {a:T; c:T; b:T;}',
-    //     output: 'interface U {a:T; b:T; c:T;}',
-    //     errors: [['b', 'c']],
-    //   },
-    //   {
-    //     code: 'interface U {b_:T; a:T; b:T;}',
-    //     output: 'interface U {a:T; b_:T; b:T;}',
-    //     errors: [['a', 'b_']],
-    //   },
-    //   {
-    //     code: 'interface U {b_:T; c:T; C:T;}',
-    //     output: 'interface U {C:T; c:T; b_:T;}',
-    //     errors: [['C', 'c']],
-    //   },
-    //   {
-    //     code: 'interface U {$:T; A:T; _:T; a:T;}',
-    //     output: 'interface U {$:T; _:T; A:T; a:T;}',
-    //     errors: [['_', 'A']],
-    //   },
-    //   {
-    //     code: "interface U {1:T; 2:T; A:T; '11':T;}",
-    //     output: "interface U {1:T; 2:T; '11':T; A:T;}",
-    //     errors: [['11', 'A']],
-    //   },
-    //   {
-    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-    //     errors: [['Z', 'À']],
-    //   },
+    {
+      code: 'interface U {a:T; _:T; b:T;}',
+      output: 'interface U {_:T; a:T; b:T;}',
+      errors: [
+        ['a', 'b'],
+        ['_', 'a'],
+      ],
+    },
+    {
+      code: 'interface U {a:T; c:T; b:T;}',
+      output: 'interface U {a:T; b:T; c:T;}',
+      errors: [['c'], ['b', 'c']],
+    },
+    {
+      code: 'interface U {b_:T; a:T; b:T;}',
+      output: 'interface U {a:T; b:T; b_:T;}',
+      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
+    },
+    {
+      code: 'interface U {b_:T; c:T; C:T;}',
+      output: 'interface U {C:T; b_:T; c:T;}',
+      errors: [['b_', 'c'], ['c'], ['C', 'b_']],
+    },
+    {
+      code: 'interface U {$:T; A:T; _:T; a:T;}',
+      output: 'interface U {$:T; _:T; A:T; a:T;}',
+      errors: [
+        ['A', 'a'],
+        ['_', 'A'],
+      ],
+    },
+    {
+      code: "interface U {1:T; 2:T; A:T; '11':T;}",
+      output: "interface U {1:T; 2:T; '11':T; A:T;}",
+      errors: [['A'], ['11', 'A']],
+    },
+    {
+      code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+      output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
+      errors: [
+        ['À', 'è'],
+        ['Z', 'À'],
+      ],
+    },
   ],
-  // /**
-  //  * ascending, natural, insensitive
-  //  */
+  /**
+   * ascending, natural, insensitive
+   */
   ascendingInsensitiveNatural: [
-    //   {
-    //     code: 'interface U {a:T; _:T; b:T;}',
-    //     output: 'interface U {_:T; a:T; b:T;}',
-    //     errors: [['_', 'a']],
-    //   },
-    //   {
-    //     code: 'interface U {a:T; c:T; b:T;}',
-    //     output: 'interface U {a:T; b:T; c:T;}',
-    //     errors: [['b', 'c']],
-    //   },
-    //   {
-    //     code: 'interface U {b_:T; a:T; b:T;}',
-    //     output: 'interface U {a:T; b_:T; b:T;}',
-    //     errors: [['a', 'b_']],
-    //   },
-    //   {
-    //     code: 'interface U {$:T; A:T; _:T; a:T;}',
-    //     output: 'interface U {$:T; _:T; A:T; a:T;}',
-    //     errors: [['_', 'A']],
-    //   },
-    //   {
-    //     code: "interface U {1:T; '11':T; 2:T; A:T;}",
-    //     output: "interface U {1:T; 2:T; '11':T; A:T;}",
-    //     errors: [['2', '11']],
-    //   },
-    //   {
-    //     code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
-    //     output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
-    //     errors: [['Z', 'À']],
-    //   },
+    {
+      code: 'interface U {a:T; _:T; b:T;}',
+      output: 'interface U {_:T; a:T; b:T;}',
+      errors: [
+        ['a', 'b'],
+        ['_', 'a'],
+      ],
+    },
+    {
+      code: 'interface U {a:T; c:T; b:T;}',
+      output: 'interface U {a:T; b:T; c:T;}',
+      errors: [['c'], ['b', 'c']],
+    },
+    {
+      code: 'interface U {b_:T; a:T; b:T;}',
+      output: 'interface U {a:T; b:T; b_:T;}',
+      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
+    },
+    {
+      code: 'interface U {$:T; A:T; _:T; a:T;}',
+      output: 'interface U {$:T; _:T; A:T; a:T;}',
+      errors: [
+        ['A', 'a'],
+        ['_', 'A'],
+      ],
+    },
+    {
+      code: "interface U {1:T; '11':T; 2:T; A:T;}",
+      output: "interface U {1:T; 2:T; '11':T; A:T;}",
+      errors: [
+        ['11', 'A'],
+        ['2', '11'],
+      ],
+    },
+    {
+      code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
+      output: "interface U {'#':T; 'Z':T; À:T; è:T;}",
+      errors: [
+        ['À', 'è'],
+        ['Z', 'À'],
+      ],
+    },
   ],
-  // /**
-  //  * ascending, natural, insensitive, required
-  //  */
+  /**
+   * ascending, natural, insensitive, required first
+   */
   ascendingInsensitiveNaturalRequired: [
-    //   {
-    //     code: 'interface U {_:T; a?:T; b:T;}',
-    //     output: 'interface U {_:T; b:T; a?:T;}',
-    //     errors: [['b', 'a']],
-    //   },
-    //   {
-    //     code: 'interface U {a:T; b?:T; c:T;}',
-    //     output: 'interface U {a:T; c:T; b?:T;}',
-    //     errors: [['c', 'b']],
-    //   },
-    //   {
-    //     code: 'interface U {b:T; a?:T; b_:T;}',
-    //     output: 'interface U {b:T; b_:T; a?:T;}',
-    //     errors: [['b_', 'a']],
-    //   },
-    //   {
-    //     code: 'interface U {C:T; b_?:T; c:T;}',
-    //     output: 'interface U {C:T; c:T; b_?:T;}',
-    //     errors: [['c', 'b_']],
-    //   },
-    //   {
-    //     code: 'interface U {C:T; b_?:T; c:T;}',
-    //     output: 'interface U {C:T; c:T; b_?:T;}',
-    //     errors: [['c', 'b_']],
-    //   },
-    //   {
-    //     code: 'interface U {$:T; A?:T; _:T; a?:T;}',
-    //     output: 'interface U {$:T; _:T; A?:T; a?:T;}',
-    //     errors: [['_', 'A']],
-    //   },
-    //   {
-    //     code: "interface U {1:T; '11':T; 2?:T; A:T;}",
-    //     output: "interface U {1:T; '11':T; A:T; 2?:T;}",
-    //     errors: [['A', '2']],
-    //   },
-    //   {
-    //     code: "interface U {'Z':T; À:T; '#'?:T; è:T;}",
-    //     output: "interface U {'Z':T; À:T; è:T; '#'?:T;}",
-    //     errors: [['è', '#']],
-    //   },
+    {
+      code: 'interface U {_:T; a?:T; b:T;}',
+      output: 'interface U {_:T; b:T; a?:T;}',
+      errors: [['a'], ['b', 'a']],
+    },
+    {
+      code: 'interface U {a:T; b?:T; c:T;}',
+      output: 'interface U {a:T; c:T; b?:T;}',
+      errors: [['b'], ['c', 'b']],
+    },
+    {
+      code: 'interface U {b:T; a?:T; b_:T;}',
+      output: 'interface U {b:T; b_:T; a?:T;}',
+      errors: [['a'], ['b_', 'a']],
+    },
+    {
+      code: 'interface U {C:T; b_?:T; c:T;}',
+      output: 'interface U {C:T; c:T; b_?:T;}',
+      errors: [['b_'], ['c', 'b_']],
+    },
+    {
+      code: 'interface U {$:T; A?:T; _:T; a?:T;}',
+      output: 'interface U {$:T; _:T; A?:T; a?:T;}',
+      errors: [
+        ['A', 'a'],
+        ['_', 'A'],
+      ],
+    },
+    {
+      code: "interface U {1:T; '11':T; 2?:T; A:T;}",
+      output: "interface U {1:T; '11':T; A:T; 2?:T;}",
+      errors: [['2'], ['A', '2']],
+    },
+    {
+      code: "interface U {'Z':T; À:T; '#'?:T; è:T;}",
+      output: "interface U {'Z':T; À:T; è:T; '#'?:T;}",
+      errors: [['#'], ['è', '#']],
+    },
   ],
-  // /**
-  //  * ascending, natural, insensitive, not-required
-  //  */
+  /**
+   * ascending, natural, insensitive, not-required first
+   */
   ascendingInsensitiveNaturalNotRequired: [
     {
       code: 'interface U {_:T; b:T; a?:T;}',
@@ -530,9 +557,9 @@ const invalid: PreInvalidTestCaseObject = {
       ],
     },
   ],
-  // /**
-  //  * descending
-  //  */
+  /**
+   * descending
+   */
   descendingOnly: [
     {
       code: 'interface U {a:T; _:T; b:T;}',
@@ -578,9 +605,9 @@ const invalid: PreInvalidTestCaseObject = {
       errors: [['[index: skey]'], ['A', '[index: skey]']],
     },
   ],
-  // /**
-  //  * descending, insensitive
-  //  */
+  /**
+   * descending, insensitive
+   */
   descendingInsensitive: [
     {
       code: 'interface U {a:T; _:T; b:T;}',
@@ -618,9 +645,9 @@ const invalid: PreInvalidTestCaseObject = {
       errors: [['#'], ['è', 'À']],
     },
   ],
-  // /**
-  //  * descending, natural
-  //  */
+  /**
+   * descending, natural
+   */
   descendingNatural: [
     {
       code: 'interface U {a:T; _:T; b:T;}',
@@ -661,9 +688,9 @@ const invalid: PreInvalidTestCaseObject = {
       errors: [['#'], ['è', 'À']],
     },
   ],
-  // /**
-  //  * descending, natural, insensitive
-  //  */
+  /**
+   * descending, natural, insensitive
+   */
   descendingInsensitiveNatural: [
     {
       code: 'interface U {a:T; _:T; b:T;}',
@@ -701,9 +728,9 @@ const invalid: PreInvalidTestCaseObject = {
       errors: [['#'], ['è', 'À']],
     },
   ],
-  // /**
-  //  * descending, natural, insensitive, required
-  //  */
+  /**
+   * descending, natural, insensitive, required first
+   */
   descendingInsensitiveNaturalRequired: [
     {
       code: 'interface U {_:T; a?:T; b:T;}',
@@ -757,9 +784,9 @@ const invalid: PreInvalidTestCaseObject = {
       errors: [['À', '#'], ['#'], ['è', 'Z']],
     },
   ],
-  // /**
-  //  * descending, natural, insensitive, not-required
-  //  */
+  /**
+   * descending, natural, insensitive, not-required first
+   */
   descendingInsensitiveNaturalNotRequired: [
     {
       code: 'interface U {_:T; a?:T; b:T;}',
@@ -811,19 +838,6 @@ const invalid: PreInvalidTestCaseObject = {
       code: "interface U {À?:T; 'Z':T; '#'?:T; è:T;}",
       output: "interface U {è:T; À?:T; 'Z':T; '#'?:T;}",
       errors: [['À', 'Z'], ['Z', '#'], ['#'], ['è', 'À']],
-    },
-  ],
-  // /**
-  //  * index signatures
-  //  */
-  ascendingOnly: [
-    {
-      code: 'interface U<T> { A: T; [skey: string]: T; _: T; }',
-      output: 'interface U<T> { [skey: string]: T; A: T; _: T; }',
-      errors: [
-        ['A', '_'],
-        ['[index: skey]', 'A'],
-      ],
     },
   ],
 }

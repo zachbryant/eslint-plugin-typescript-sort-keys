@@ -19,6 +19,7 @@ export const getFixerFunction = (
       unsorted: body.map(node => sourceCode.getText(node)).join(''),
       sorted: sortedBody.map(node => sourceCode.getText(node)).join(''),
       context: createReporterArgs.context,
+      sourceCode: createReporterArgs.context.getSourceCode().text,
     })
     const fixedBodyTextMemoKey = `fixedBodyText_${baseMemoKey}`
     // Replace the entire body with the sorted body
@@ -32,5 +33,6 @@ export const getFixerFunction = (
           body as unknown as Node[],
         ),
       )
+
     yield fixer.replaceTextRange(bodyRange, fixedBodyText)
   }

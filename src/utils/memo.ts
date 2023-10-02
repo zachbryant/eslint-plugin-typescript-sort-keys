@@ -11,3 +11,7 @@ export function memoize(key: string, value: any): any {
 export function getMemoized(key: string): any {
   return memo[key]
 }
+
+export function hasMemoized(key: string): boolean {
+  return !!memo[key]
+}

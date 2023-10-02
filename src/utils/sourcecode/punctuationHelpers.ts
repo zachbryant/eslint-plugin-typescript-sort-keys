@@ -1,7 +1,12 @@
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils'
 import assert from 'assert'
 import { Node, SourceCode } from 'types'
-import { getEarliestNode, getLatestNode, getNextNonCommentNode } from './nodeHelpers'
+import {
+  getEarliestNode,
+  getLatestNode,
+  getNextNonCommentNode,
+  getPreviousNonCommentNode,
+} from './nodeHelpers'
 
 export function getNodePunctuator(
   sourceCode: SourceCode,
@@ -32,7 +37,7 @@ export function getNodeFollowingPunctuator(sourceCode: SourceCode, node: Node) {
 export function getDeclarationPunctuators(sourceCode: SourceCode, body: Node[]) {
   const startNode = getEarliestNode(body)
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const declarationStartPunctuator = sourceCode.getTokenBefore(startNode)!
+  const declarationStartPunctuator = getPreviousNonCommentNode(sourceCode, startNode)!
   assert(
     !!declarationStartPunctuator,
     `Expected declaration end punctuator after ${sourceCode.getText(startNode)}`,

@@ -53,13 +53,12 @@ export const optionsSetsWithRequiredFirst = {
   ascendingRequired: [[SortingOrder.Ascending, { requiredFirst: true }]],
   descendingOnly: [[SortingOrder.Descending]],
   descending: [
-    [],
-    [SortingOrder.Ascending],
-    [SortingOrder.Ascending, { caseSensitive: true }],
-    [SortingOrder.Ascending, { natural: false }],
-    [SortingOrder.Ascending, { caseSensitive: true, natural: false }],
+    [SortingOrder.Descending],
+    [SortingOrder.Descending, { caseSensitive: true }],
+    [SortingOrder.Descending, { natural: false }],
+    [SortingOrder.Descending, { caseSensitive: true, natural: false }],
     [
-      SortingOrder.Ascending,
+      SortingOrder.Descending,
       { caseSensitive: true, natural: false, requiredFirst: false },
     ],
   ],

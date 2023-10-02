@@ -16,46 +16,53 @@ import {
 
 /* Types for processing test cases */
 export type ValidTestCase = Omit<ESLintRuleTester.ValidTestCase, 'options'> & OptionsSet
-
 export type InvalidTestCase = Omit<ESLintRuleTester.InvalidTestCase, 'options'> &
   OptionsSet
 
 /* Types for preprocessing test cases */
 export type PreInvalidTestCaseList = (Omit<InvalidTestCase, 'optionsSet' | 'errors'> & {
-  errors: string[][] | number
+  errors: Array<string[] | number> | number
+  omitInferredErrorCount?: boolean
 })[]
 export type PreInvalidTestCaseObject = Partial<
   Record<OptionsSetsKey, PreInvalidTestCaseList>
 >
-
 export type PreValidTestCaseObject = Partial<Record<OptionsSetsKey, string[]>>
 
+// Get error messages based on args provided in test cases
 function processErrorArgs(
   category: CaseCategory,
   optionsSetsKey: OptionsSetsKey,
-  errorArgs: string[][] | number,
+  errorArgs: Array<string[] | number> | number,
+  omitInferredErrorCount: boolean,
 ) {
   const errorMessages: string[] = []
   if (Array.isArray(errorArgs)) {
-    errorMessages.push(getCountErrorString(category, errorArgs.length))
-    errorArgs.forEach((args: string[]) => {
-      switch (args.length) {
-        case 1:
-          errorMessages.push(getEndErrorString(category, optionsSetsKey, args[0]))
-          break
-        case 2:
-          errorMessages.push(
-            getSwapErrorString(category, optionsSetsKey, args[0], args[1]),
-          )
-          break
+    if (!omitInferredErrorCount)
+      errorMessages.push(getCountErrorString(category, errorArgs.length))
+    for (const args of errorArgs) {
+      if (Array.isArray(args)) {
+        switch (args.length) {
+          case 1:
+            errorMessages.push(getEndErrorString(category, optionsSetsKey, args[0]))
+            break
+          case 2:
+            errorMessages.push(
+              getSwapErrorString(category, optionsSetsKey, args[0], args[1]),
+            )
+            break
+        }
+      } else {
+        errorMessages.push(getCountErrorString(category, args))
       }
-    })
+    }
     return errorMessages
   }
   // Can return count of errors for test case instead of strings
   return errorArgs
 }
 
+// First processing step to put cases in the shape of InvalidTestCase
 function preProcessInvalidTestCase(
   testCases: PreInvalidTestCaseObject,
   category: CaseCategory,
@@ -68,8 +75,13 @@ function preProcessInvalidTestCase(
     const cases = testCases[optionsSetsKey]
     if (cases && cases.length > 0) {
       processedCases.push(
-        ...cases.map(({ code, output, errors: errorArgs }) => {
-          const errors = processErrorArgs(category, optionsSetsKey, errorArgs)
+        ...cases.map(({ code, output, errors: errorArgs, omitInferredErrorCount }) => {
+          const errors = processErrorArgs(
+            category,
+            optionsSetsKey,
+            errorArgs,
+            !!omitInferredErrorCount,
+          )
           const optionsSet = (
             withRequiredFirstOption ? optionsSetsWithRequiredFirst : optionsSetsNoRequired
           )[optionsSetsKey] as AllRuleOptions[]
@@ -86,6 +98,7 @@ function preProcessInvalidTestCase(
   return processedCases
 }
 
+// First processing step to put cases in the shape of ValidTestCase
 function preProcessValidTestCase(
   testCases: PreValidTestCaseObject,
   withRequiredFirstOption: boolean,
@@ -110,7 +123,7 @@ function preProcessValidTestCase(
   }
   return processedCases
 }
-
+// Second processing step to put cases in the shape expected by eslint test runner
 function processTestCases<T>(cases: (InvalidTestCase | ValidTestCase)[]) {
   return cases.flatMap(testCase =>
     testCase.optionsSet.map(options => {
