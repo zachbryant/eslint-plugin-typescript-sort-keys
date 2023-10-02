@@ -37,17 +37,13 @@ describe('plugin', () => {
     file => file !== 'index.ts' && file.endsWith('.ts'),
   )
 
-  const configFiles: readonly string[] = readdirSync('./src/config').filter(
-    file => file !== 'index.ts' && file.endsWith('.ts'),
-  )
-
   it('should have all the rules', () => {
     expect(plugin).toHaveProperty('rules')
     expect(Object.keys(plugin.rules)).toHaveLength(ruleFiles.length)
   })
 
-  it('should have all the configs', () => {
+  it('should have the recommended config', () => {
     expect(plugin).toHaveProperty('configs')
-    expect(Object.keys(plugin.configs)).toHaveLength(configFiles.length)
+    expect(Object.keys(plugin.configs)).toHaveLength(1)
   })
 })
