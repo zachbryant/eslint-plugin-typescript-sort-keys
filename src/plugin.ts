@@ -50,11 +50,11 @@ export function createReporter(
     const sourceCode = createReporterArgs.context.getSourceCode()
     // Create a key for memoizing results based on plugin context & input
     const baseMemoKey = JSON.stringify({
-      unsorted: body.map(node => sourceCode.getText(node)).join(''),
-      options: createReporterArgs.context.options,
+      unsorted: body.map(node => sourceCode.getText(node)).join(''), // body is different when embedded while source is the same
+      options: { isAscending, isInsensitive, isNatural, isRequiredFirst },
       fileName: createReporterArgs.context.getFilename(),
       cwd: createReporterArgs.context.getCwd?.(),
-      sourceCode: sourceCode.text,
+      source: sourceCode.getText(), // Useful for same body on type and interface for example
     })
 
     const sortedBody: TSType[] = memoize(
@@ -80,7 +80,7 @@ export function createReporter(
       const fixerFunctionMemoKey = `fixerFunction_${baseMemoKey}`
       const fixerFunction = memoize(
         fixerFunctionMemoKey,
-        getFixerFunction(createReporterArgs, body, sortedBody),
+        getFixerFunction(baseMemoKey, createReporterArgs, body, sortedBody),
       )
       reportParentNode(createReporterArgs, bodyParent, unsortedCount, fixerFunction)
       reportBodyNodes(
