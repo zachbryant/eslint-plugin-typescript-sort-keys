@@ -38,6 +38,7 @@ const valid: PreValidTestCaseObject = {
    * ascending, insensitive
    */
   ascendingInsensitive: [
+    'interface U {_:T;}',
     'interface U {_:T; a:T; b:T;}',
     'interface U {a:T; b:T; c:T;}',
     'interface U {a:T; b:T; b_:T;}',
@@ -129,6 +130,7 @@ const valid: PreValidTestCaseObject = {
    */
   descendingSensitiveNatural: [
     'interface U {b:T; a:T; _:T;}',
+    'interface U {_:T;}',
     'interface U {c:T; b:T; a:T;}',
     'interface U {b_:T; b:T; a:T;}',
     'interface U {c:T; b_:T; C:T;}',
