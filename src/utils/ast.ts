@@ -91,12 +91,13 @@ export function getPropertyName(node: TSType) {
   }
 }
 
+// Returns whether a method or property signature is optional.
 export function getPropertyIsOptional(node: TSType) {
   switch (node.type) {
     case AST_NODE_TYPES.TSMethodSignature:
     case AST_NODE_TYPES.TSPropertySignature:
       return Boolean(node.optional)
+    default:
+      return false
   }
-
-  return false
 }
