@@ -48,6 +48,7 @@ export function createReporter(
     }
 
     const sourceCode = createReporterArgs.context.getSourceCode()
+    // Create a key for memoizing results based on plugin context & input
     const baseMemoKey = JSON.stringify({
       unsorted: body.map(node => sourceCode.getText(node)).join(''),
       options: createReporterArgs.context.options,
