@@ -13,12 +13,12 @@ describe('autofix', () => {
     tmp.setGracefulCleanup()
   })
 
-  it.each([
-    [recommended, 'autofix.output.ts'],
-    [requiredFirst, 'requiredFirst.output.ts'],
-  ])(
-    'should autofix and properly format comments and indent level',
-    async (config, fileName) => {
+  const cases: Array<[any, string, string]> = [
+    [recommended, 'recommended', 'autofix.output.ts'],
+    [requiredFirst, 'requiredFirst', 'requiredFirst.output.ts'],
+  ]
+  cases.forEach(([config, configName, outputFileName]) => {
+    it(`should autofix (config=${configName}, output=${outputFileName})`, async () => {
       const { name: tmpDir } = tmp.dirSync({
         prefix: 'typescript-sort-keys-',
         unsafeCleanup: true,
@@ -26,7 +26,7 @@ describe('autofix', () => {
 
       const testFilePath = path.join(tmpDir, 'autofix.ts')
       const input = fs.readFileSync('tests/fixtures/autofix.input.ts', 'utf8')
-      const expectedOutput = fs.readFileSync(`tests/fixtures/${fileName}`, 'utf8')
+      const expectedOutput = fs.readFileSync(`tests/fixtures/${outputFileName}`, 'utf8')
 
       fs.writeFileSync(testFilePath, input)
 
@@ -57,6 +57,6 @@ describe('autofix', () => {
       const output = fs.readFileSync(testFilePath, 'utf8')
 
       expect(output).toStrictEqual(expectedOutput)
-    },
-  )
+    })
+  })
 })
