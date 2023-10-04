@@ -44,15 +44,16 @@ export function reportBodyNodes(
   >,
   nodePositions: Map<TSType, NodePositionInfo>,
   sortedBody: TSType[],
+  finalIndicesToReport: boolean[],
   fixerFunction: ReportFixFunction,
 ) {
   const { context, createReportPropertiesObject } = createReporterArgs
   const { isInsensitive, isNatural, isRequiredFirst, order } = getOptions(
     createReporterArgs.context,
   )
-  for (const [node, { initialIndex, finalIndex }] of nodePositions.entries()) {
+  for (const [node, { finalIndex }] of nodePositions.entries()) {
     // If the node is not in the correct position, report it
-    if (initialIndex !== finalIndex) {
+    if (finalIndicesToReport[finalIndex]) {
       const { loc, messageId } = createReportPropertiesObject(node)
 
       // Sanity check

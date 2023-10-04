@@ -1,7 +1,7 @@
 const memo: Record<string, any> = {}
 
 export function memoize(key: string, value: any): any {
-  if (memo[key]) {
+  if (hasMemoized(key)) {
     return memo[key]
   }
   memo[key] = value

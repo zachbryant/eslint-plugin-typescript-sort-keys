@@ -2,6 +2,7 @@ import { TSESTree } from '@typescript-eslint/utils'
 import { getOptions } from 'common/options'
 import { getFixerFunction } from 'fixer'
 import { memoize } from 'utils/memo'
+import { getUnsortedInfo } from 'utils/reportUtils'
 import { reportBodyNodes, reportParentNode } from './report'
 import { AllRuleOptions, CreateReporterArgs, NodePositionInfo, TSType } from './types'
 import { getPropertyIsOptional, getPropertyName } from './utils/ast'
@@ -49,7 +50,9 @@ export function createReporter(
     const sourceCode = createReporterArgs.context.getSourceCode()
     const baseMemoKey = JSON.stringify({
       unsorted: body.map(node => sourceCode.getText(node)).join(''),
-      context: createReporterArgs.context,
+      options: createReporterArgs.context.options,
+      fileName: createReporterArgs.context.getFilename(),
+      cwd: createReporterArgs.context.getCwd?.(),
       sourceCode: sourceCode.text,
     })
 
@@ -67,15 +70,9 @@ export function createReporter(
       ),
     )
 
-    const unsortedCount = Array.from(nodePositions.entries()).reduce(
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      (count, [_, info]) => {
-        if (info.initialIndex !== info.finalIndex) {
-          return count + 1
-        }
-        return count
-      },
-      0,
+    const { unsortedCount, finalIndicesToReport } = memoize(
+      `getUnsortedInfo_${baseMemoKey}`,
+      getUnsortedInfo(sortedBody, body, nodePositions),
     )
 
     if (unsortedCount > 0) {
@@ -85,7 +82,13 @@ export function createReporter(
         getFixerFunction(createReporterArgs, body, sortedBody),
       )
       reportParentNode(createReporterArgs, bodyParent, unsortedCount, fixerFunction)
-      reportBodyNodes(createReporterArgs, nodePositions, sortedBody, fixerFunction)
+      reportBodyNodes(
+        createReporterArgs,
+        nodePositions,
+        sortedBody,
+        finalIndicesToReport,
+        fixerFunction,
+      )
     }
   }
 }

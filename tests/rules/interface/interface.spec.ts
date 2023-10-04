@@ -220,17 +220,17 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {b_:T; a:T; b:T;}',
       output: 'interface U {a:T; b:T; b_:T;}',
-      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
+      errors: [['b_'], ['b', 'b_']],
     },
     {
       code: 'interface U {b_:T; c:T; C:T;}',
       output: 'interface U {C:T; b_:T; c:T;}',
-      errors: [['b_', 'c'], ['c'], ['C', 'b_']],
+      errors: [['c'], ['C', 'b_']],
     },
     {
       code: "interface U {1:T; 2:T; A:T; '11':T;}",
       output: "interface U {1:T; '11':T; 2:T; A:T;}",
-      errors: [['2', 'A'], ['A'], ['11', '2']],
+      errors: [['A'], ['11', '2']],
     },
     {
       code: 'interface U {a:T; _:T; b:T;}',
@@ -246,22 +246,12 @@ const invalid: PreInvalidTestCaseObject = {
       errors: [['c'], ['b', 'c']],
     },
     {
-      code: 'interface U {b_:T; a:T; b:T;}',
-      output: 'interface U {a:T; b:T; b_:T;}',
-      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
-    },
-    {
       code: 'interface U {$:T; _:T; A:T; a:T;}',
       output: 'interface U {$:T; A:T; _:T; a:T;}',
       errors: [
         ['_', 'a'],
         ['A', '_'],
       ],
-    },
-    {
-      code: "interface U {1:T; 2:T; A:T; '11':T;}",
-      output: "interface U {1:T; '11':T; 2:T; A:T;}",
-      errors: [['2', 'A'], ['A'], ['11', '2']],
     },
     {
       code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
@@ -277,7 +267,7 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: "interface U {1:T; 2:T; A():T; '11':T;}",
       output: "interface U {1:T; '11':T; 2:T; A():T;}",
-      errors: [['2', 'A'], ['A'], ['11', '2']],
+      errors: [['A'], ['11', '2']],
     },
     {
       code: "interface U {'#'():T; À():T; 'Z':T; è:T;}",
@@ -335,7 +325,7 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {b_:T; a:T; b:T;}',
       output: 'interface U {a:T; b:T; b_:T;}',
-      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
+      errors: [['b_'], ['b', 'b_']],
     },
     {
       code: 'interface U {$:T; A:T; _:T; a:T;}',
@@ -348,7 +338,7 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: "interface U {1:T; 2:T; A:T; '11':T;}",
       output: "interface U {1:T; '11':T; 2:T; A:T;}",
-      errors: [['2', 'A'], ['A'], ['11', '2']],
+      errors: [['A'], ['11', '2']],
     },
     {
       code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
@@ -359,9 +349,9 @@ const invalid: PreInvalidTestCaseObject = {
       ],
     },
   ],
-  /**
-   * ascending, natural
-   */
+  // /**
+  //  * ascending, natural
+  //  */
   ascendingNatural: [
     {
       code: 'interface U {a:T; _:T; b:T;}',
@@ -379,12 +369,12 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {b_:T; a:T; b:T;}',
       output: 'interface U {a:T; b:T; b_:T;}',
-      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
+      errors: [['b_'], ['b', 'b_']],
     },
     {
       code: 'interface U {b_:T; c:T; C:T;}',
       output: 'interface U {C:T; b_:T; c:T;}',
-      errors: [['b_', 'c'], ['c'], ['C', 'b_']],
+      errors: [['c'], ['C', 'b_']],
     },
     {
       code: 'interface U {$:T; A:T; _:T; a:T;}',
@@ -428,7 +418,7 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {b_:T; a:T; b:T;}',
       output: 'interface U {a:T; b:T; b_:T;}',
-      errors: [['b_'], ['a', 'b'], ['b', 'b_']],
+      errors: [['b_'], ['b', 'b_']],
     },
     {
       code: 'interface U {$:T; A:T; _:T; a:T;}',
@@ -551,7 +541,6 @@ const invalid: PreInvalidTestCaseObject = {
       code: "interface U {'Z':T; À:T; '#'?:T; è:T;}",
       output: "interface U {'#'?:T; 'Z':T; À:T; è:T;}",
       errors: [
-        ['Z', 'À'],
         ['À', 'è'],
         ['#', 'Z'],
       ],
@@ -564,12 +553,12 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {a:T; _:T; b:T;}',
       output: 'interface U {b:T; a:T; _:T;}',
-      errors: [['a', '_'], ['_'], ['b', 'a']],
+      errors: [['_'], ['b', 'a']],
     },
     {
       code: 'interface U {a:T; c:T; b:T;}',
       output: 'interface U {c:T; b:T; a:T;}',
-      errors: [['a'], ['c', 'b'], ['b', 'a']],
+      errors: [['a'], ['b', 'a']],
     },
     {
       code: 'interface U {b_:T; a:T; b:T;}',
@@ -612,12 +601,12 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {a:T; _:T; b:T;}',
       output: 'interface U {b:T; a:T; _:T;}',
-      errors: [['a', '_'], ['_'], ['b', 'a']],
+      errors: [['_'], ['b', 'a']],
     },
     {
       code: 'interface U {a:T; c:T; b:T;}',
       output: 'interface U {c:T; b:T; a:T;}',
-      errors: [['a'], ['c', 'b'], ['b', 'a']],
+      errors: [['a'], ['b', 'a']],
     },
     {
       code: 'interface U {b_:T; a:T; b:T;}',
@@ -627,12 +616,12 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {b_:T; c:T; C:T;}',
       output: 'interface U {c:T; C:T; b_:T;}',
-      errors: [['b_'], ['c', 'C'], ['C', 'b_']],
+      errors: [['b_'], ['C', 'b_']],
     },
     {
       code: 'interface U {$:T; _:T; A:T; a:T;}',
       output: 'interface U {A:T; a:T; _:T; $:T;}',
-      errors: [['$'], ['_', '$'], ['A', 'a'], ['a', '_']],
+      errors: [['$'], ['_', '$'], ['a', '_']],
     },
     {
       code: "interface U {1:T; 2:T; A:T; '11':T;}",
@@ -652,12 +641,12 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {a:T; _:T; b:T;}',
       output: 'interface U {b:T; a:T; _:T;}',
-      errors: [['a', '_'], ['_'], ['b', 'a']],
+      errors: [['_'], ['b', 'a']],
     },
     {
       code: 'interface U {a:T; c:T; b:T;}',
       output: 'interface U {c:T; b:T; a:T;}',
-      errors: [['a'], ['c', 'b'], ['b', 'a']],
+      errors: [['a'], ['b', 'a']],
     },
     {
       code: 'interface U {b_:T; a:T; b:T;}',
@@ -680,7 +669,7 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: "interface U {1:T; 2:T; A:T; '11':T;}",
       output: "interface U {A:T; '11':T; 2:T; 1:T;}",
-      errors: [['1'], ['2', '1'], ['A', '11'], ['11', '2']],
+      errors: [['1'], ['2', '1'], ['11', '2']],
     },
     {
       code: "interface U {'#':T; À:T; 'Z':T; è:T;}",
@@ -688,19 +677,19 @@ const invalid: PreInvalidTestCaseObject = {
       errors: [['#'], ['è', 'À']],
     },
   ],
-  /**
-   * descending, natural, insensitive
-   */
+  // /**
+  //  * descending, natural, insensitive
+  //  */
   descendingInsensitiveNatural: [
     {
       code: 'interface U {a:T; _:T; b:T;}',
       output: 'interface U {b:T; a:T; _:T;}',
-      errors: [['a', '_'], ['_'], ['b', 'a']],
+      errors: [['_'], ['b', 'a']],
     },
     {
       code: 'interface U {a:T; c:T; b:T;}',
       output: 'interface U {c:T; b:T; a:T;}',
-      errors: [['a'], ['c', 'b'], ['b', 'a']],
+      errors: [['a'], ['b', 'a']],
     },
     {
       code: 'interface U {b_:T; a:T; b:T;}',
@@ -710,12 +699,12 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {b_:T; c:T; C:T;}',
       output: 'interface U {c:T; C:T; b_:T;}',
-      errors: [['b_'], ['c', 'C'], ['C', 'b_']],
+      errors: [['b_'], ['C', 'b_']],
     },
     {
       code: 'interface U {$:T; _:T; A:T; a:T;}',
       output: 'interface U {A:T; a:T; _:T; $:T;}',
-      errors: [['$'], ['_', '$'], ['A', 'a'], ['a', '_']],
+      errors: [['$'], ['_', '$'], ['a', '_']],
     },
     {
       code: "interface U {1:T; 2:T; '11':T; A:T;}",
@@ -735,7 +724,7 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {_:T; a?:T; b:T;}',
       output: 'interface U {b:T; _:T; a?:T;}',
-      errors: [['_', 'a'], ['a'], ['b', '_']],
+      errors: [['a'], ['b', '_']],
     },
     {
       code: 'interface U {b:T; a?:T; _:T;}',
@@ -758,7 +747,7 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {b_?:T; C:T; c:T;}',
       output: 'interface U {C:T; c:T; b_?:T;}',
-      errors: [['b_'], ['C', 'c'], ['c', 'b_']],
+      errors: [['b_'], ['c', 'b_']],
     },
     {
       code: 'interface U {_:T; a?:T; $:T; A?:T;}',
@@ -817,7 +806,7 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: 'interface U {b_?:T; C:T; c:T;}',
       output: 'interface U {C:T; c:T; b_?:T;}',
-      errors: [['b_'], ['C', 'c'], ['c', 'b_']],
+      errors: [['b_'], ['c', 'b_']],
     },
     {
       code: 'interface U {_:T; a?:T; $:T; A?:T;}',
@@ -832,12 +821,12 @@ const invalid: PreInvalidTestCaseObject = {
     {
       code: "interface U {è:T; 'Z':T; '#'?:T; À?:T;}",
       output: "interface U {è:T; À?:T; 'Z':T; '#'?:T;}",
-      errors: [['Z', '#'], ['#'], ['À', 'Z']],
+      errors: [['#'], ['À', 'Z']],
     },
     {
       code: "interface U {À?:T; 'Z':T; '#'?:T; è:T;}",
       output: "interface U {è:T; À?:T; 'Z':T; '#'?:T;}",
-      errors: [['À', 'Z'], ['Z', '#'], ['#'], ['è', 'À']],
+      errors: [['#'], ['è', 'À']],
     },
   ],
 }
