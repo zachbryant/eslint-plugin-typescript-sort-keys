@@ -1,5 +1,5 @@
 // So typescript treats this as a module
-export {};
+export { };
 
 class GraphQLExtension<T> {_: T}
 
@@ -13,8 +13,10 @@ const inlineArrow: (props: {bar: boolean, foo: boolean; baz?: boolean;}) => null
 
 const inlineArrow2: (props: {baz: boolean, foo: boolean; bar?: boolean;}) => null = ({...props}) => null;
 
-const inlineWeird: (props: {bar: boolean,baz: boolean,
+const inlineNewline: (props: {bar: boolean,baz: boolean,
           foo?: boolean;}) => null = ({...props}) => null;
+
+const inlineArrowEmbedded: (props: {bar: boolean; foo: {x: string; y: string;}; baz?: boolean;}) => null = ({...props}) => null;
 
 function inlineGeneric<T extends { bar: boolean, foo: boolean; baz?: boolean;}>({...props}: T | {bar: boolean; foo: boolean; baz?: boolean}) {
    return null

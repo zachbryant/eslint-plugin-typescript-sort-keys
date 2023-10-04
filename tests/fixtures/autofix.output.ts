@@ -16,6 +16,8 @@ const inlineArrow2: (props: {bar?: boolean; baz: boolean, foo: boolean;}) => nul
 const inlineNewline: (props: {bar: boolean,baz: boolean,
           foo?: boolean;}) => null = ({...props}) => null;
 
+const inlineArrowEmbedded: (props: {bar: boolean; baz?: boolean; foo: {x: string; y: string;};}) => null = ({...props}) => null;
+
 function inlineGeneric<T extends { bar: boolean, baz?: boolean; foo: boolean;}>({...props}: T | {bar: boolean; baz?: boolean, foo: boolean;}) {
    return null
 }
