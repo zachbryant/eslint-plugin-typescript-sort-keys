@@ -2,3 +2,4 @@ tests/fixtures/**
 dist
 lib
 build
+*case.ts
