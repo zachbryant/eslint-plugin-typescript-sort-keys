@@ -9,16 +9,16 @@ namespace Koa {
   export interface Context {}
 }
 
-const inlineArrow: (props: {bar: boolean, foo: boolean; baz?: boolean;}) => null = ({...props}) => null;
+const inlineArrow: (props: {bar: boolean; foo: boolean; baz?: boolean;}) => null = ({...props}) => null;
 
-const inlineArrow2: (props: {baz: boolean, foo: boolean; bar?: boolean;}) => null = ({...props}) => null;
+const inlineArrow2: (props: {baz: boolean; foo: boolean; bar?: boolean;}) => null = ({...props}) => null;
 
-const inlineNewline: (props: {bar: boolean,baz: boolean,
+const inlineNewline: (props: {bar: boolean;baz: boolean;
           foo?: boolean;}) => null = ({...props}) => null;
 
 const inlineArrowEmbedded: (props: {bar: boolean; foo: {x: string; y: string;}; baz?: boolean;}) => null = ({...props}) => null;
 
-function inlineGeneric<T extends { bar: boolean, foo: boolean; baz?: boolean;}>({...props}: T | {bar: boolean; foo: boolean; baz?: boolean}) {
+function inlineGeneric<T extends { bar: boolean; foo: boolean; baz?: boolean;}>({...props}: T | {bar: boolean; foo: boolean; baz?: boolean;}) {
    return null
 }
 
@@ -29,9 +29,9 @@ enum InlineEnum2 {Bar = 'BAR',Baz = 'BAZ', Foo = 'FOO' }
 enum InlineEnum3 {C="T", b_="T", c="T"}
 
 enum WeirdEnum {
-  Bar = 'BAR',Baz = 'BAZ',    Foo = 'FOO'}
+  Bar = 'BAR',Baz = 'BAZ',    Foo = 'FOO',}
 
-interface InlineInterface {b:"T"; d:"T"; e: "T"; a?:"T", c?:"T";}
+interface InlineInterface {b:"T"; d:"T"; e: "T"; a?:"T"; c?:"T";}
 
 class Class extends GraphQLExtension<{
   graphqlResponse: GraphQLResponse;
@@ -40,7 +40,7 @@ class Class extends GraphQLExtension<{
   public method(o: {
     graphqlResponse: GraphQLResponse;
     context?: Koa.Context;
-  }): void | { context?: Koa.Context, graphqlResponse?: GraphQLResponse; } {
+  }): void | { context?: Koa.Context; graphqlResponse?: GraphQLResponse; } {
     //
   }
 }
