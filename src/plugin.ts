@@ -50,11 +50,9 @@ export function createReporter(
     const sourceCode = createReporterArgs.context.getSourceCode()
     // Create a key for memoizing results based on plugin context & input
     const baseMemoKey = JSON.stringify({
-      unsorted: body.map(node => sourceCode.getText(node)).join(''), // body is different when embedded while source is the same
+      body: sourceCode.getText(bodyParent), // Disambiguator when body has code embedded in body
       options: { isAscending, isInsensitive, isNatural, isRequiredFirst },
-      fileName: createReporterArgs.context.getFilename(),
-      cwd: createReporterArgs.context.getCwd?.(),
-      source: sourceCode.getText(), // Useful for same body on type and interface for example
+      source: sourceCode.getText(), // Disambiguator when same body on both a type and interface
     })
 
     const sortedBody: TSType[] = memoize(

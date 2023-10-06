@@ -1,5 +1,6 @@
 const memo: Record<string, any> = {}
 
+// Getting strange test failures? Could be this! Disable and try again.
 export function memoize(key: string, value: any): any {
   if (hasMemoized(key)) {
     return memo[key]
