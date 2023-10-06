@@ -13,8 +13,8 @@ const inlineArrow: (props: {bar: boolean; baz?: boolean; foo: boolean;}) => null
 
 const inlineArrow2: (props: {bar?: boolean; baz: boolean; foo: boolean;}) => null = ({...props}) => null;
 
-const inlineNewline: (props: {bar: boolean;baz: boolean;
-          foo?: boolean;}) => null = ({...props}) => null;
+const inlineNewline: (props: {/* bar0 */ bar: boolean /* bar1 */;baz: boolean;
+          /* foo0 */ foo?: boolean /* foo1 */;}) => null = ({...props}) => null;
 
 const inlineArrowEmbedded: (props: {bar: boolean; baz?: boolean; foo: {x: string; y: string;};}) => null = ({...props}) => null;
 
@@ -54,6 +54,7 @@ interface Interface {
    * %foo
    */
   foo: boolean;
+  // end comment no sort
 }
 
 type Type1<TKey extends string> = Partial<{
@@ -89,7 +90,8 @@ enum StringEnum {
   Baz = 'BAZ',
 
   /* %foo */
-  Foo = 'FOO'
+  Foo = 'FOO' //Fooend
+  // end comment no sort
 }
 
 type Type2 = {
@@ -101,7 +103,8 @@ type Type2 = {
 // %baz
   baz: boolean;
   /* %foo */
-  foo?: boolean;
+  foo?: boolean; //fooend
+  // end comment no sort
 }
 
 interface ClockConstructor {

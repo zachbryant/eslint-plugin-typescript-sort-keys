@@ -13,8 +13,8 @@ const inlineArrow: (props: {bar: boolean; foo: boolean; baz?: boolean;}) => null
 
 const inlineArrow2: (props: {baz: boolean; foo: boolean; bar?: boolean;}) => null = ({...props}) => null;
 
-const inlineNewline: (props: {bar: boolean;baz: boolean;
-          foo?: boolean;}) => null = ({...props}) => null;
+const inlineNewline: (props: {/* bar0 */ bar: boolean /* bar1 */;baz: boolean;
+          /* foo0 */ foo?: boolean /* foo1 */;}) => null = ({...props}) => null;
 
 const inlineArrowEmbedded: (props: {bar: boolean; foo: {x: string; y: string;}; baz?: boolean;}) => null = ({...props}) => null;
 
@@ -29,7 +29,7 @@ enum InlineEnum2 {Bar = 'BAR',Baz = 'BAZ', Foo = 'FOO' }
 enum InlineEnum3 {C="T", b_="T", c="T"}
 
 enum WeirdEnum {
-  Bar = 'BAR',Baz = 'BAZ',    Foo = 'FOO',}
+  Bar = 'BAR',Baz = 'BAZ',    Foo = 'FOO'}
 
 interface InlineInterface {b:"T"; d:"T"; e: "T"; a?:"T"; c?:"T";}
 
@@ -54,6 +54,7 @@ interface Interface {
   foo: boolean;
   /* %baz */
   baz?: boolean;
+  // end comment no sort
 }
 
 type Type1<TKey extends string> = Partial<{
@@ -89,7 +90,8 @@ enum StringEnum {
   Baz = 'BAZ',
 
   /* %foo */
-  Foo = 'FOO'
+  Foo = 'FOO' //Fooend
+  // end comment no sort
 }
 
 type Type2 = {
@@ -101,7 +103,8 @@ type Type2 = {
 // %baz
   baz: boolean;
   /* %foo */
-  foo?: boolean;
+  foo?: boolean; //fooend
+  // end comment no sort
 }
 
 interface ClockConstructor {
