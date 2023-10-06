@@ -8,22 +8,34 @@ import {
   getPreviousNonCommentNode,
 } from './nodeHelpers'
 
+/**
+ * Returns the node's following punctuation node, if any. Does not return comments.
+ */
 export function getNodePunctuator(
   sourceCode: SourceCode,
   node: Node,
   punctuators = ',;',
 ) {
+  // interface/type member nodes contain their own punctuation
+  if (new RegExp(`[${punctuators}]$`).test(sourceCode.getText(node)))
+    return sourceCode.getTokenByRangeStart(node.range[1])
+
   const punctuator = sourceCode.getTokenAfter(node, {
-    filter: n =>
-      n.type === AST_TOKEN_TYPES.Punctuator &&
-      n.value !== ':' &&
-      new RegExp(`^[${punctuators}]$`).test(n.value),
+    filter: n => {
+      return (
+        n.type === AST_TOKEN_TYPES.Punctuator &&
+        new RegExp(`^[${punctuators}]$`).test(n.value)
+      )
+    },
     includeComments: false,
   })
-
   return punctuator ?? undefined
 }
 
+/**
+ * Returns the non-comment node following the given node's punctuation node, if any.
+ * Ex: For `foo: T, bar: T`, returns `bar: T` node given `foo: T,` node.
+ */
 export function getNodeFollowingPunctuator(sourceCode: SourceCode, node: Node) {
   const punctuator = getNodePunctuator(sourceCode, node)
   if (!punctuator) return undefined
@@ -42,7 +54,6 @@ export function getDeclarationPunctuators(sourceCode: SourceCode, body: Node[]) 
     !!declarationStartPunctuator,
     `Expected declaration end punctuator after ${sourceCode.getText(startNode)}`,
   )
-  //console.log('declarationStartPunctuator', declarationStartPunctuator)
 
   const endNode = getLatestNode(body) // Sometimes this is a comma
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -56,11 +67,8 @@ export function getDeclarationPunctuators(sourceCode: SourceCode, body: Node[]) 
 }
 
 // Returns a string containing the node's punctuation, if any.
-export function getPunctuation(sourceCode: SourceCode, node: Node) {
-  return (
-    getNodePunctuator(sourceCode, node)?.value ??
-    (node.type === AST_NODE_TYPES.TSEnumMember ? ',' : ';')
-  )
+export function getPunctuation(node: Node) {
+  return node.type === AST_NODE_TYPES.TSEnumMember ? ',' : ';'
 }
 
 export function getBodyRange(sourceCode: SourceCode, body: Node[]): [number, number] {

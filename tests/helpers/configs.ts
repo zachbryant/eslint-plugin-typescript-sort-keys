@@ -10,3 +10,12 @@ export const typescriptConfig: Linter.Config = {
     project: path.join(__dirname, './tsconfig.json'),
   },
 }
+
+export const entriesToObject = <T = unknown>(
+  value: readonly [string, T][],
+): Record<string, T> => {
+  return value.reduce<Record<string, T>>((memo, [k, v]) => {
+    memo[k] = v
+    return memo
+  }, {})
+}

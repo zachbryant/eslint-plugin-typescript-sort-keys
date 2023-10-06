@@ -23,25 +23,30 @@ export function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
   const lastComments = sourceCode.getCommentsAfter(latestBodyNodeComment)
 
   const { declarationEndPunctuator } = getDeclarationPunctuators(sourceCode, body)
-  const lastWhitespace = getTextBetween(
-    sourceCode,
-    getLatestNode([...lastComments, lastBodyNode]),
-    declarationEndPunctuator,
+
+  // Sometimes the node punctuator ends up beyond the end of the body punctuator because types dont parse out punctuation
+  const latestNode = getLatestNode(
+    [
+      ...lastComments,
+      lastBodyNode,
+      getNodePunctuator(sourceCode, lastBodyNode, ',;'),
+    ].filter(_ => !!_) as Node[],
   )
+  const lastWhitespace = getTextBetween(sourceCode, latestNode, declarationEndPunctuator)
 
   const lastCommentsTextWithWhitespace =
     getCommentsText(sourceCode, lastComments) + lastWhitespace
-
-  // Disabled to pass test
-  // if (lastComments.length > 0) {
-  //   const textBeforeComment = getTextBetween(
-  //     sourceCode,
-  //     latestBodyNodeComment,
-  //     getEarliestNode(lastComments),
+  // if (lastBodyNode.loc.start.line === 104)
+  //   console.log(
+  //     'lastWhitespace',
+  //     `'${lastWhitespace}'`,
+  //     '\nlastBodyNode',
+  //     lastBodyNode,
+  //     '\npunctuator',
+  //     latestNode,
+  //     '\ndeclarationEndPunctuator',
+  //     declarationEndPunctuator,
   //   )
-
-  //   return textBeforeComment + lastCommentsTextWithWhitespace
-  // }
 
   return lastCommentsTextWithWhitespace
 }
@@ -55,26 +60,10 @@ export function getCommentsText(
   comments: TSESTree.Comment[],
 ): string {
   return comments
-    .map((comment, index) => {
+    .map(comment => {
       let commentText = sourceCode.getText(comment)
-      const isLast = index === comments.length - 1
-      // if (!isLast || comments.length === 1) {
-      //   // Conflicts with space between comments when this is added to the last comment
-      //   const indentation = getTextBetweenNodeAndPrevious(sourceCode, comment)
-      //   commentText = indentation + commentText
-      // }
       const indentation = getTextBetweenNodeAndPrevious(sourceCode, comment)
       commentText = indentation + commentText
-      // if (!isLast) {
-      //   // Preserve whitespace between comments
-      //   const textBetween = getTextBetween(sourceCode, comment, comments[index + 1])
-      //   console.log(
-      //     `textBetween '${textBetween}' comment '${commentText}' and '${
-      //       comments[index + 1].value
-      //     }'`,
-      //   )
-      //   commentText += textBetween
-      // }
       // Don't put a line comment on the same line as anything else
       if (
         comment.type === AST_TOKEN_TYPES.Line &&

@@ -25,7 +25,6 @@ export function getFixedBodyText(
     bodyToEmit
       .map((node, index) => {
         const isLast = index === bodyToEmit.length - 1
-        const punctuation = getPunctuation(sourceCode, node)
         const shouldHavePunctuation = !isLast || node.type !== AST_NODE_TYPES.TSEnumMember
         const resultNodeText =
           indentations.get(index) +
@@ -33,7 +32,7 @@ export function getFixedBodyText(
             getCommentsTextBefore(sourceCode, node),
             getProcessedText(sourceCode, node),
             getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Block),
-            shouldHavePunctuation && punctuation,
+            shouldHavePunctuation && getPunctuation(node),
             getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Line),
           ]
             .filter(Boolean)
