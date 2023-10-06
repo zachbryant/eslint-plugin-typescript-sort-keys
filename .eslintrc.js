@@ -40,7 +40,6 @@ module.exports = {
         'jest/no-alias-methods': 'error',
         'jest/no-identical-title': 'error',
         'jest/no-jasmine-globals': 'error',
-        'jest/no-jest-import': 'error',
         'jest/no-test-prefixes': 'error',
         'jest/no-test-callback': 'error',
         'jest/no-test-return-statement': 'error',

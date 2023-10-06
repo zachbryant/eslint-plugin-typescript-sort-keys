@@ -1,16 +1,15 @@
 import commonjs from '@rollup/plugin-commonjs'
+import json from '@rollup/plugin-json'
 import resolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
-import json from '@rollup/plugin-json'
-import tsconfig from 'tsconfig'
-import fs from 'fs'
 import assert from 'assert'
+import fs from 'fs'
 
-const filePath = tsconfig.resolveSync('.')
+const filePath = './tsconfig.json'
 
 assert(filePath)
 
-const config = tsconfig.readFileSync(filePath)
+const config = JSON.parse(fs.readFileSync(filePath))
 const baseUrl = config.compilerOptions.baseUrl
 
 const moduleMappings = fs
