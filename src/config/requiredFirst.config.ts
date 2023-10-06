@@ -9,7 +9,7 @@ export default {
     'typescript-sort-keys/interface': [
       'error' as const,
       defaultSortingOrder,
-      defaultOptions,
+      { ...defaultOptions, requiredFirst: true },
     ] as Linter.RuleEntry,
   },
 }
