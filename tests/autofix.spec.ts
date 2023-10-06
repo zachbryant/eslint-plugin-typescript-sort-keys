@@ -1,4 +1,4 @@
-import { ESLint } from 'eslint'
+import { ESLint } from '@typescript-eslint/utils/ts-eslint'
 import fs from 'fs'
 import path from 'path'
 import tmp from 'tmp'
@@ -24,7 +24,7 @@ describe('autofix', () => {
         unsafeCleanup: true,
       })
 
-      const testFilePath = path.join(tmpDir, 'autofix.ts')
+      const testFilePath = path.join(tmpDir, `autofix-${configName}.ts`)
       const input = fs.readFileSync('tests/fixtures/autofix.input.ts', 'utf8')
       const expectedOutput = fs.readFileSync(`tests/fixtures/${outputFileName}`, 'utf8')
 
@@ -45,6 +45,9 @@ describe('autofix', () => {
 
       const results = await eslint.lintFiles(testFilePath)
       const result = results[0]
+
+      // For debugging when output is malformed
+      // console.log(result.output)
 
       expect(result.messages).toHaveLength(0)
       expect(result.errorCount).toBe(0)
