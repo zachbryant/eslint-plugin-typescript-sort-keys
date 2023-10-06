@@ -1,4 +1,4 @@
-import { ReportFixFunction } from '@typescript-eslint/utils/dist/ts-eslint'
+import { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint'
 import { AllRuleOptions, CreateReporterArgs, Node, SourceCode, TSType } from './types'
 import { getBodyRange, getFixedBodyText } from './utils/sourcecode'
 

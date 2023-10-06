@@ -1,3 +1,4 @@
+import { RuleModule } from '@typescript-eslint/utils/ts-eslint'
 import {
   RuleOptions as InterfaceRuleOptions,
   name as interfaceName,
@@ -9,7 +10,7 @@ import {
   rule as stringEnumRule,
 } from './string-enum'
 
-export const rules = {
+export const rules: Record<string, RuleModule<string, unknown[]>> = {
   [interfaceName]: interfaceRule,
   [stringEnumName]: stringEnumRule,
 }

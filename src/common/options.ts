@@ -5,6 +5,7 @@ import {
   SortingParamsOptions,
 } from '../types'
 
+export const defaultSortingOrder = SortingOrder.Ascending
 export const defaultOptions: SortingParamsOptions = {
   caseSensitive: true,
   natural: false,
@@ -17,7 +18,7 @@ export const defaultOptions: SortingParamsOptions = {
 export function getOptions(
   context: CreateReporterArgs<string, AllRuleOptions>['context'],
 ) {
-  const order = context.options[0] || SortingOrder.Ascending
+  const order = context.options[0] || defaultSortingOrder
   const options = context.options[1]
   const isAscending = order === SortingOrder.Ascending
   const isInsensitive = !(options?.caseSensitive ?? defaultOptions.caseSensitive)

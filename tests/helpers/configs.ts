@@ -1,4 +1,4 @@
-import { Linter } from 'eslint'
+import { Linter } from '@typescript-eslint/utils/ts-eslint'
 import * as path from 'path'
 
 export const filename = path.join(__dirname, 'file.ts')

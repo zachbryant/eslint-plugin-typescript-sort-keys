@@ -1,5 +1,6 @@
 import { readdirSync } from 'fs'
 
+import { RuleModule } from '@typescript-eslint/utils/ts-eslint'
 import plugin from '../src'
 
 describe('recommended config', () => {
@@ -20,19 +21,21 @@ describe('recommended config', () => {
     }, {})
   }
 
-  const ruleConfigs = Object.entries(rules)
-    .filter(([, rule]) => rule.meta.docs?.recommended !== 'recommended')
-    .map<[string, string]>(([name, rule]) => [
-      `${RULE_NAME_PREFIX}${name}`,
-      rule.meta.docs?.recommended ? 'error' : 'off',
-    ])
+  const ruleConfigs: Array<[string, string]> = (
+    Object.entries(rules).filter(
+      ([, rule]) => rule.meta.docs?.recommended !== 'recommended',
+    ) as Array<[string, RuleModule<string, unknown[]>]>
+  ).map(([name, rule]) => [
+    `${RULE_NAME_PREFIX}${name}`,
+    rule.meta.docs?.recommended ? 'error' : 'off',
+  ])
 
   it('contains all recommended rules', () => {
     expect(entriesToObject(ruleConfigs)).toEqual(configRules)
   })
 })
 
-describe('plugin', () => {
+describe('recommended plugin', () => {
   const ruleFiles: readonly string[] = readdirSync('./src/rules').filter(
     file => file !== 'index.ts' && file.endsWith('.ts'),
   )

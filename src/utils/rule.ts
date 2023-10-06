@@ -42,5 +42,5 @@ export function createRule<MessageIds extends string, Options extends BaseOption
   return ESLintUtils.RuleCreator(
     name =>
       `https://github.com/infctr/eslint-plugin-typescript-sort-keys/blob/master/docs/rules/${name}.md`,
-  )(data)
+  )<Options, MessageIds>(data)
 }

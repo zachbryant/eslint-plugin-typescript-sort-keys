@@ -1,6 +1,6 @@
-import { SortingOrder } from 'types'
+import { Linter } from '@typescript-eslint/utils/ts-eslint'
+import { defaultOptions, defaultSortingOrder } from 'common/options'
 import recommended from './recommended.config'
-import { Linter } from 'eslint'
 
 export default {
   plugins: recommended.plugins,
@@ -8,8 +8,8 @@ export default {
     ...recommended.rules,
     'typescript-sort-keys/interface': [
       'error' as const,
-      SortingOrder.Ascending,
-      { caseSensitive: true, natural: true, requiredFirst: true },
+      defaultSortingOrder,
+      defaultOptions,
     ] as Linter.RuleEntry,
   },
 }
