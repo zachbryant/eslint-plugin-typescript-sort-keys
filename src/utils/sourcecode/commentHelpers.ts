@@ -80,6 +80,7 @@ export function getCommentsText(
 /* Get text of comments before a node, if any, with leading whitespace. */
 export function getCommentsTextBefore(sourceCode: SourceCode, node: Node) {
   let commentText = getCommentsText(sourceCode, getCommentsBefore(sourceCode, node))
+
   if (commentText) {
     commentText += getTextBetweenNodeAndPrevious(sourceCode, node)
   }
@@ -115,12 +116,13 @@ export function getCommentsBefore(
 
   return comments.filter(comment => {
     const commentStartLine = comment.loc.start.line
-    const commentEndLine = comment.loc.end.line
 
+    // Special case when comment is on previous' line but prev is declaration punctuator
     return (
+      (!type || comment.type === type) &&
       (commentStartLine === nodeStartLine ||
-        (commentStartLine > prevNodeEndLine && commentEndLine <= nodeStartLine)) &&
-      (!type || comment.type === type)
+        commentStartLine > prevNodeEndLine ||
+        (commentStartLine >= prevNodeEndLine && prevNode.value === '{'))
     )
   })
 }
