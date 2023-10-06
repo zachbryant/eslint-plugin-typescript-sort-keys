@@ -22,14 +22,14 @@ function inlineGeneric<T extends { bar: boolean; foo: boolean; baz?: boolean;}>(
    return null
 }
 
-enum InlineEnum {a="T", b="T", c="T", d="T", e="T"}
+enum InlineEnum { a="T", b="T", c="T", d="T", e="T"}
 
 enum InlineEnum2 {Bar = 'BAR',Baz = 'BAZ', Foo = 'FOO' }
 
 enum InlineEnum3 {C="T", b_="T", c="T"}
 
 enum WeirdEnum {
-  Bar = 'BAR',Baz = 'BAZ',    Foo = 'FOO'}
+  Bar = 'BAR',Baz = 'BAZ',    Foo = 'FOO'    }
 
 interface InlineInterface {b:"T"; d:"T"; e: "T"; a?:"T"; c?:"T";}
 
@@ -66,8 +66,7 @@ type Type1<TKey extends string> = Partial<{
 
   // %foo
   foo?: boolean;
-}> & {
-  /**
+}> & {/**
    * %bar
    */
   bar: boolean;
@@ -94,8 +93,7 @@ enum StringEnum {
   // end comment no sort
 }
 
-type Type2 = {
-  /**
+type Type2 = {/**
    * %bar
    */
   bar: boolean;
