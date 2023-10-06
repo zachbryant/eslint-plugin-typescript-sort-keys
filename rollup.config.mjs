@@ -26,9 +26,10 @@ export default [
     input: './src/index.ts',
     external,
     output: [
-      { dir: 'lib', entryFileNames: '[name].cjs.js', format: 'cjs' },
-      { dir: 'lib', entryFileNames: '[name].esm.js', format: 'es' },
+      { dir: 'lib', entryFileNames: '[name].cjs.js', format: 'cjs', sourcemap: true },
+      { dir: 'lib', entryFileNames: '[name].esm.js', format: 'es', sourcemap: true },
     ],
     plugins: [commonjs(), resolve(), typescript(), json()],
+
   },
 ]
