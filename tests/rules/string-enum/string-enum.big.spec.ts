@@ -12,11 +12,13 @@ import {
 import fs from 'fs'
 import { CaseCategory } from '../../helpers/strings'
 
+const fixtures = path.resolve(__dirname, '../../fixtures')
+
 const validBigTestCode = fs
-  .readFileSync(path.resolve(__dirname, 'string-enum-big-test.valid-case.ts'))
+  .readFileSync(path.resolve(fixtures, 'string-enum-big-valid.output.ts'))
   .toString('utf-8')
 const invalidBigTestCode = fs
-  .readFileSync(path.resolve(__dirname, 'string-enum-big-test.invalid-case.ts'))
+  .readFileSync(path.resolve(fixtures, 'string-enum-big-invalid.output.ts'))
   .toString('utf-8')
 
 const valid: PreValidTestCaseObject = {
