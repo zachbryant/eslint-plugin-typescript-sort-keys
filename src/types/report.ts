@@ -1,8 +1,8 @@
 import { TSESTree } from '@typescript-eslint/utils'
 import {
-  RuleContext as UtilRuleContext,
   SourceCode as Lib_SourceCode,
-} from '@typescript-eslint/utils/dist/ts-eslint'
+  RuleContext as UtilRuleContext,
+} from '@typescript-eslint/utils/ts-eslint'
 
 export type SourceCode = Lib_SourceCode & {
   lineStartIndices: number[]

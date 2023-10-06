@@ -1,6 +1,5 @@
-import { JSONSchema4 } from 'json-schema'
-
 import { TSESTree } from '@typescript-eslint/utils'
+import { JSONSchema4 } from '@typescript-eslint/utils/json-schema'
 import { createReporter } from 'plugin'
 import { getObjectBody } from 'utils/ast'
 import { createRule, RuleMetaData } from 'utils/rule'
@@ -41,7 +40,10 @@ const sortingParamsOptionSchema: JSONSchema4 = {
 /**
  * The schema for the rule options.
  */
-const schema: JSONSchema4[] = [sortingOrderOptionSchema, sortingParamsOptionSchema]
+const schema: readonly JSONSchema4[] = [
+  sortingOrderOptionSchema,
+  sortingParamsOptionSchema,
+]
 
 /**
  * The default options for the rule.
@@ -55,7 +57,7 @@ const defaultOptions: RuleOptions = [
  * The possible error messages.
  */
 const errorMessages = {
-  invalidOrderProperties: ErrorMessage.InterfaceInvalidOrder,
+  invalidOrderBody: ErrorMessage.InterfaceInvalidOrder,
   invalidOrderParent: ErrorMessage.InterfaceParentInvalidOrder,
 } as const
 type errorMessageKeys = keyof typeof errorMessages
@@ -67,7 +69,7 @@ const meta: RuleMetaData<errorMessageKeys> = {
   type: 'suggestion',
   docs: {
     description: 'require interface keys to be sorted',
-    recommended: 'warn',
+    recommended: 'stylistic',
   },
   messages: errorMessages,
   fixable: 'code',
@@ -87,7 +89,7 @@ export const rule = createRule<errorMessageKeys, RuleOptions>({
       context,
       createReportPropertiesObject: ({ loc }: TSESTree.Node) => ({
         loc,
-        messageId: 'invalidOrderProperties' as any,
+        messageId: 'invalidOrderBody' as any,
       }),
       createReportParentObject: ({ loc }: TSESTree.Node) => ({
         loc,

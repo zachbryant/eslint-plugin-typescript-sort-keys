@@ -5,7 +5,7 @@ import { AllRuleOptions, CreateReporterArgs, NodePositionInfo, TSType } from './
 import { getPropertyName } from './utils/ast'
 
 import { TSESTree } from '@typescript-eslint/utils'
-import { ReportFixFunction } from '@typescript-eslint/utils/dist/ts-eslint'
+import { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint'
 
 /**
  * Report the parent node if

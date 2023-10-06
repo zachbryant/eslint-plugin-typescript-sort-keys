@@ -21,10 +21,10 @@ describe('recommended config', () => {
   }
 
   const ruleConfigs = Object.entries(rules)
-    .filter(([, rule]) => rule.meta.docs && rule.meta.docs.recommended !== false)
+    .filter(([, rule]) => rule.meta.docs?.recommended !== 'recommended')
     .map<[string, string]>(([name, rule]) => [
       `${RULE_NAME_PREFIX}${name}`,
-      rule.meta.docs && rule.meta.docs.recommended ? 'error' : 'off',
+      rule.meta.docs?.recommended ? 'error' : 'off',
     ])
 
   it('contains all recommended rules', () => {

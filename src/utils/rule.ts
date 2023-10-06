@@ -1,12 +1,12 @@
 import { ESLintUtils } from '@typescript-eslint/utils'
 import {
   ReportDescriptor,
-  RuleContext as UtilRuleContext,
   RuleListener,
+  RuleModule,
+  RuleContext as UtilRuleContext,
   RuleMetaData as UtilRuleMetaData,
   RuleMetaDataDocs as UtilRuleMetaDataDocs,
-  RuleModule,
-} from '@typescript-eslint/utils/dist/ts-eslint'
+} from '@typescript-eslint/utils/ts-eslint'
 
 export type BaseOptions = readonly unknown[]
 

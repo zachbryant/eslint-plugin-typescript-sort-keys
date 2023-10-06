@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils'
-import { JSONSchema4 } from 'json-schema'
+import { JSONSchema4 } from '@typescript-eslint/utils/json-schema'
 import { createReporter } from 'plugin'
 
 import { getObjectBody } from 'utils/ast'
@@ -52,7 +52,7 @@ const defaultOptions: RuleOptions = [
  * The possible error messages.
  */
 const errorMessages = {
-  invalidOrderProperties: ErrorMessage.StringEnumInvalidOrder,
+  invalidOrderBody: ErrorMessage.StringEnumInvalidOrder,
   invalidOrderParent: ErrorMessage.StringEnumParentInvalidOrder,
 } as const
 type errorMessageKeys = keyof typeof errorMessages
@@ -64,7 +64,7 @@ const meta: RuleMetaData<errorMessageKeys> = {
   type: 'suggestion',
   docs: {
     description: 'require string enum members to be sorted',
-    recommended: 'warn',
+    recommended: 'stylistic',
   },
   messages: errorMessages,
   fixable: 'code',
@@ -84,7 +84,7 @@ export const rule = createRule<errorMessageKeys, RuleOptions>({
       context,
       createReportPropertiesObject: ({ loc }: TSESTree.Node) => ({
         loc,
-        messageId: 'invalidOrderProperties' as any,
+        messageId: 'invalidOrderBody' as any,
       }),
       createReportParentObject: ({ loc }: TSESTree.Node) => ({
         loc,
