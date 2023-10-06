@@ -1,21 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "esnext",
-    "lib": ["ESNext"],
     "allowJs": true,
+    "baseUrl": "src",
     "checkJs": false,
-    "sourceMap": true,
-    "outDir": "lib",
-    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "baseUrl": "src",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES6"
   },
   "exclude": ["./node_modules", "tests/fixtures", "dist", "lib"]
 }

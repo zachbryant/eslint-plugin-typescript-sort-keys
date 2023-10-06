@@ -6,10 +6,8 @@ import assert from 'assert'
 import fs from 'fs'
 
 const filePath = './tsconfig.json'
-
-assert(filePath)
-
-const config = JSON.parse(fs.readFileSync(filePath))
+const config = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+assert(config)
 const baseUrl = config.compilerOptions.baseUrl
 
 const moduleMappings = fs
