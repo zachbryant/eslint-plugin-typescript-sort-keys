@@ -61,7 +61,7 @@
     "test:watch": "yarn jest --watch",
     "test": "yarn jest",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "verify": "yarn typecheck && yarn lint && yarn build && yarn coverage"
+    "verify": "yarn typecheck && yarn lint && yarn build && yarn test:all && yarn coverage"
   },
   "dependencies": {
     "@typescript-eslint/utils": "^6.7.4",
@@ -90,6 +90,7 @@
     "babel-plugin-module-resolver": "~4.1.0",
     "eslint": "~8.50.0",
     "eslint-config-prettier": "~9.0.0",
+    "eslint-import-resolver-typescript": "~3.6.1",
     "eslint-plugin-eslint-plugin": "~5.1.1",
     "eslint-plugin-import": "~2.28.1",
     "eslint-plugin-jest": "~27.4.2",
@@ -106,7 +107,7 @@
     "yarn-deduplicate": "^6.0.2"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^1 || ^2 || ^3 || ^4 || ^5",
+    "@typescript-eslint/parser": "^1 || ^2 || ^3 || ^4 || ^5 || ^6",
     "eslint": "^7 || ^8",
     "typescript": "^3 || ^4 || ^5"
   },

@@ -1,5 +1,4 @@
 module.exports = {
-  root: true,
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'eslint-plugin', 'import', 'jest', 'prettier'],
   env: {
@@ -8,8 +7,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:import/errors',
-    'plugin:import/warnings',
+    'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:eslint-plugin/all',
@@ -17,12 +15,10 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: 10,
-    project: ['./tsconfig.json', './tests/tsconfig.json'],
     sourceType: 'module',
   },
   rules: {
     'no-console': 'warn',
-
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
@@ -52,9 +48,8 @@ module.exports = {
   ],
   settings: {
     'import/resolver': {
-      node: {
-        moduleDirectory: ['node_modules', 'src'],
-      },
+      node: true,
+      typescript: true,
     },
   },
   ignorePatterns: ['.eslintrc.js'],

@@ -17,5 +17,5 @@
     "strict": true,
     "target": "ES6"
   },
-  "exclude": ["./node_modules", "tests/fixtures", "dist", "lib"]
+  "exclude": ["node_modules", "tests/fixtures", "dist", "lib"]
 }
