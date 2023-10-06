@@ -1,4 +1,4 @@
-import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils'
+import { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils'
 import { Node, SourceCode } from 'types'
 import { getLatestNode } from './nodeHelpers'
 import {
@@ -18,37 +18,25 @@ import {
 export function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
   const lastBodyNode = getLatestNode(body)
   const lastBodyNodeComments = getCommentsAfter(sourceCode, lastBodyNode)
-  const latestBodyNodeComment = getLatestNode([...lastBodyNodeComments, lastBodyNode])
+  const latestCommentOrBodyNode = getLatestNode([...lastBodyNodeComments, lastBodyNode])
   // Comments after the comments that belong to the last property in the body
-  const lastComments = sourceCode.getCommentsAfter(latestBodyNodeComment)
+  const endComments = sourceCode.getCommentsAfter(latestCommentOrBodyNode)
 
   const { declarationEndPunctuator } = getDeclarationPunctuators(sourceCode, body)
 
-  // Sometimes the node punctuator ends up beyond the end of the body punctuator because types dont parse out punctuation
   const latestNode = getLatestNode(
     [
-      ...lastComments,
-      lastBodyNode,
-      getNodePunctuator(sourceCode, lastBodyNode, ',;'),
+      ...endComments,
+      latestCommentOrBodyNode,
+      getNodePunctuator(sourceCode, lastBodyNode),
     ].filter(_ => !!_) as Node[],
   )
-  const lastWhitespace = getTextBetween(sourceCode, latestNode, declarationEndPunctuator)
+  const endWhitespace = getTextBetween(sourceCode, latestNode, declarationEndPunctuator)
 
-  const lastCommentsTextWithWhitespace =
-    getCommentsText(sourceCode, lastComments) + lastWhitespace
-  // if (lastBodyNode.loc.start.line === 104)
-  //   console.log(
-  //     'lastWhitespace',
-  //     `'${lastWhitespace}'`,
-  //     '\nlastBodyNode',
-  //     lastBodyNode,
-  //     '\npunctuator',
-  //     latestNode,
-  //     '\ndeclarationEndPunctuator',
-  //     declarationEndPunctuator,
-  //   )
+  const endCommentsTextWithWhitespace =
+    getCommentsText(sourceCode, endComments) + endWhitespace
 
-  return lastCommentsTextWithWhitespace
+  return endCommentsTextWithWhitespace
 }
 
 /**
@@ -139,8 +127,14 @@ export function getCommentsAfter(
   const nodeEndLine = node.loc.end.line
   const comments = sourceCode.getCommentsAfter(node)
 
-  const punctuator = getNodePunctuator(sourceCode, node)
-  if (punctuator) comments.push(...sourceCode.getCommentsAfter(punctuator))
+  /**
+   * Sometimes a comment may be after the node's punctuation, thus not included
+   * in getCommentsAfter. Only enum members have punctuation that behaves this way.
+   */
+  if (node.type === AST_NODE_TYPES.TSEnumMember) {
+    const punctuator = getNodePunctuator(sourceCode, node)
+    if (punctuator) comments.push(...sourceCode.getCommentsAfter(punctuator))
+  }
 
   const nextNode = getNodeFollowingPunctuator(sourceCode, node)
   const nextNodeStartPos = nextNode?.range[0] ?? Infinity

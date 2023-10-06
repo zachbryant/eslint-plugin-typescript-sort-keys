@@ -17,8 +17,9 @@ export function getNodePunctuator(
   punctuators = ',;',
 ) {
   // interface/type member nodes contain their own punctuation
-  if (new RegExp(`[${punctuators}]$`).test(sourceCode.getText(node)))
-    return sourceCode.getTokenByRangeStart(node.range[1])
+  if (new RegExp(`[${punctuators}]$`).test(sourceCode.getText(node))) {
+    return sourceCode.getTokenByRangeStart(node.range[1] - 1)
+  }
 
   const punctuator = sourceCode.getTokenAfter(node, {
     filter: n => {
@@ -29,7 +30,10 @@ export function getNodePunctuator(
     },
     includeComments: false,
   })
-  return punctuator ?? undefined
+  // Ensure we don't go beyond the parent into the source code
+  return punctuator && punctuator?.range[1] <= (node.parent?.range[1] || Infinity)
+    ? punctuator
+    : undefined
 }
 
 /**
