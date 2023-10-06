@@ -93,6 +93,11 @@ enum StringEnum {
   // end comment no sort
 }
 
+enum BasicEnum {
+  Foo = 'FOO',
+  Bar = 'BAR',
+}
+
 type Type2 = {/* %foo */
   foo?: boolean; //fooend
 
