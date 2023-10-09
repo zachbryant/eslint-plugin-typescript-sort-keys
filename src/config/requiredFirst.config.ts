@@ -1,5 +1,5 @@
 import { Linter } from '@typescript-eslint/utils/ts-eslint'
-import { defaultOptions, defaultSortingOrder } from 'common/options'
+import { defaultOptions, defaultSortingOrder } from '../common/options'
 import recommended from './recommended.config'
 
 export default {

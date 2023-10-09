@@ -1,6 +1,6 @@
 import { Rule, RuleTester } from 'eslint'
 import path from 'path'
-import { name, rule } from 'rules/string-enum'
+import { name, rule } from '../../../src/rules/string-enum'
 import { typescriptConfig } from '../../helpers/configs'
 import {
   PreInvalidTestCaseObject,

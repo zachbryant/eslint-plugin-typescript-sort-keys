@@ -14,7 +14,7 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   parserOptions: {
-    ecmaVersion: 10,
+    ecmaVersion: 'latest',
     sourceType: 'module',
   },
   rules: {
@@ -23,6 +23,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'import/extensions': ['error', { ts: 'ignorePackages' }],
   },
   overrides: [
     {
@@ -37,7 +38,6 @@ module.exports = {
         'jest/no-identical-title': 'error',
         'jest/no-jasmine-globals': 'error',
         'jest/no-test-prefixes': 'error',
-        'jest/no-test-callback': 'error',
         'jest/no-test-return-statement': 'error',
         'jest/prefer-to-have-length': 'warn',
         'jest/prefer-spy-on': 'error',
@@ -52,5 +52,4 @@ module.exports = {
       typescript: true,
     },
   },
-  ignorePatterns: ['.eslintrc.js'],
 }

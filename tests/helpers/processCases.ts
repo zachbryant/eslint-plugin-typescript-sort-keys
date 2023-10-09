@@ -1,5 +1,5 @@
 import { RuleTester as ESLintRuleTester } from 'eslint'
-import { AllRuleOptions } from 'types'
+import { AllRuleOptions } from '../../src/types'
 import { filename } from './configs'
 import {
   OptionsSet,

@@ -1,12 +1,12 @@
 import { TSESTree } from '@typescript-eslint/utils'
-import { getOptions } from 'common/options'
-import { getFixerFunction } from 'fixer'
-import { memoize } from 'utils/memo'
-import { getUnsortedInfo } from 'utils/reportUtils'
+import { getOptions } from './common/options'
+import { getFixerFunction } from './fixer'
 import { reportBodyNodes, reportParentNode } from './report'
 import { AllRuleOptions, CreateReporterArgs, NodePositionInfo, TSType } from './types'
 import { getPropertyIsOptional, getPropertyName } from './utils/ast'
 import { compareFn } from './utils/compare'
+import { memoize } from './utils/memo'
+import { getUnsortedInfo } from './utils/reportUtils'
 
 /**
  * Returns the body sorted according to the options and sorting function.

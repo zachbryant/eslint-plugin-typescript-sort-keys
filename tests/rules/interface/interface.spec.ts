@@ -1,6 +1,6 @@
 import { Rule, RuleTester } from 'eslint'
 
-import { name, rule } from 'rules/interface'
+import { name, rule } from '../../../src/rules/interface'
 import { typescriptConfig } from '../../helpers/configs'
 import {
   PreInvalidTestCaseObject,

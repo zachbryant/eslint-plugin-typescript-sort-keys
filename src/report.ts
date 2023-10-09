@@ -1,6 +1,6 @@
 import assert from 'assert'
 
-import { getOptions } from 'common/options'
+import { getOptions } from './common/options'
 import { AllRuleOptions, CreateReporterArgs, NodePositionInfo, TSType } from './types'
 import { getPropertyName } from './utils/ast'
 

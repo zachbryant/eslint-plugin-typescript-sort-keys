@@ -1,9 +1,7 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils'
 import { JSONSchema4 } from '@typescript-eslint/utils/json-schema'
-import { createReporter } from 'plugin'
+import { createReporter } from '../plugin'
 
-import { getObjectBody } from 'utils/ast'
-import { RuleMetaData, createRule } from 'utils/rule'
 import {
   ErrorMessage,
   RuleOptionsGeneric,
@@ -11,6 +9,8 @@ import {
   SortingParamsOptions,
   sortingOrderOptionSchema,
 } from '../types'
+import { getObjectBody } from '../utils/ast'
+import { RuleMetaData, createRule } from '../utils/rule'
 
 /**
  * The name of this rule.
@@ -93,7 +93,7 @@ export const rule = createRule<errorMessageKeys, RuleOptions>({
     })
 
     return {
-      TSEnumDeclaration(node) {
+      TSEnumDeclaration(node: TSESTree.TSEnumDeclaration) {
         const body = getObjectBody(node) as TSESTree.TSEnumMember[]
         const isStringEnum = body.every(
           (member: TSESTree.TSEnumMember) =>

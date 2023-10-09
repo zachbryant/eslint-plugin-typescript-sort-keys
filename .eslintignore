@@ -1,4 +1,6 @@
 tests/fixtures/**
+tests/environments/template/**
+tests/environments/generated/**
 dist
 lib
 build

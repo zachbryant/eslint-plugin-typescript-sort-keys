@@ -3,7 +3,7 @@ import { AllRuleOptions, CreateReporterArgs, Node, SourceCode, TSType } from './
 import { getBodyRange, getFixedBodyText } from './utils/sourcecode'
 
 import { TSESLint } from '@typescript-eslint/utils'
-import { getMemoized, memoize } from 'utils/memo'
+import { getMemoized, memoize } from './utils/memo'
 
 export const getFixerFunction = (
   baseMemoKey: string,

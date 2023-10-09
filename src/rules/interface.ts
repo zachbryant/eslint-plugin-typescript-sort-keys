@@ -1,8 +1,6 @@
 import { TSESTree } from '@typescript-eslint/utils'
 import { JSONSchema4 } from '@typescript-eslint/utils/json-schema'
-import { createReporter } from 'plugin'
-import { getObjectBody } from 'utils/ast'
-import { createRule, RuleMetaData } from 'utils/rule'
+import { createReporter } from '../plugin'
 import {
   ErrorMessage,
   RuleOptionsGeneric,
@@ -10,6 +8,8 @@ import {
   sortingOrderOptionSchema,
   SortingParamsOptions,
 } from '../types'
+import { getObjectBody } from '../utils/ast'
+import { createRule, RuleMetaData } from '../utils/rule'
 
 /**
  * The name of this rule.
@@ -98,13 +98,13 @@ export const rule = createRule<errorMessageKeys, RuleOptions>({
     })
 
     return {
-      TSInterfaceDeclaration(node) {
+      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration) {
         const body = getObjectBody(node)
 
         return compareNodeListAndReport(node, body)
       },
 
-      TSTypeLiteral(node) {
+      TSTypeLiteral(node: TSESTree.TSTypeLiteral) {
         const body = getObjectBody(node)
 
         return compareNodeListAndReport(node, body)
