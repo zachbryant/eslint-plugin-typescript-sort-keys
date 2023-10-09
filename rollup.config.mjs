@@ -9,8 +9,7 @@ import path from 'path'
 
 const minify = !!process.env.MINIFY
 
-const filePath = './tsconfig.json'
-const config = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+const config = JSON.parse(fs.readFileSync('./tsconfig.json', 'utf-8'))
 assert(config)
 const baseUrl = config.compilerOptions.baseUrl
 
@@ -25,21 +24,19 @@ const isExternal = id =>
   !id.startsWith('\0') &&
   !internalFolders.some(mapping => id.startsWith(mapping))
 
-const outputDirectory = 'lib'
-
 export default [
   {
     input: './src/index.ts',
     external: isExternal,
     output: [
       {
-        dir: outputDirectory,
+        dir: 'lib',
         entryFileNames: '[name].cjs.js',
         format: 'cjs',
         sourcemap: true,
       },
       {
-        dir: outputDirectory,
+        dir: 'lib',
         entryFileNames: '[name].esm.js',
         format: 'es',
         sourcemap: true,

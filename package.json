@@ -1,6 +1,5 @@
 {
   "name": "eslint-plugin-typescript-sort-keys",
-  "type": "module",
   "version": "2.3.0",
   "description": "Sort interface and string enum keys",
   "keywords": [
@@ -10,7 +9,7 @@
     "typescript"
   ],
   "author": "infctr <infctr@gmail.com>",
-  "main": "./lib/index.esm.js",
+  "main": "./lib/index.cjs.js",
   "repository": "git@github.com:infctr/eslint-plugin-typescript-sort-keys.git",
   "url": "https://github.com/infctr/eslint-plugin-typescript-sort-keys",
   "files": [
@@ -23,7 +22,7 @@
     ".": {
       "import": "./lib/index.esm.js",
       "require": "./lib/index.cjs.js",
-      "default": "./lib/index.esm.js"
+      "default": "./lib/index.cjs.js"
     },
     "./package.json": "./package.json"
   },
