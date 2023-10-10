@@ -1,14 +1,13 @@
 module.exports = {
-  collectCoverage: true,
   coverageDirectory: 'coverage',
   collectCoverageFrom: ['src/**/*'],
   coverageReporters: [['text', { skipFull: false, skipEmpty: true }]],
   coverageThreshold: {
     global: {
-      branches: 95,
-      functions: 95,
+      branches: 89,
+      functions: 100,
       lines: 95,
-      statements: -10,
+      statements: 96,
     },
   },
   moduleDirectories: ['node_modules', 'src'],

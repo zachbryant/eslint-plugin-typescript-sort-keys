@@ -15,6 +15,8 @@ const valid: PreValidTestCaseObject = {
    * ascending, caseSensitive (default)
    */
   ascendingSensitive: [
+    'interface U {a:T;}',
+    'interface U {a:T; b:T;}',
     'interface U {_:T; a:T; b:T;}',
     'interface U {a:T; b:T; c:T;}',
     'interface U {a:T; b:T; b_:T;}',
@@ -219,6 +221,11 @@ const invalid: PreInvalidTestCaseObject = {
    * ascending sensitive (default)
    */
   ascendingSensitive: [
+    {
+      code: 'interface U {b:T; a:T;}',
+      output: 'interface U {a:T; b:T;}',
+      errors: [['b'], ['a', 'b']],
+    },
     {
       code: 'interface U {b_:T; a:T; b:T;}',
       output: 'interface U {a:T; b:T; b_:T;}',

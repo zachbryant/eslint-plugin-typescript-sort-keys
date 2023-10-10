@@ -31,7 +31,7 @@ export function getNodePunctuator(
     includeComments: false,
   })
   // Ensure we don't go beyond the parent into the source code
-  return punctuator && punctuator?.range[1] <= (node.parent?.range[1] || Infinity)
+  return punctuator && punctuator.range[1] <= (node.parent?.range[1] || Infinity)
     ? punctuator
     : undefined
 }

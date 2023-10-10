@@ -29,6 +29,8 @@ const valid: PreValidTestCaseObject = {
    * ascending (default)
    */
   ascending: [
+    'enum U {a="b", }',
+    'enum U {a="b", b="c"}',
     'enum U {_="a", a="b", b="c"}',
     'enum U {a="a", b="b", c="c"}',
     'enum U {a="a", b="b", b_="c"}',
@@ -122,6 +124,11 @@ const invalid: PreInvalidTestCaseObject = {
   //  * ascending (default case sensitive)
   //  */
   ascending: [
+    {
+      code: 'enum U {b="c", a="a"}',
+      output: 'enum U {a="a", b="c"}',
+      errors: [['b'], ['a', 'b']],
+    },
     {
       code: 'enum U {a="a", _="b", b="c"}',
       output: 'enum U {_="b", a="a", b="c"}',

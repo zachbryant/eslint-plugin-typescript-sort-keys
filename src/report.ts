@@ -21,14 +21,12 @@ export function reportParentNode(
 ) {
   const { context, createReportParentObject } = createReporterArgs
   const { loc, messageId } = createReportParentObject(bodyParent)
-
   context.report({
     loc,
     messageId,
     node: bodyParent,
     data: {
       unsortedCount,
-      plural: unsortedCount > 1 ? 's' : '',
     },
     fix: fixerFunction,
   })

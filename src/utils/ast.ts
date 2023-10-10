@@ -75,11 +75,7 @@ function getProperty(node: TSESTree.Node) {
 export function getPropertyName(node: TSType) {
   const property = getProperty(node as TSESTree.Node)
 
-  if (!property) {
-    return undefined
-  }
-
-  switch (property.type) {
+  switch (property?.type) {
     case AST_NODE_TYPES.Literal:
       return String(property.value)
 
