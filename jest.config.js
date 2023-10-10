@@ -1,6 +1,7 @@
 module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
+  collectCoverageFrom: ['src/**/*'],
   coverageReporters: [['text', { skipFull: false, skipEmpty: true }]],
   coverageThreshold: {
     global: {

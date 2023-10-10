@@ -3,20 +3,15 @@
   "name": "test-node-{{TEST_NODE_MAJOR_VERSION}}",
   "license": "ISC",
   "scripts": {
-    "link-pkg": "yarn -s chalk-start '🕒 Linking development package' && yarn -s link eslint-plugin-typescript-sort-keys && yarn -s chalk-pass '✅ Linked' || yarn -s chalk-warn '⚠️ Run yarn link in root package'",
-    "lint": "yarn -s chalk-start '🕒 Testing linter...' && yarn -s eslint --fix index.ts && yarn -s chalk-pass '✅ Linter ran without errors'",
-    "lint-sanity": "yarn chalk-start '🕒 Sanity check should fail' && yarn -s eslint index.ts && exit 1 || yarn -s chalk-pass '✅ Sanity check lint failed as expected'",
-    "setup": "yarn -s install && yarn -s link-pkg",
-    "test": "yarn -s setup && yarn -s lint-sanity && yarn -s lint",
-    "chalk-pass": "yarn -s chalk-print greenBright",
-    "chalk-start": "yarn -s chalk-print magentaBright",
-    "chalk-warn": "yarn -s chalk-print yellowBright",
-    "chalk-print": "yarn -s chalk bold"
+    "link-pkg": "yarn -s link eslint-plugin-typescript-sort-keys || echo '⚠️ Run yarn link in root package'",
+    "lint-fix": "yarn -s eslint --fix index.ts",
+    "lint-original-file": "OUT=$(yarn -s eslint index-original.ts); CODE=$?; echo $OUT > lint.out && exit $CODE",
+    "lint-fixed-file": "yarn -s eslint index.ts &> /dev/null",
+    "setup": "yarn -s install && yarn -s link-pkg"
   },
   "dependencies": {
     "@typescript-eslint/parser": "*",
-    "chalk-cli": "*",
-    "eslint-plugin-typescript-sort-keys": "../../../../",
+    "eslint-plugin-typescript-sort-keys": "file:../../../../",
     "eslint": "*",
     "typescript": "*"
   },

@@ -43,6 +43,7 @@ module.exports = {
         'jest/prefer-spy-on': 'error',
         'jest/valid-expect': 'error',
         'jest/no-test-callback': 'off',
+        'no-console': 'off',
       },
     },
   ],

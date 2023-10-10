@@ -1,10 +1,9 @@
-import chalk from 'chalk'
-import { spawnSync } from 'child_process'
+import { execSync } from 'child_process'
 import fs from 'fs'
 import path from 'path'
 import { rimrafSync } from 'rimraf'
 
-const TemplatesAbsolutePath = path.resolve(__dirname, 'templates')
+const TemplatesAbsolutePath = path.resolve(__dirname, '../environments/templates')
 
 /**
  * Generate a test environment based on the node version supplied.
@@ -25,25 +24,26 @@ export function generateTestEnvironment(nodeVersion: string, testFolder: string)
     })
 }
 
-// Run the test and report results
-export function runTest(testFolder: string) {
-  const testName = path.basename(testFolder)
-  console.log(chalk.bold(chalk.yellowBright(`🕒 Running test ${testName}`)))
-
-  const result = spawnSync(`cd ${testFolder} && yarn test`, {
-    encoding: 'utf-8',
-    stdio: 'inherit',
-    shell: true,
-    env: {
-      PATH: `/home/node/.volta/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin`,
-      FORCE_COLOR: 1
-    } as any,
-  })
-
-  if (result.status === 0) {
-    console.log(chalk.bold(chalk.greenBright(`✅ Test ${testName} executed successfully`)))
-  } else {
-    console.error(chalk.bold(chalk.redBright(`❌ Test ${testName} failed with code ${result.status}`)))
+// Run the package.json script in and report results
+export function runScript(testFolder: string, scriptName: string) {
+  try {
+    const result = execSync(`cd ${testFolder} && yarn -s ${scriptName}`, {
+      encoding: 'utf-8',
+      stdio: 'inherit',
+      env: {
+        PATH: `/home/node/.volta/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin`,
+        FORCE_COLOR: '1',
+      },
+    })
+    return {
+      result: (result ?? '').toString(),
+      exitCode: 0,
+    }
+  } catch (error: any) {
+    return {
+      result: error.message,
+      exitCode: 1,
+    }
   }
 }
 
@@ -76,7 +76,7 @@ function getTemplateFileFormatObject(
 function formatFileWithNamedVariables(file: string, variables: Record<string, string>) {
   const templateContent = fs.readFileSync(file, 'utf8')
   return Object.entries(variables).reduce(
-    (acc, [key, value]) => acc.replace(new RegExp(`\{\{${key}\}\}`, 'g'), value),
+    (acc, [key, value]) => acc.replace(new RegExp(`{{${key}}}`, 'g'), value),
     templateContent,
   )
 }
