@@ -33,7 +33,12 @@ export function getFixedBodyText(
             getProcessedText(sourceCode, node),
             getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Block),
             shouldHavePunctuation && getPunctuation(node),
-            getCommentsTextAfter(sourceCode, node, AST_TOKEN_TYPES.Line),
+            getCommentsTextAfter(
+              sourceCode,
+              node,
+              AST_TOKEN_TYPES.Line,
+              indentations.get(index + 1),
+            ),
           ]
             .filter(Boolean)
             .join('')

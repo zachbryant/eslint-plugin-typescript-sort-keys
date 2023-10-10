@@ -6,11 +6,7 @@ import {
   getNodeFollowingPunctuator,
   getNodePunctuator,
 } from './punctuationHelpers'
-import {
-  getTextBetween,
-  getTextBetweenNodeAndNext,
-  getTextBetweenNodeAndPrevious,
-} from './textHelpers'
+import { getTextBetween, getTextBetweenNodeAndPrevious } from './textHelpers'
 
 /**
  * Returns the text of the last comment in the body
@@ -46,6 +42,7 @@ export function getLastCommentText(sourceCode: SourceCode, body: Node[]) {
 export function getCommentsText(
   sourceCode: SourceCode,
   comments: TSESTree.Comment[],
+  nextIndentation?: string,
 ): string {
   return comments
     .map(comment => {
@@ -56,7 +53,8 @@ export function getCommentsText(
       if (
         comment.type === AST_TOKEN_TYPES.Line &&
         !commentText.endsWith('\n') &&
-        !getTextBetweenNodeAndNext(sourceCode, comment).includes('\n')
+        !!nextIndentation &&
+        !nextIndentation.includes('\n')
       ) {
         commentText += '\n'
       }
@@ -80,8 +78,13 @@ export function getCommentsTextAfter(
   sourceCode: SourceCode,
   node: Node,
   type?: AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block,
+  nextIndentation?: string,
 ) {
-  return getCommentsText(sourceCode, getCommentsAfter(sourceCode, node, type))
+  return getCommentsText(
+    sourceCode,
+    getCommentsAfter(sourceCode, node, type),
+    nextIndentation,
+  )
 }
 
 /**

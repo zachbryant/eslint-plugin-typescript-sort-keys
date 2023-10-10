@@ -14,7 +14,7 @@ describe('autofix', () => {
   })
 
   const cases: Array<[any, string, string]> = [
-    [recommended, 'recommended', 'autofix.output.ts'],
+    [recommended, 'recommended', 'recommended.output.ts'],
     [requiredFirst, 'requiredFirst', 'requiredFirst.output.ts'],
   ]
   cases.forEach(([config, configName, outputFileName]) => {

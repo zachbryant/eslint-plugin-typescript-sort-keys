@@ -31,6 +31,10 @@ enum InlineEnum3 {C="T", b_="T", c="T"}
 enum WeirdEnum {
   Bar = 'BAR',Baz = 'BAZ',    Foo = 'FOO'    }
 
+enum WeirderEnum { Bar = 'BAR', Baz = 'BAZ',
+Foo = 'FOO', // FOO
+    Gorp = 'GORP' }
+
 interface InlineInterface {a?:"T"; b:"T"; c?:"T"; d:"T"; e: "T";}
 
 class Class extends GraphQLExtension<{
