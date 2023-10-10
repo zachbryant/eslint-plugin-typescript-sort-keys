@@ -47,7 +47,7 @@
     "test:node-19": "TEST_NODE_VERSION=19 yarn -s test:node:generate",
     "test:node-20": "TEST_NODE_VERSION=20 yarn -s test:node:generate",
     "test:node:all": "run-s \"test:node-*\"",
-    "test:node:generate": "TEST_KEEP_ARTIFACTS=true yarn -s tsx tests/environments/test-node.ts",
+    "test:node:generate": "TEST_KEEP_ARTIFACTS=false yarn -s tsx tests/environments/test-node.ts",
     "test:rules": "yarn -s test ./tests/rules/*/*.spec.ts",
     "test:string-enum": "yarn -s test ./tests/rules/string-enum/*.spec.ts",
     "test:watch:all": "yarn -s jest --watch .*.spec.ts",
