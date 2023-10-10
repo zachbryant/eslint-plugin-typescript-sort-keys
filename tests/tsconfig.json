@@ -13,5 +13,5 @@
     "strictNullChecks": false
   },
   "include": ["**/*.ts"],
-  "exclude": ["fixtures"]
+  "exclude": ["fixtures", "environment"]
 }

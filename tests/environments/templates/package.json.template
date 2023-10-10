@@ -1,0 +1,22 @@
+{
+  "name": "test-node-{{TEST_NODE_MAJOR_VERSION}}",
+  "license": "ISC",
+  "scripts": {
+    "link-pkg": "echo 'Linking development package' && yarn link eslint-plugin-typescript-sort-keys || exit 0",
+    "lint": "echo 'Testing linter...' && eslint --fix index.ts",
+    "lint-sanity": "echo 'Sanity check should fail' && eslint index.ts",
+    "test": "yarn -s link-pkg && echo 'Running yarn install...' && yarn -s install && yarn -s lint"
+  },
+  "dependencies": {
+    "@typescript-eslint/parser": "*",
+    "eslint-plugin-typescript-sort-keys": "../../../../",
+    "eslint": "*",
+    "typescript": "*"
+  },
+  "engines": {
+    "node": "^{{TEST_NODE_MAJOR_VERSION}}"
+  },
+  "volta": {
+    "node": "{{TEST_NODE_VERSION}}"
+  }
+}

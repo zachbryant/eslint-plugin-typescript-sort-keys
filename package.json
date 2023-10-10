@@ -42,14 +42,15 @@
     "test:autofix": "yarn test ./tests/autofix.spec.ts",
     "test:config": "yarn test ./tests/config.spec.ts --collectCoverage=false",
     "test:interface": "yarn test ./tests/rules/interface/*.spec.ts",
-    "test:node:all": "run-s \"test:node*\"",
-    "test:node13": "echo node13 && exit 0",
-    "test:node14": "echo node14 && exit 0",
-    "test:node15": "echo node15 && exit 0",
-    "test:node16": "echo node16 && exit 0",
-    "test:node18": "echo node18 && exit 0",
-    "test:node19": "echo node19 && exit 0",
-    "test:node20": "echo node20 && exit 0",
+    "test:node-13": "TEST_NODE_VERSION=13 yarn test:node:generate",
+    "test:node-14": "TEST_NODE_VERSION=14 yarn test:node:generate",
+    "test:node-15": "TEST_NODE_VERSION=15 yarn test:node:generate",
+    "test:node-16": "TEST_NODE_VERSION=16 yarn test:node:generate",
+    "test:node-18": "TEST_NODE_VERSION=18 yarn test:node:generate",
+    "test:node-19": "TEST_NODE_VERSION=19 yarn test:node:generate",
+    "test:node-20": "TEST_NODE_VERSION=20 yarn test:node:generate",
+    "test:node:all": "run-s \"test:node-*\"",
+    "test:node:generate": "TEST_KEEP_ARTIFACTS=0 yarn tsx tests/environments/test-node.ts",
     "test:rules": "yarn test ./tests/rules/*/*.spec.ts",
     "test:string-enum": "yarn test ./tests/rules/string-enum/*.spec.ts",
     "test:watch:all": "yarn jest --watch .*.spec.ts",
@@ -87,6 +88,7 @@
     "@typescript-eslint/parser": "^6.7.4",
     "babel-jest": "~26.6.3",
     "babel-plugin-module-resolver": "~4.1.0",
+    "chalk": "~5.3.0",
     "eslint": "~8.50.0",
     "eslint-config-prettier": "~9.0.0",
     "eslint-import-resolver-typescript": "~3.6.1",
@@ -103,6 +105,7 @@
     "rimraf": "^5.0.5",
     "rollup": "~4.0.0",
     "tmp": "~0.2.1",
+    "tsx": "~3.13.0",
     "typescript": "~5.2.2",
     "yarn-deduplicate": "^6.0.2"
   },
@@ -115,7 +118,7 @@
     "node": ">=13.9 <17 || >=18"
   },
   "volta": {
-    "node": "18.0.0",
+    "node": "18.18.0",
     "yarn": "1.22.19"
   },
   "license": "ISC"
