@@ -102,7 +102,7 @@ export function getCommentsBefore(
   const nodeStartLine = node.loc.start.line
   const prevNodeEndLine = prevNode.loc.end.line
 
-  return comments.filter(comment => {
+  return comments.filter((comment: Node) => {
     const commentStartLine = comment.loc.start.line
 
     // Special case when comment is on previous' line but prev is declaration punctuator
@@ -139,7 +139,7 @@ export function getCommentsAfter(
   const nextNode = getNodeFollowingPunctuator(sourceCode, node)
   const nextNodeStartPos = nextNode?.range[0] ?? Infinity
 
-  const commentsAfter = comments.filter(comment => {
+  const commentsAfter = comments.filter((comment: Node) => {
     const commentStartLine = comment.loc.start.line
     const commentEndPos = comment.range[1]
     const nextBeforeComments = nextNode ? getCommentsBefore(sourceCode, nextNode) : []

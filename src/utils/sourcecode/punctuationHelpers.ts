@@ -22,7 +22,7 @@ export function getNodePunctuator(
   }
 
   const punctuator = sourceCode.getTokenAfter(node, {
-    filter: n => {
+    filter: (n: Node) => {
       return (
         n.type === AST_TOKEN_TYPES.Punctuator &&
         new RegExp(`^[${punctuators}]$`).test(n.value)
