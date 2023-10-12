@@ -11,6 +11,7 @@ export function randomSelect<T>(arr: T[] | object): T {
 }
 
 export function randomIntBetween([min, max]: Range) {
+  if (min > max) return randomIntBetween([0, max])
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
@@ -19,6 +20,7 @@ export function randomText(
   countRange: Range,
   units: 'words' | 'sentences' | 'paragraphs',
 ) {
+  console.log(countRange, units)
   return loremIpsum({
     count: randomIntBetween(countRange),
     random: Math.random,
@@ -32,7 +34,13 @@ export function randomText(
 }
 
 export function generateFilledArray<T>(length: number, generator: () => T): Array<T> {
-  return Array.from({ length }, generator)
+  const arr = Array.from({ length }, generator)
+  arr.forEach((_, index) => {
+    if (arr.indexOf(_) !== index && arr.indexOf(_, index) !== -1) {
+      arr[index] = generator()
+    }
+  })
+  return arr
 }
 
 const validCharacters =
@@ -60,4 +68,21 @@ export const getWhitespaceFromType = (spaceType: WhitespaceTypes) => {
     case WhitespaceTypes.Tab:
       return '\t'
   }
+}
+
+// [a,b,c,d] zipped with [1,2,] -> [a,1,b,2,c,d]
+export const zip = <T = unknown, U = unknown>(
+  arr1: Array<T>,
+  arr2: Array<U>,
+): Array<T | U> => {
+  const result: Array<T | U> = []
+  for (let index = 0; index < Math.max(arr1.length, arr2.length); index++) {
+    if (arr1[index]) result.push(arr1[index])
+    if (arr2[index]) result.push(arr2[index])
+  }
+  return result
+}
+
+export function chance(probability: number) {
+  return Math.random() < probability
 }

@@ -3,30 +3,23 @@ export type Range = [number, number]
 export enum DefinitionTypes {
   Enum = 'E',
   Inline = 'inline',
-  I = 'I',
+  Interface = 'I',
   Type = 'T',
   Union = 'U',
 }
 
 export enum MemberKeyFormat {
-  String = '{0}',
-  Index = '[{0}: {1}]',
-  Variable = '[{0}]',
-  Method = '{0}{1}()', // Name, optional respectively
-  KeyOf = '[K in keyof TKey]',
+  Index = "[index: '{0}']{1}", // type, optional respectively
+  KeyOf = '[K in keyof TKey]{1}', // optional
+  Method = "'{0}'{1}()", // Name, optional respectively
+  String = "'{0}'{1}", // Name, optional respectively
+  //Variable = '[\'{0}\']', // TODO need to generate a variable to enable this
 }
 
-export enum MemberTypeAnnotationFormats {
-  Array = 'string[][]',
-  String = 'string',
-  Number = 'number',
-  Boolean = 'boolean',
-  Undefined = 'undefined',
-  Unknown = 'unknown',
-  Any = 'any',
+export enum MemberTypeAnnotationFormat {
+  Basic = '{0}',
   Generic = 'Array<{0}>',
-  Union = '{1}|{2}|{3}',
-  Embedded = '{0}',
+  Union = '{0}|{1}|{2}',
 }
 
 export enum WhitespaceTypes {
@@ -36,14 +29,18 @@ export enum WhitespaceTypes {
 }
 
 export enum CommentTypes {
-  Line = 'Line',
   Block = 'Block',
+  Line = 'Line',
 }
 
 export interface GeneratedDefinition {
-  type: DefinitionTypes
-  name: string
+  comments: {
+    start: GeneratedComment[]
+    end: GeneratedComment[]
+  }
   members: GeneratedMember[]
+  name: string | false
+  type: DefinitionTypes
 }
 
 export interface GeneratedMember {
@@ -51,13 +48,15 @@ export interface GeneratedMember {
     before: GeneratedComment[]
     after: GeneratedComment[]
   }
-  name: string
   keyFormat: MemberKeyFormat
-  typeAnnotationFormat: MemberTypeAnnotationFormats
+  name: string
   optional: boolean
+  type: string[]
+  typeAnnotationFormat: MemberTypeAnnotationFormat
+  isEnumMember: boolean
 }
 
 export interface GeneratedComment {
-  type: CommentTypes
   text: string
+  type: CommentTypes
 }

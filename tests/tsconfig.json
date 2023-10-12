@@ -1,8 +1,10 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "module": "nodenext",
+    "lib": ["ESNext"],
+    "module": "ESNext",
     "outDir": "../build",
+    "esModuleInterop": true,
     // Turn off checks to make debugging nicer.
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
@@ -10,8 +12,9 @@
     "noImplicitThis": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "target": "ESNext"
   },
-  "include": ["**/*.ts"],
-  "exclude": ["fixtures", "environment"]
+  "include": ["*", "rules", "helpers"],
+  "exclude": ["fixtures", "environments"]
 }
