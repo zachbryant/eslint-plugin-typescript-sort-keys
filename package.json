@@ -41,6 +41,7 @@
     "test:all": "yarn -s test .*.spec.ts --collectCoverage=true",
     "test:autofix": "yarn -s test ./tests/autofix.spec.ts",
     "test:config": "yarn -s test ./tests/config.spec.ts",
+    "test:fuzz": "yarn tsx --tsconfig ./tests/tsconfig.json ./tests/helpers/fuzzer/fuzz.ts",
     "test:interface": "yarn -s test ./tests/rules/interface/*.spec.ts",
     "test:node": "DEBUG=true yarn -s test ./tests/node-environments.spec.ts",
     "test:rules": "yarn -s test ./tests/rules/*/*.spec.ts --collectCoverage=true",
