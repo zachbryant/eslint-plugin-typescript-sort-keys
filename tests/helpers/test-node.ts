@@ -25,13 +25,25 @@ export function generateTestEnvironment(nodeVersion: string, testFolder: string)
 }
 
 // Run the package.json script in and report results
-export function runScript(testFolder: string, scriptName: string) {
+export function runScript(
+  testFolder: string,
+  scriptName: string,
+  stdio: 'inherit' | 'ignore' | 'pipe' = 'inherit',
+) {
   try {
     const result = execSync(`cd ${testFolder} && yarn -s ${scriptName}`, {
       encoding: 'utf-8',
-      stdio: 'inherit',
+      stdio,
       env: {
-        PATH: `/home/node/.volta/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin`,
+        PATH: [
+          '/bin',
+          '/home/node/.volta/bin',
+          '/sbin',
+          '/usr/bin',
+          '/usr/local/bin',
+          '/usr/local/sbin',
+          '/usr/sbin',
+        ].join(':'),
         FORCE_COLOR: '1',
       },
     })
@@ -73,10 +85,14 @@ function getTemplateFileFormatObject(
 /**
  * Format a file with the supplied variables. Expects variables to be wrapped with brackets like {{MYVAR}}.
  */
-function formatFileWithNamedVariables(file: string, variables: Record<string, string>) {
+function formatFileWithNamedVariables(
+  file: string,
+  variables: Record<string, string | undefined>,
+) {
   const templateContent = fs.readFileSync(file, 'utf8')
   return Object.entries(variables).reduce(
-    (acc, [key, value]) => acc.replace(new RegExp(`{{${key}}}`, 'g'), value),
+    (acc, [key, value]) =>
+      value ? acc.replace(new RegExp(`{{${key}}}`, 'g'), value) : acc,
     templateContent,
   )
 }
@@ -97,5 +113,7 @@ const getNodeVersion = (majorNodeVersion: string) => {
       return '17.9.1'
     case '16':
       return '16.20.2'
+    default:
+      return ''
   }
 }
