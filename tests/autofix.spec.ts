@@ -47,7 +47,7 @@ describe('autofix', () => {
       const result = results[0]
 
       // For debugging when output is malformed
-      // console.log(result.output)
+      if (process.env.DEBUG === 'true') console.log(result.output)
 
       expect(result.messages).toHaveLength(0)
       expect(result.errorCount).toBe(0)

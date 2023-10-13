@@ -19,6 +19,8 @@ describe('Node environments', () => {
           beforeAll(() => {
             purgeTestEnvironment(testFolder)
             generateTestEnvironment(majorNodeVersion, testFolder)
+            if (process.env.DEBUG === 'true')
+              console.log(`Running setup for node v${majorNodeVersion} (${moduleType})`)
             runScript(testFolder, 'setup')
           })
           afterAll(() => {
