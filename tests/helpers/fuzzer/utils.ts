@@ -1,4 +1,7 @@
 import { loremIpsum } from 'lorem-ipsum'
+import os from 'os'
+import path from 'path'
+import * as ts from 'typescript'
 import { Range, WhitespaceTypes } from './types'
 
 export const range = (min: number, max: number) => [min, max] as Range
@@ -10,9 +13,9 @@ export function randomSelect<T>(arr: T[] | object): T {
   return randomSelect(Object.values(arr))
 }
 
+// Returns a random integer between min and max, inclusive
 export function randomIntBetween([min, max]: Range) {
-  if (min > max) return randomIntBetween([0, max])
-  return Math.floor(Math.random() * (max - min + 1) + min)
+  return Math.abs(Math.floor(Math.random() * (max - min + 1) + min))
 }
 
 // Generates lorem ipsum text
@@ -20,33 +23,34 @@ export function randomText(
   countRange: Range,
   units: 'words' | 'sentences' | 'paragraphs',
 ) {
-  console.log(countRange, units)
   return loremIpsum({
     count: randomIntBetween(countRange),
     random: Math.random,
     format: 'plain',
     units,
-    paragraphLowerBound: 2, // Min sentences per paragraph
-    paragraphUpperBound: 3, // Max sentences per paragarph
+    paragraphLowerBound: 1, // Min sentences per paragraph
+    paragraphUpperBound: 2, // Max sentences per paragarph
     sentenceLowerBound: 3, // Min words per sentence
     sentenceUpperBound: 4, // Max words per sentence
   })
 }
 
 export function generateFilledArray<T>(length: number, generator: () => T): Array<T> {
-  const arr = Array.from({ length }, generator)
-  arr.forEach((_, index) => {
-    if (arr.indexOf(_) !== index && arr.indexOf(_, index) !== -1) {
-      arr[index] = generator()
+  const arr = new Array(length)
+  for (let index = 0; index < length; index++) {
+    let generated
+    while (arr.includes((generated = generator()))) {
+      /**/
     }
-  })
+    arr[index] = generated
+  }
   return arr
 }
 
 const validCharacters =
   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.' +
-  'áéíóúÀÈÌÒÙâêîôûÄËÏÖÜãñõçÇß' +
-  '€£¥¢§®©¶@#%&+!-/*\\?<>'
+  'áéíóúÄËÏÖÜçÇß' +
+  '£®¶@#%&+!-/*\\?<>'
 export function generateRandomMemberKeyCharacter(): string {
   const randomIndex = Math.floor(Math.random() * validCharacters.length)
   return validCharacters[randomIndex]
@@ -85,4 +89,34 @@ export const zip = <T = unknown, U = unknown>(
 
 export function chance(probability: number) {
   return Math.random() < probability
+}
+
+export function validateTSCode(code: string): boolean {
+  console.log(code)
+  const tempFilePath = path.resolve(
+    os.tmpdir(),
+    `temp_${new Date().getMilliseconds()}.ts`,
+  )
+  const sourceFile = ts.createSourceFile(tempFilePath, code, ts.ScriptTarget.Latest, true)
+
+  const program = ts.createProgram({
+    rootNames: [tempFilePath],
+    options: {
+      module: ts.ModuleKind.ESNext,
+      skipLibCheck: true,
+      strict: true,
+    },
+  })
+
+  try {
+    const errors = ts
+      .getPreEmitDiagnostics(program, sourceFile)
+      .filter(_ => _.category === ts.DiagnosticCategory.Error)
+    errors.forEach(console.log)
+
+    return errors.length === 0
+  } catch (error) {
+    console.error(error)
+    return false
+  }
 }

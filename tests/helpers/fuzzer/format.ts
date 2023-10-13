@@ -1,17 +1,20 @@
-import { generateWhitespace } from './generate'
+import { generateWhitespace } from './generate/whitespace'
 import {
-  CommentTypes,
   DefinitionTypes,
   GeneratedComment,
   GeneratedDefinition,
   GeneratedMember,
-  MemberKeyFormat,
-  MemberTypeAnnotationFormat,
+  isBlockComment,
+  isEnumMember,
+  isLineComment,
 } from './types'
 import { generateFilledArray, zip } from './utils'
 
 export function formatDefinition(definition: GeneratedDefinition) {
-  const formattedTypeAndName = [formatDefinitionType(definition.type), definition.name]
+  const formattedTypeAndName = [
+    formatDefinitionType(definition.type),
+    canShowName(definition.type) && definition.name,
+  ]
     .filter(Boolean)
     .join(' ')
   const formattedMembers = definition.members.map(formatMember)
@@ -21,25 +24,22 @@ export function formatDefinition(definition: GeneratedDefinition) {
     ...definition.comments.end.map(formatComment),
   ]
   const whitespace = generateFilledArray(entries.length + 1, generateWhitespace)
-  return `${formattedTypeAndName}${formattedTypeAndName && ' '}{${zip(
-    entries,
-    whitespace,
-  ).join('')}}`
+  const codeBodyString = zip(entries, whitespace).join('')
+  return `${formattedTypeAndName}${formattedTypeAndName && ' '}{${codeBodyString}}`
 }
 
 function formatMember(member: GeneratedMember) {
-  const formattedKey = formatMemberKey(member.keyFormat, member)
-  const formattedType = formatMemberTypeAnnotation(member.typeAnnotationFormat, member)
-  const punctuation = member.isEnumMember ? ',' : ';'
+  const formattedKey = formatMemberKey(member)
+  const formattedType = formatMemberTypeAnnotation(member)
+  const punctuation = isEnumMember(member) ? ',' : ';'
+  const assignmentOperator = isEnumMember(member) ? '=' : ':'
   const entries = [
     ...member.comments.before.map(formatComment),
-    `${formattedKey}${member.isEnumMember ? '=' : ':'}`,
+    `${formattedKey}${assignmentOperator}`,
     `${formattedType}`,
-    ...member.comments.after
-      .filter(_ => _.type === CommentTypes.Block)
-      .map(formatComment),
+    ...member.comments.after.filter(isBlockComment).map(formatComment),
     punctuation,
-    ...member.comments.after.filter(_ => _.type === CommentTypes.Line).map(formatComment),
+    ...member.comments.after.filter(isLineComment).map(formatComment),
   ]
   return zipWithWhitespace(entries).join('')
 }
@@ -60,6 +60,12 @@ function formatComment(comment: GeneratedComment) {
   }
 }
 
+function canShowName(definitionType: DefinitionTypes) {
+  return (
+    definitionType !== DefinitionTypes.Inline && definitionType !== DefinitionTypes.Union
+  )
+}
+
 function formatDefinitionType(definitionType: string) {
   switch (definitionType) {
     case DefinitionTypes.Enum:
@@ -75,15 +81,12 @@ function formatDefinitionType(definitionType: string) {
   }
 }
 
-export function formatMemberTypeAnnotation(
-  typeAnnotationFormat: MemberTypeAnnotationFormat,
-  member: GeneratedMember,
-) {
-  return format(typeAnnotationFormat, ...member.type)
+export function formatMemberTypeAnnotation(member: GeneratedMember) {
+  return format(member.typeAnnotationFormat, ...member.type)
 }
 
-function formatMemberKey(keyFormat: MemberKeyFormat, member: GeneratedMember) {
-  return format(keyFormat, member.name, member.optional ? '?' : '')
+export function formatMemberKey(member: GeneratedMember) {
+  return format(member.keyFormat, member.name, member.optional ? '?' : '', ...member.type)
 }
 
 export function format(template: string, ...args: string[]) {
