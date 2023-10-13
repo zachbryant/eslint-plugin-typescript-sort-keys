@@ -3,9 +3,9 @@ import fs from 'fs'
 import path from 'path'
 import tmp from 'tmp'
 
-import recommended from 'config/recommended.config'
-import requiredFirst from 'config/requiredFirst.config'
 import plugin from '../src'
+import recommended from '../src/config/recommended.config'
+import requiredFirst from '../src/config/requiredFirst.config'
 import { typescriptConfig } from './helpers/configs'
 
 describe('autofix', () => {
