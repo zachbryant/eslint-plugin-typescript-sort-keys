@@ -3,16 +3,14 @@ import { formatDefinition } from '../format'
 import {
   CommentTypes,
   DefinitionTypes,
+  DefinitionTypesTopLevel,
   GeneratedComment,
   GeneratedDefinition,
   GeneratedMember,
   MemberKeyFormat,
   MemberTypeAnnotationFormat,
   isEnum,
-  isIndexKey,
-  isKeyOfKey,
   isStringKey,
-  isType,
 } from '../types'
 import {
   capitalize,
@@ -22,8 +20,11 @@ import {
   randomIntBetween,
   randomSelect,
   randomText,
-  validateTSCode,
 } from '../utils'
+
+// TODO deduplicate index type annotations
+// TODO mapped types can't have anything else
+// TODO sync other type annotations to possible index signature types
 
 export function generateDefinitions(count: number): GeneratedDefinition[] {
   return generateFilledArray(count, () =>
@@ -36,7 +37,9 @@ function generateDefinition(
   depthCurrent: number = 0,
   depthMax: number = 0,
 ): GeneratedDefinition {
-  const definitionType: DefinitionTypes = forceType ?? randomSelect(DefinitionTypes)
+  const definitionType: DefinitionTypes =
+    forceType ??
+    randomSelect(depthCurrent === 0 ? DefinitionTypesTopLevel : DefinitionTypes)
   const definitionName =
     definitionType !== DefinitionTypes.Inline &&
     `${definitionType}_${capitalize(randomText([1, 1], 'words'))}_${randomIntBetween([
@@ -73,7 +76,7 @@ const getKeyFormat = (definitionType: DefinitionTypes) => {
   let keyFormat
   while (
     !keyFormat ||
-    (!isType(definitionType) && isKeyOfKey(keyFormat)) ||
+    // (!isType(definitionType) && isKeyOfKey(keyFormat)) ||
     (isEnum(definitionType) && !isStringKey(keyFormat))
   ) {
     keyFormat = randomSelect(MemberKeyFormat)
@@ -82,8 +85,13 @@ const getKeyFormat = (definitionType: DefinitionTypes) => {
 }
 
 // Check for scenarios where optional is invalid
-function canBeOptional(definitionType: DefinitionTypes, keyFormat: MemberKeyFormat) {
-  return !isEnum(definitionType) && keyFormat !== MemberKeyFormat.Index
+function canBeOptional(definitionType: DefinitionTypes) {
+  return !isEnum(definitionType) // && keyFormat !== MemberKeyFormat.Index
+}
+
+function getMemberTypeAnnotationFormat(definitionType: DefinitionTypes) {
+  if (isEnum(definitionType)) return MemberTypeAnnotationFormat.Basic
+  return randomSelect<MemberTypeAnnotationFormat>(MemberTypeAnnotationFormat)
 }
 
 function generateMember(
@@ -93,10 +101,8 @@ function generateMember(
 ): GeneratedMember {
   const name = generateRandomMemberKeyName()
   const keyFormat = getKeyFormat(definitionType)
-  const optional = chance(0.5) && canBeOptional(definitionType, keyFormat)
-  const typeAnnotation: MemberTypeAnnotationFormat = randomSelect(
-    MemberTypeAnnotationFormat,
-  )
+  const optional = chance(0.5) && canBeOptional(definitionType)
+  const typeAnnotation = getMemberTypeAnnotationFormat(definitionType)
   const type = generateTypeAnnotationValues(
     definitionType,
     keyFormat,
@@ -146,9 +152,9 @@ function generateTypeAnnotationValues(
 }
 
 // Check for scenarios where literal is invalid
-function canBeLiteral(keyFormat: MemberKeyFormat) {
-  return keyFormat !== MemberKeyFormat.Index
-}
+// function canBeLiteral(keyFormat: MemberKeyFormat) {
+//   return keyFormat !== MemberKeyFormat.Index
+// }
 
 // Enum values must be literal
 function mustBeLiteral(definitionType: DefinitionTypes) {
@@ -161,9 +167,10 @@ function generateTypeAnnotationValue(
   depthCurrent: number,
   depthMax: number,
 ): string {
-  if (isIndexKey(keyFormat)) return generateIndexSignatureFriendlyTypeValue()
+  if (isEnum(definitionType)) return generateEnumFriendlyTypeValue()
+  // if (isIndexKey(keyFormat)) return generateIndexSignatureFriendlyTypeValue()
 
-  return (chance(0.5) && canBeLiteral(keyFormat)) || mustBeLiteral(definitionType)
+  return chance(0.5) /* && canBeLiteral(keyFormat) */ || mustBeLiteral(definitionType)
     ? generateLiteralTypeAnnotationValue(depthCurrent, depthMax)
     : generateBasicTypeAnnotationValue()
 }
@@ -186,8 +193,12 @@ function generateLiteralTypeAnnotationValue(
   )
 }
 
-function generateIndexSignatureFriendlyTypeValue() {
-  return randomSelect(['string', 'number', 'symbol'])
+// function generateIndexSignatureFriendlyTypeValue() {
+//   return randomSelect(['string', 'number', 'symbol'])
+// }
+
+function generateEnumFriendlyTypeValue() {
+  return `'${randomText([1, 1], 'words')}'`
 }
 
 function generateBasicTypeAnnotationValue(): string {
@@ -202,9 +213,3 @@ function generateBasicTypeAnnotationValue(): string {
     '(() => void)',
   ])
 }
-
-// TODO deduplicate index type annotations
-// TODO mapped types can't have anything else
-// TODO sync other type annotations to possible index signature types
-//console.log(generateDefinitions(1).map(formatDefinition))
-console.log(validateTSCode(`${generateDefinitions(1).map(formatDefinition)[0]}`))

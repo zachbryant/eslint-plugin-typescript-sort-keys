@@ -1,3 +1,4 @@
+import fs from 'fs'
 import { loremIpsum } from 'lorem-ipsum'
 import os from 'os'
 import path from 'path'
@@ -50,7 +51,7 @@ export function generateFilledArray<T>(length: number, generator: () => T): Arra
 const validCharacters =
   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.' +
   'áéíóúÄËÏÖÜçÇß' +
-  '£®¶@#%&+!-/*\\?<>'
+  '£®¶@#%&+!-/*?<>'
 export function generateRandomMemberKeyCharacter(): string {
   const randomIndex = Math.floor(Math.random() * validCharacters.length)
   return validCharacters[randomIndex]
@@ -91,13 +92,20 @@ export function chance(probability: number) {
   return Math.random() < probability
 }
 
+// TODO: Apparently only sometimes works?
 export function validateTSCode(code: string): boolean {
   console.log(code)
   const tempFilePath = path.resolve(
     os.tmpdir(),
-    `temp_${new Date().getMilliseconds()}.ts`,
+    `temp_ts_${new Date().getMilliseconds()}.ts`,
   )
-  const sourceFile = ts.createSourceFile(tempFilePath, code, ts.ScriptTarget.Latest, true)
+  fs.writeFileSync(tempFilePath, code)
+  const sourceFile = ts.createSourceFile(
+    tempFilePath,
+    `export {};\n${code}`,
+    ts.ScriptTarget.Latest,
+    true,
+  )
 
   const program = ts.createProgram({
     rootNames: [tempFilePath],
@@ -112,7 +120,7 @@ export function validateTSCode(code: string): boolean {
     const errors = ts
       .getPreEmitDiagnostics(program, sourceFile)
       .filter(_ => _.category === ts.DiagnosticCategory.Error)
-    errors.forEach(console.log)
+    errors.forEach(_ => console.log(_.messageText))
 
     return errors.length === 0
   } catch (error) {

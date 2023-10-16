@@ -8,19 +8,26 @@ export enum DefinitionTypes {
   Union = 'U',
 }
 
+export enum DefinitionTypesTopLevel {
+  Enum = DefinitionTypes.Enum,
+  Interface = DefinitionTypes.Interface,
+  Type = DefinitionTypes.Type,
+}
+
 export const isEnum = (dt: DefinitionTypes) => dt === DefinitionTypes.Enum
 export const isType = (dt: DefinitionTypes) => dt === DefinitionTypes.Type
 
 export enum MemberKeyFormat {
-  Index = '[index: {2}]', // type, optional respectively
-  KeyOf = '[K in keyof TKey]{1}', // optional
+  // Disabled these because they don't need fuzzing and cause a lot of edge cases
+  //Index = '[index: {2}]', // type, optional respectively
+  //KeyOf = '[K in keyof TKey]{1}', // optional
   Method = "'{0}'{1}()", // Name, optional respectively
   String = "'{0}'{1}", // Name, optional respectively
   //Variable = '[\'{0}\']', // TODO need to generate a variable to enable this
 }
 
-export const isIndexKey = (kf: MemberKeyFormat) => kf === MemberKeyFormat.Index
-export const isKeyOfKey = (kf: MemberKeyFormat) => kf === MemberKeyFormat.KeyOf
+// export const isIndexKey = (kf: MemberKeyFormat) => kf === MemberKeyFormat.Index
+// export const isKeyOfKey = (kf: MemberKeyFormat) => kf === MemberKeyFormat.KeyOf
 export const isStringKey = (kf: MemberKeyFormat) => kf === MemberKeyFormat.String
 
 export enum MemberTypeAnnotationFormat {

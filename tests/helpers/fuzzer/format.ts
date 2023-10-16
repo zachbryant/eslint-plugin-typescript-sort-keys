@@ -7,6 +7,7 @@ import {
   isBlockComment,
   isEnumMember,
   isLineComment,
+  isType,
 } from './types'
 import { generateFilledArray, zip } from './utils'
 
@@ -23,9 +24,12 @@ export function formatDefinition(definition: GeneratedDefinition) {
     ...formattedMembers,
     ...definition.comments.end.map(formatComment),
   ]
+  const assignmentOperator = isType(definition.type) ? ' = ' : ' '
   const whitespace = generateFilledArray(entries.length + 1, generateWhitespace)
   const codeBodyString = zip(entries, whitespace).join('')
-  return `${formattedTypeAndName}${formattedTypeAndName && ' '}{${codeBodyString}}`
+  return `${formattedTypeAndName}${
+    (formattedTypeAndName && assignmentOperator) || ''
+  }{${codeBodyString}}\n`
 }
 
 function formatMember(member: GeneratedMember) {
