@@ -2,23 +2,21 @@ import { ESLint } from '@typescript-eslint/utils/ts-eslint'
 import fs from 'fs'
 import path from 'path'
 import tmp from 'tmp'
-
-import plugin from '../src'
-import recommended from '../src/config/recommended.config'
-import requiredFirst from '../src/config/requiredFirst.config'
-import { typescriptConfig } from './helpers/configs'
+import { Config, getESLint } from './helpers/eslint'
 
 describe('autofix', () => {
   beforeEach(() => {
     tmp.setGracefulCleanup()
   })
 
-  const cases: Array<[any, string, string]> = [
-    [recommended, 'recommended', 'recommended.output.ts'],
-    [requiredFirst, 'requiredFirst', 'requiredFirst.output.ts'],
+  const cases: Array<[Config, string]> = [
+    [Config.Recommended, 'recommended.output.ts'],
+    [Config.RequiredFirst, 'requiredFirst.output.ts'],
   ]
-  cases.forEach(([config, configName, outputFileName]) => {
-    it(`should autofix (config=${configName}, output=${outputFileName})`, async () => {
+
+  it.each(cases)(
+    `should autofix (config=%s, output=%s)`,
+    async (configName, outputFileName) => {
       const { name: tmpDir } = tmp.dirSync({
         prefix: 'typescript-sort-keys-',
         unsafeCleanup: true,
@@ -30,19 +28,7 @@ describe('autofix', () => {
 
       fs.writeFileSync(testFilePath, input)
 
-      const eslint = new ESLint({
-        overrideConfig: {
-          ...config,
-          parser: typescriptConfig.parser,
-          parserOptions: { sourceType: 'module' },
-        },
-        plugins: {
-          'typescript-sort-keys': plugin,
-        },
-        useEslintrc: false,
-        fix: true,
-      })
-
+      const eslint = getESLint(configName)
       const results = await eslint.lintFiles(testFilePath)
       const result = results[0]
 
@@ -60,6 +46,6 @@ describe('autofix', () => {
       const output = fs.readFileSync(testFilePath, 'utf8')
 
       expect(output).toStrictEqual(expectedOutput)
-    })
-  })
+    },
+  )
 })
