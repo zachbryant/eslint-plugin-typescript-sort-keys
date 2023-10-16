@@ -37,7 +37,7 @@ export function getFixedBodyText(
               sourceCode,
               node,
               AST_TOKEN_TYPES.Line,
-              indentations.get(index + 1),
+              indentations.get(index + 1) ?? lastCommentsText,
             ),
           ]
             .filter(Boolean)

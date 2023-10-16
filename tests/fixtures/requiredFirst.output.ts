@@ -31,7 +31,11 @@ enum InlineEnum3 {C="T", b_="T", c="T"}
 enum WeirdEnum {
   Bar = 'BAR',Baz = 'BAZ',    Foo = 'FOO'    }
 
-enum WeirderEnum { Bar = 'BAR', Baz = 'BAZ',
+enum WeirderEnum { Bar = 'BAR',
+Baz = 'BAZ',    Foo = 'FOO' // FOO
+ }
+
+enum WeirdestEnum { Bar = 'BAR', Baz = 'BAZ',
 Foo = 'FOO', // FOO
     Gorp = 'GORP' }
 

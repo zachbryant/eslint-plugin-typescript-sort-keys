@@ -6,7 +6,11 @@ import {
   getNodeFollowingPunctuator,
   getNodePunctuator,
 } from './punctuationHelpers'
-import { getTextBetween, getTextBetweenNodeAndPrevious } from './textHelpers'
+import {
+  getTextBetween,
+  getTextBetweenNodeAndNext,
+  getTextBetweenNodeAndPrevious,
+} from './textHelpers'
 
 /**
  * Returns the text of the last comment in the body
@@ -45,16 +49,20 @@ export function getCommentsText(
   nextIndentation?: string,
 ): string {
   return comments
-    .map(comment => {
+    .map((comment, index) => {
       let commentText = sourceCode.getText(comment)
       const indentation = getTextBetweenNodeAndPrevious(sourceCode, comment)
       commentText = indentation + commentText
-      // Don't put a line comment on the same line as anything else
+      // Don't put a line comment on the same line as anything else, applies to last comment
+      const _nextIndentation =
+        index === comments.length - 1
+          ? nextIndentation
+          : getTextBetweenNodeAndNext(sourceCode, comment)
       if (
         comment.type === AST_TOKEN_TYPES.Line &&
         !commentText.endsWith('\n') &&
-        !!nextIndentation &&
-        !nextIndentation.includes('\n')
+        !!_nextIndentation &&
+        !_nextIndentation?.includes('\n')
       ) {
         commentText += '\n'
       }
