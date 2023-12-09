@@ -9,12 +9,17 @@ export enum Config {
   RequiredFirst,
 }
 
+/**
+ * @param config Enum deciding which config from src/config to use
+ * @param fix Boolean telling ESLint to emit fixes or not
+ * @returns ESLint instance configured with the local plugin
+ */
 export function getESLint(config: Config, fix = true) {
   const eslint = new ESLint({
     overrideConfig: {
       ...(config === Config.Recommended ? recommended : requiredFirst),
-      parser: typescriptConfig.parser,
-      parserOptions: { sourceType: 'module' },
+      ...typescriptConfig,
+      parserOptions: { sourceType: 'module' }, // Exclude project property for generated input files
     },
     plugins: {
       'typescript-sort-keys': plugin,

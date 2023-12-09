@@ -36,6 +36,7 @@ describe('autofix', () => {
       // eslint-disable-next-line no-console
       if (process.env.DEBUG === 'true') console.log(result.output)
 
+      // Validate no issues linting
       expect(result.messages).toHaveLength(0)
       expect(result.errorCount).toBe(0)
       expect(result.warningCount).toBe(0)
@@ -45,7 +46,7 @@ describe('autofix', () => {
       await ESLint.outputFixes(results)
 
       const output = fs.readFileSync(testFilePath, 'utf8')
-
+      // Validate correctness
       expect(output).toStrictEqual(expectedOutput)
     },
   )

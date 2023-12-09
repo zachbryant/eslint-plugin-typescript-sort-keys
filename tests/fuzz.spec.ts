@@ -44,11 +44,15 @@ describe('fuzz', () => {
       // eslint-disable-next-line no-console
       if (process.env.DEBUG === 'true') console.log(result.output)
 
+      // Validate no issues linting
       expect(result.messages).toHaveLength(0)
       expect(result.errorCount).toBe(0)
       expect(result.warningCount).toBe(0)
       expect(result.fixableErrorCount).toBe(0)
       expect(result.fixableWarningCount).toBe(0)
+
+      // Validate correctness
+      // TODO
 
       // No need to keep successful test files
       fs.unlinkSync(tmpInputFile)
