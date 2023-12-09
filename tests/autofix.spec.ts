@@ -33,6 +33,7 @@ describe('autofix', () => {
       const result = results[0]
 
       // For debugging when output is malformed
+      // eslint-disable-next-line no-console
       if (process.env.DEBUG === 'true') console.log(result.output)
 
       expect(result.messages).toHaveLength(0)
