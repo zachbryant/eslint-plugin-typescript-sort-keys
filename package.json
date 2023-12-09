@@ -31,7 +31,7 @@
     "compile": "yarn rollup -c",
     "coverage-preview": "http-server -o -p 5000 coverage/lcov-report",
     "coverage": "yarn test --coverage --watchAll=false",
-    "deduplicate": "yarn-deduplicate --strategy highest",
+    "deduplicate": "yarn-deduplicate --strategy fewer",
     "docs:check": "eslint-docs check",
     "docs": "eslint-docs",
     "format": "prettier --write src/**/*.{js,ts} tests/**/*.{js,ts}",
