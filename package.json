@@ -43,7 +43,6 @@
     "test:interface": "yarn -s jest ./tests/rules/interface/*.spec.ts",
     "test:rules": "yarn -s jest ./tests/rules/*/*.spec.ts --collectCoverage=true",
     "test:string-enum": "yarn -s jest ./tests/rules/string-enum/*.spec.ts",
-    "test:watch:all": "yarn -s jest --watch .*.spec.ts",
     "test:watch:autofix": "yarn jest --watch ./tests/autofix.spec.ts",
     "test:watch:config": "yarn jest --watch ./tests/config.spec.ts",
     "test:watch:interface": "yarn jest --watch ./tests/rules/interface/*.spec.ts",
@@ -52,7 +51,7 @@
     "test:watch": "yarn -s jest --watch .*.spec.ts",
     "test": "yarn -s jest .*.spec.ts --collectCoverage=true",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "verify": "yarn typecheck && yarn lint && yarn build && yarn test:all && yarn coverage"
+    "verify": "yarn typecheck && yarn lint && yarn build && yarn test && yarn coverage"
   },
   "dependencies": {
     "@typescript-eslint/utils": "^6.7.4",
