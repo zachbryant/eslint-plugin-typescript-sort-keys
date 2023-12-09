@@ -89,5 +89,3 @@ dist
 build
 lib
 
-# Test artifacts
-tests/environments/generated

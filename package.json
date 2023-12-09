@@ -43,7 +43,6 @@
     "test:config": "yarn -s test ./tests/config.spec.ts",
     "test:fuzz": "yarn -s test ./tests/fuzz.spec.ts",
     "test:interface": "yarn -s test ./tests/rules/interface/*.spec.ts",
-    "test:node": "DEBUG=true yarn -s test ./tests/node-environments.spec.ts",
     "test:rules": "yarn -s test ./tests/rules/*/*.spec.ts --collectCoverage=true",
     "test:string-enum": "yarn -s test ./tests/rules/string-enum/*.spec.ts",
     "test:watch:all": "yarn -s jest --watch .*.spec.ts",

@@ -1,5 +1,4 @@
 tests/fixtures/**
-tests/environments/**
 dist
 lib
 build

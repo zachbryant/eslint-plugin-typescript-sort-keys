@@ -17,5 +17,5 @@
     "strictNullChecks": false
   },
   "include": ["./**/*"],
-  "exclude": ["fixtures", "environments"]
+  "exclude": ["fixtures"]
 }
