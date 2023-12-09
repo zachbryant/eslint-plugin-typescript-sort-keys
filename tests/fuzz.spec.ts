@@ -10,7 +10,6 @@ const FUZZ_COUNT = 1000
  * edge cases that cause the autofix to crash.
  *
  * It is intended to test positioning of comments/whitespace around nodes.
- * TODO Add output comparison
  */
 describe('fuzz', () => {
   const tmpOutDir = tmp.dirSync({
@@ -23,8 +22,7 @@ describe('fuzz', () => {
   })
 
   afterAll(() => {
-    if (fs.readdirSync(tmpOutDir).length === 0)
-      fs.rmdirSync(tmpOutDir, { recursive: true })
+    if (fs.readdirSync(tmpOutDir).length === 0) fs.rmSync(tmpOutDir, { recursive: true })
   })
 
   const cases = fuzz(FUZZ_COUNT).map(inputString => [
