@@ -1,5 +1,4 @@
 tests/fixtures/**
-**/generated/**
 build
 dist
 lib

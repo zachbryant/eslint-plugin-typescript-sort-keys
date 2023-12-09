@@ -40,7 +40,6 @@
     "purge": "yarn -s rimraf node_modules lib",
     "test:autofix": "yarn -s jest ./tests/autofix.spec.ts",
     "test:config": "yarn -s jest ./tests/config.spec.ts",
-    "test:fuzz": "yarn -s jest ./tests/fuzz.spec.ts",
     "test:interface": "yarn -s jest ./tests/rules/interface/*.spec.ts",
     "test:rules": "yarn -s jest ./tests/rules/*/*.spec.ts --collectCoverage=true",
     "test:string-enum": "yarn -s jest ./tests/rules/string-enum/*.spec.ts",
